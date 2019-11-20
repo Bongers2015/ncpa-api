@@ -1,0 +1,51 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    // "allowJs": true,
+    // "allowSyntheticDefaultImports": false,
+    "target": "ES5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    // // "isolatedModules": false,
+    // "lib": [
+    //   "es2017"
+    // ],
+    // "module": "commonjs",
+    // // "moduleResolution": "node",
+    // "noEmit": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "strict": true,
+    // "target": "es5",
+    // "skipLibCheck": true,
+    // "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "json/*": [
+        "dist/*"
+      ]
+      /*
+      ,
+      "baseline/*": [
+        "src/lib/baseline/*",
+      ],
+      "components/*": [
+        "src/lib/components/*",
+      ],
+      "hoc/*": [
+        "src/lib/hoc/*",
+      ],
+      "graphql/*": [
+        "src/lib/graphql/*",
+      ]
+      */
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

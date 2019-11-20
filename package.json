@@ -1,0 +1,46 @@
+{
+	"name": "ncpa-api",
+	"version": "1.0.0",
+	"description": "Reference API for NCPA",
+	"main": "index.js",
+	"author": "JP Wesselink<jp@spronq.com>",
+	"license": "UNLICENSED",
+	"private": true,
+	"scripts": {
+		"lint": "eslint --fix ./src/*",
+		"dev": "nodemon -e ts -w ./src/index.ts -w ./src/server.ts -w ./src/controllers -x yarn run serve",
+		"serve": "tsoa routes && tsoa swagger && ts-node src/index.ts"
+	},
+	"devDependencies": {
+		"@types/node": "^12.12.6",
+		"@types/swagger-ui-express": "^3.0.1",
+		"@typescript-eslint/eslint-plugin": "^2.3.0",
+		"@typescript-eslint/parser": "^2.6.1",
+		"eslint": "^6.6.0",
+		"eslint-config-airbnb": "^18.0.1",
+		"eslint-config-airbnb-typescript": "^6.0.0",
+		"eslint-config-prettier": "^6.5.0",
+		"eslint-plugin-import": "^2.18.2",
+		"eslint-plugin-prettier": "^3.1.1",
+		"prettier": "^1.18.2",
+		"ts-node": "^8.5.0",
+		"tsc-watch": "^4.0.0",
+		"typescript": "^3.7.2"
+	},
+	"dependencies": {
+		"body-parser": "^1.19.0",
+		"date-fns": "^2.7.0",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"method-override": "^3.0.0",
+		"moment": "^2.24.0",
+		"nodemon": "^1.19.4",
+		"passport": "^0.4.0",
+		"passport-jwt": "^4.0.0",
+		"qrcode": "^1.4.4",
+		"swagger-ui-express": "^4.1.2",
+		"tsoa": "^2.5.8",
+		"uuid": "^3.3.3",
+		"xstate": "^4.7.0-rc6"
+	}
+}

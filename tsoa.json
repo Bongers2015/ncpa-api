@@ -1,0 +1,29 @@
+{
+	"swagger": {
+		"outputDirectory": "./src/swagger",
+		"entryFile": "./src/server.ts",
+		"basePath": "/ncpa/api/v1",
+		"noImplicitAdditionalProperties": "silently-remove-extras",
+		"securityDefinitions": {
+			"api_key": {
+				"type": "apiKey",
+				"name": "access_token",
+				"in": "query"
+			},
+			"jwtAuth": {
+				"type": "apiKey",
+				"scheme": "bearer",
+				"bearerFormat": "jwt",
+				"in": "header",
+				"name": "authorization"
+			}
+		}
+	},
+	"routes": {
+		"basePath": "/ncpa/api/v1",
+		"entryFile": "./src/server.ts",
+		"routesDir": "./src",
+		"authenticationModule": "./src/authentication.ts"
+	},
+	"ignore": [ "**/node_modules/**" ]
+}

@@ -51,7 +51,7 @@ Find the cert in Keychain by searching for its common name (`localhost` in this 
 
 ```
 $ yarn dev
-$ open http://localhost:8008/documentation
+$ open http://localhost:3000/api-docs
 ```
 
 
