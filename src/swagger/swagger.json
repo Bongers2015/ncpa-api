@@ -4,6 +4,71 @@
 		"application/json"
 	],
 	"definitions": {
+		"Upgrade": {
+			"properties": {
+				"originalname": {
+					"type": "string",
+					"description": "Name of the file on the user's computer"
+				},
+				"encoding": {
+					"type": "string",
+					"description": "Encoding type of the file"
+				},
+				"mimetype": {
+					"type": "string",
+					"description": "Mime type of the file"
+				},
+				"size": {
+					"type": "number",
+					"format": "double",
+					"description": "Size of the file in bytes"
+				},
+				"destination": {
+					"type": "string",
+					"description": "The folder to which the file has been saved (DiskStorage)"
+				},
+				"location": {
+					"type": "string",
+					"description": "The url where to get the uploaded file (aws S3 for example)"
+				},
+				"filename": {
+					"type": "string",
+					"description": "The name of the file within the destination (DiskStorage)"
+				},
+				"path": {
+					"type": "string",
+					"description": "Location of the uploaded file (DiskStorage)"
+				}
+			},
+			"required": [
+				"originalname",
+				"encoding",
+				"mimetype",
+				"size",
+				"destination",
+				"location",
+				"filename",
+				"path"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"UpgradeResponse": {
+			"properties": {
+				"filename": {
+					"type": "string"
+				},
+				"data": {
+					"$ref": "#/definitions/Upgrade"
+				}
+			},
+			"required": [
+				"filename",
+				"data"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
 		"Card": {
 			"properties": {
 				"id": {
@@ -346,6 +411,47 @@
 							"WHITELIST"
 						]
 					}
+				]
+			}
+		},
+		"/upgrade": {
+			"post": {
+				"operationId": "Upgrade",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/UpgradeResponse"
+						}
+					}
+				},
+				"tags": [
+					"Charge point"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "formData",
+						"name": "data",
+						"required": true,
+						"type": "file"
+					},
+					{
+						"in": "formData",
+						"name": "filename",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"consumes": [
+					"multipart/form-data"
 				]
 			}
 		},
@@ -832,27 +938,6 @@
 					}
 				],
 				"parameters": []
-			}
-		},
-		"/upgrade": {
-			"post": {
-				"consumes": [
-					"multipart/form-data"
-				],
-				"parameters": [
-					{
-						"in": "formData",
-						"name": "data",
-						"required": true,
-						"type": "file"
-					},
-					{
-						"in": "formData",
-						"name": "filename",
-						"required": true,
-						"type": "string"
-					}
-				]
 			}
 		}
 	},
