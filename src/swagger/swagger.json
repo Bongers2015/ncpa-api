@@ -1,5 +1,5 @@
 {
-	"basePath": "/ncpa/api/v1",
+	"basePath": "/api/tnm/freeapp/v1",
 	"consumes": [
 		"application/json"
 	],
@@ -10,6 +10,14 @@
 					"type": "string"
 				},
 				"owner": {
+					"type": "string",
+					"x-nullable": true
+				},
+				"status": {
+					"type": "string",
+					"x-nullable": true
+				},
+				"exp": {
 					"type": "string",
 					"x-nullable": true
 				},
@@ -274,6 +282,73 @@
 		}
 	},
 	"paths": {
+		"/authentication-mode": {
+			"get": {
+				"operationId": "GetAuthenticationMode",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "string",
+							"enum": [
+								"PLUGNCHARGE",
+								"WHITELIST"
+							]
+						}
+					}
+				},
+				"tags": [
+					"Charge point"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "SetAuthenticationMode",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "string",
+							"enum": [
+								"PLUGNCHARGE",
+								"WHITELIST"
+							]
+						}
+					}
+				},
+				"tags": [
+					"Charge point"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "authenticationMode",
+						"required": true,
+						"type": "string",
+						"enum": [
+							"PLUGNCHARGE",
+							"WHITELIST"
+						]
+					}
+				]
+			}
+		},
 		"/auth/{jwtToken}": {
 			"get": {
 				"operationId": "ValidateAuthToken",
@@ -757,6 +832,27 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/upgrade": {
+			"post": {
+				"consumes": [
+					"multipart/form-data"
+				],
+				"parameters": [
+					{
+						"in": "formData",
+						"name": "data",
+						"required": true,
+						"type": "file"
+					},
+					{
+						"in": "formData",
+						"name": "filename",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		}
 	},

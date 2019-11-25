@@ -1,6 +1,7 @@
 import v4 from 'uuid/v4';
 
 import {
+  AuthMode,
   CardId,
   // CardOwner,
   // CardRegistrationStatus,
@@ -124,6 +125,13 @@ const getSplitBilling = (): ChargingTransactionPerCard[] => {
     };
   });
 };
+
+let authMode: AuthMode = 'WHITELIST';
+const getAuthMode = (): AuthMode => authMode;
+const setAuthMode = (newAuthMode: AuthMode): AuthMode => {
+  authMode = newAuthMode;
+  return authMode;
+};
 export default {
   getCards: (): Card[] => {
     return cards.map(card => ({ ...card }));
@@ -234,5 +242,7 @@ export default {
   updateChargePointStatus,
   getCardTransactions,
   getTransactions,
-  getSplitBilling
+  getSplitBilling,
+  getAuthMode,
+  setAuthMode
 };

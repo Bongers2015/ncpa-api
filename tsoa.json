@@ -2,7 +2,7 @@
 	"swagger": {
 		"outputDirectory": "./src/swagger",
 		"entryFile": "./src/server.ts",
-		"basePath": "/ncpa/api/v1",
+		"basePath": "/api/tnm/freeapp/v1",
 		"noImplicitAdditionalProperties": "silently-remove-extras",
 		"securityDefinitions": {
 			"api_key": {
@@ -17,10 +17,34 @@
 				"in": "header",
 				"name": "authorization"
 			}
+		},
+		"specMerging": "recursive",
+		"spec": {
+			"paths": {
+				"/upgrade": {
+					"post": {
+						"consumes": [ "multipart/form-data" ],
+						"parameters": [
+							{
+								"in": "formData",
+								"name": "data",
+								"required": true,
+								"type": "file"
+							},
+							{
+								"in": "formData",
+								"name": "filename",
+								"required": true,
+								"type": "string"
+							}
+						]
+					}
+				}
+			}
 		}
 	},
 	"routes": {
-		"basePath": "/ncpa/api/v1",
+		"basePath": "/api/tnm/freeapp/v1",
 		"entryFile": "./src/server.ts",
 		"routesDir": "./src",
 		"authenticationModule": "./src/authentication.ts"

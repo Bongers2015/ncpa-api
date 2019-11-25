@@ -3,13 +3,13 @@ import https from 'https';
 import fs from 'fs';
 
 import bodyParser from 'body-parser';
-// import chalk from 'chalk';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import methodOverride from 'method-override';
 
 import swaggerDocument from './swagger/swagger.json';
 
+import './controllers/authentication-mode-controller';
 import './controllers/auth-controller';
 import './controllers/cards-controller';
 import './controllers/card-controller';
@@ -19,9 +19,8 @@ import './controllers/charging-session-controller';
 import './controllers/transactions-controller';
 import './controllers/split-billing-controller';
 import { RegisterRoutes } from './routes';
-// import { log } from './utils/log';
 
-export const server = () => {
+export const server = (): Promise<https.Server> => {
   const app = express()
     .use(bodyParser.urlencoded({ extended: true }))
     .use(bodyParser.json())

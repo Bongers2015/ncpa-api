@@ -5,6 +5,8 @@ export type CardOwner = string;
 export interface Card {
   id: string;
   owner?: string;
+  status?: string;
+  exp?: string;
   editable?: boolean;
 }
 
@@ -19,12 +21,23 @@ export interface CardRegistrationResponse {
   statusMessage: string;
 }
 
+export type AuthMode = 'PLUGNCHARGE' | 'WHITELIST';
 export interface ChargingTransaction {
   startedAt: string;
   //   stoppedAt: ISODate;
   duration: Seconds;
   WattHourCharged: CPWattHourCharged;
   cardId: string;
+}
+
+// >>> /transactions
+export interface Transaction {
+  uuid: string;
+  startDate: string;
+  stopDate: string;
+  stopReason: string;
+  startKWattHour: string;
+  stopKWattHour: string;
 }
 
 export interface ChargingTransactionPerCard {
