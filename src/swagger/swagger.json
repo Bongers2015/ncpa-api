@@ -267,9 +267,9 @@
 						}
 					}
 				},
-				"description": "jwt scopes:\n expects token as url encoded cyphered jwt token like so:\n```json\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"{client-id}\",\n\"iat\": {unix time}},\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n```\nreturns an access token:\n\n```json\n{\n\"iss\": \"{cp-uuid}\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"{client-uuid}\",\n\"iat\": 1516239022,\n\"scopes\": [\"operator\"]\n}\n```",
+				"description": "jwt scopes:\n expects token as url encoded cyphered jwt token like so:\n```json\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": [\"operator\", \"{client-id}\"],\n\"iat\": {unix time}},\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n```\nreturns an access token:\n\n```json\n{\n\"iss\": \"{cp-uuid}\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"{client-uuid}\",\n\"iat\": 1516239022,\n\"scopes\": [\"operator\"]\n}\n```",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [],
 				"parameters": [
@@ -302,7 +302,7 @@
 				},
 				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -330,7 +330,7 @@
 				},
 				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -372,7 +372,7 @@
 				},
 				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -401,7 +401,7 @@
 				},
 				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -442,7 +442,7 @@
 				},
 				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -468,7 +468,7 @@
 				},
 				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -499,7 +499,7 @@
 				},
 				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -532,7 +532,7 @@
 				},
 				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -558,7 +558,7 @@
 				},
 				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -581,7 +581,7 @@
 				},
 				"description": "jwt scopes: `operator` `",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -604,7 +604,7 @@
 				},
 				"description": "jwt scopes: `operator`",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -633,7 +633,7 @@
 				},
 				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
-					"Charge point"
+					"operator"
 				],
 				"security": [
 					{
@@ -659,7 +659,7 @@
 				},
 				"description": "jwt scopes: `installer`",
 				"tags": [
-					"Charge point"
+					"installer"
 				],
 				"security": [
 					{
@@ -685,7 +685,7 @@
 				]
 			}
 		},
-		"/development/cards": {
+		"/development/whitelist/cards": {
 			"post": {
 				"operationId": "AddCard",
 				"produces": [
@@ -699,9 +699,9 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `developer`",
+				"description": "jwt scopes: `developer`\n\nDeveloper endpoint for whitelisting card manually",
 				"tags": [
-					"Development only"
+					"developer"
 				],
 				"security": [
 					{
@@ -731,9 +731,9 @@
 						"description": "No content"
 					}
 				},
-				"description": "jwt scopes: `developer`",
+				"description": "jwt scopes: `developer`\n\nSet the response of the `/card` endpoint request",
 				"tags": [
-					"Development only"
+					"developer"
 				],
 				"security": [
 					{
@@ -774,9 +774,9 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `developer` \n\n\n```\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"{client-id}\",\n\"iat\": 1516239022,\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n}\n```",
+				"description": "jwt scopes: `developer` \n\nCreates a QR code containing an identity token\n\n\n```\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": [\"operator\", \"{client-id}\"],\n\"iat\": 1516239022,\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n}\n```",
 				"tags": [
-					"Development only"
+					"developer"
 				],
 				"security": [],
 				"parameters": [

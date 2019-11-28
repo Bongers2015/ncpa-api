@@ -10,7 +10,7 @@ export class TransactionsController extends Controller {
   /** jwt scopes: `operator`, `installer` */
   @Get()
   @Security('jwtAuth')
-  @Tags('Charge point')
+  @Tags('operator')
   public async getTransactions(): Promise<Transaction[]> {
     return new Promise(resolve => {
       resolve(cpService.getTransactions());

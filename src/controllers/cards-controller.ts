@@ -8,7 +8,7 @@ export class CardsController extends Controller {
   /** jwt scopes: `operator`, `installer` */
   @Get()
   @Security('jwtAuth')
-  @Tags('Charge point')
+  @Tags('operator')
   public async getCards(): Promise<Card[]> {
     return new Promise(resolve => {
       resolve(cpService.getCards());
@@ -18,7 +18,7 @@ export class CardsController extends Controller {
   /** jwt scopes: `operator`, `installer` */
   @Get('{token}')
   @Security('jwtAuth')
-  @Tags('Charge point')
+  @Tags('operator')
   public async getCard(token: string): Promise<Card> {
     return new Promise(resolve => {
       resolve(cpService.getCardById(token));
@@ -28,7 +28,7 @@ export class CardsController extends Controller {
   /** jwt scopes: `operator`, `installer` */
   @Delete('{token}')
   @Security('jwtAuth')
-  @Tags('Charge point')
+  @Tags('operator')
   public async deleteCard(token: string): Promise<Card> {
     return new Promise(resolve => {
       try {

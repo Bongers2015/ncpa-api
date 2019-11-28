@@ -4,7 +4,7 @@ import { SocketLockMode } from '../types';
 import cpService from '../services/cp';
 
 @Route('config')
-@Tags('Charge point')
+@Tags('operator')
 @Security('jwtAuth')
 export class ConfigController extends Controller {
   /** jwt scopes: `operator`, `installer` */

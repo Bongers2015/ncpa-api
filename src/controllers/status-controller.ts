@@ -6,7 +6,7 @@ import cpService from '../services/cp';
 
 @Route('status')
 @Security('jwtAuth')
-@Tags('Charge point')
+@Tags('operator')
 export class StatusController extends Controller {
   /** jwt scopes: `operator`, `installer` */
   @Get()

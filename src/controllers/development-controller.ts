@@ -26,13 +26,15 @@ import {
 
 import cpService from '../services/cp';
 import { encrypt } from '../services/qr';
-import { CHARGE_POINT_ID } from '../constants';
 
 @Route('development')
-@Tags('Development only')
+@Tags('developer')
 export class AdminController extends Controller {
-  /** jwt scopes: `developer` */
-  @Post('/cards')
+  /** jwt scopes: `developer`
+   *
+   * Developer endpoint for whitelisting card manually
+   */
+  @Post('/whitelist/cards')
   @Security('jwtAuth')
   public async addCard(
     @Body() createCardRequest: CreateCardRequest
@@ -47,7 +49,10 @@ export class AdminController extends Controller {
     });
   }
 
-  /** jwt scopes: `developer` */
+  /** jwt scopes: `developer`
+   *
+   * Set the response of the `/card` endpoint request
+   */
   @Post('/card/registration-response')
   @Security('jwtAuth')
   public updateCardRegistrationResponse(
@@ -59,12 +64,14 @@ export class AdminController extends Controller {
 
   /** jwt scopes: `developer` 
    * 
+   * Creates a QR code containing an identity token
+   * 
    * 
    * ```
    * {
   "iss": "TNM Auth server",
   "sub": "{cp-uuid}",
-  "aud": "{client-id}",
+  "aud": ["operator", "{client-id}"],
   "iat": 1516239022,
   "wifi": {
     "ssid": "my-ssid",
@@ -97,9 +104,9 @@ export class AdminController extends Controller {
     );
 
     const payload = {
-      iss: 'TNM Auth server',
+      iss: 'TNM Auth Server',
       sub: `${chargePointId}`,
-      aud: clientId,
+      aud: ['operator', clientId],
 
       wifi: {
         ssid: 'my-ssid',

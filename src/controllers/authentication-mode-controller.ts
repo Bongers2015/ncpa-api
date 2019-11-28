@@ -4,7 +4,7 @@ import { AuthMode } from '../types';
 import cpService from '../services/cp';
 
 @Route('authentication-mode')
-@Tags('Charge point')
+@Tags('operator')
 @Security('jwtAuth')
 export class AuthenticationModeController extends Controller {
   /** jwt scopes: `operator`, `installer` */

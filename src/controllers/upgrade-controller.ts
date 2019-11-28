@@ -5,7 +5,7 @@ import multer from 'multer';
 import { Upgrade, UpgradeResponse } from '../types';
 
 @Route('upgrade')
-@Tags('Charge point')
+@Tags('installer')
 @Security('jwtAuth')
 export class UpgradeController extends Controller {
   /** jwt scopes: `installer` */

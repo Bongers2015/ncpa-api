@@ -8,7 +8,7 @@ export class CardController extends Controller {
   /** jwt scopes: `operator`, `installer` */
   @Get()
   @Security('jwtAuth')
-  @Tags('Charge point')
+  @Tags('operator')
   public async registerCard(): Promise<CardRegistration> {
     const cardRegistration = await cpService.cardRegistration();
     return new Promise(resolve => {

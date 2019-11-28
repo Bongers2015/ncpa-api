@@ -7,7 +7,7 @@ import { Controller, Get, Route, Tags, Query } from 'tsoa';
 import { decrypt } from '../services/qr';
 import { CHARGE_POINT_ID } from '../constants';
 @Route('auth')
-@Tags('Charge point')
+@Tags('operator')
 export class AuthController extends Controller {
   /** 
     
@@ -18,7 +18,7 @@ export class AuthController extends Controller {
 {
   "iss": "TNM Auth server",
   "sub": "{cp-uuid}",
-  "aud": "{client-id}",
+  "aud": ["operator", "{client-id}"],
   "iat": {unix time}},
   "wifi": {
     "ssid": "my-ssid",
@@ -53,25 +53,33 @@ returns an access token:
         if (err) {
           reject(err);
         } else {
-          const { iss, sub: chargePointId, aud: clientId } = decoded;
+          const { iss, sub: chargePointId, aud } = decoded;
+
           if (
             iss === 'TNM Auth Server' &&
-            clientId &&
+            aud &&
             chargePointId === CHARGE_POINT_ID
           ) {
-            const privateKey = fs.readFileSync(
-              path.resolve(process.cwd(), './certs/server.key')
-            );
-            const payload = {
-              scope: 'operator',
-              iss: chargePointId,
-              sub: chargePointId,
-              aud: clientId
-            };
-            const appToken = jwt.sign(payload, privateKey, {
-              algorithm: 'RS256'
-            });
-            resolve(appToken);
+            // select scope
+            if (!Array.isArray(aud) || aud.length !== 2) {
+              reject(new Error('aud is bad'));
+            } else {
+              const [scope, clientId] = aud;
+
+              const privateKey = fs.readFileSync(
+                path.resolve(process.cwd(), './certs/server.key')
+              );
+              const payload = {
+                scope,
+                iss: chargePointId,
+                sub: chargePointId,
+                aud: clientId
+              };
+              const appToken = jwt.sign(payload, privateKey, {
+                algorithm: 'RS256'
+              });
+              resolve(appToken);
+            }
           } else {
             reject(new Error('no'));
           }
