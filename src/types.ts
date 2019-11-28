@@ -3,11 +3,10 @@ export type CardId = string;
 export type CardOwner = string;
 
 export interface Card {
-  id: string;
-  owner?: string;
-  status?: string;
-  exp?: string;
-  editable?: boolean;
+  /** RFID  */
+  token: string;
+  status: 'ACCEPTED' | 'BLOCKED' | 'EXPIRED' | 'INVALID';
+  expirationDate?: string;
 }
 
 export interface CardRegistration {
@@ -32,12 +31,14 @@ export interface ChargingTransaction {
 
 // >>> /transactions
 export interface Transaction {
-  uuid: string;
+  id: string;
+  /** card token id */
+  token: string;
   startDate: string;
-  stopDate: string;
-  stopReason: string;
-  startKWattHour: string;
-  stopKWattHour: string;
+  stopDate?: string;
+  stopReason?: string;
+  startKWattHour: number;
+  stopKWattHour?: number;
 }
 
 export interface ChargingTransactionPerCard {
@@ -87,10 +88,38 @@ export type ISODate = string;
 export type Seconds = number;
 export type CPWattHourCharged = number;
 export interface CreateCardRequest {
-  id: string;
+  token: string;
 }
 export interface GetAuthQrResponse {
+  /** {protocol}://{host}:{port}/{path} */
   host: string;
+  /** QR bitmap encoded as data url */
   qrDataUrl: string;
+  /** authorization request url */
   requestUrl: string;
+}
+export type SocketLockMode = 'TRANSACTION' | 'LOCKED' | 'UNLOCKED';
+
+export interface Upgrade {
+  /** Name of the file on the user's computer */
+  originalname: string;
+  /** Encoding type of the file */
+  encoding: string;
+  /** Mime type of the file */
+  mimetype: string;
+  /** Size of the file in bytes */
+  size: number;
+  /** The folder to which the file has been saved (DiskStorage) */
+  destination: string;
+  /** The url where to get the uploaded file (aws S3 for example) */
+  location: string;
+  /** The name of the file within the destination (DiskStorage) */
+  filename: string;
+  /** Location of the uploaded file (DiskStorage) */
+  path: string;
+}
+
+export interface UpgradeResponse {
+  filename: string;
+  data: Upgrade;
 }

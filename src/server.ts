@@ -9,16 +9,17 @@ import methodOverride from 'method-override';
 
 import swaggerDocument from './swagger/swagger.json';
 
-import './controllers/authentication-mode-controller';
-import './controllers/upgrade-controller';
 import './controllers/auth-controller';
+import './controllers/authentication-mode-controller';
+import './controllers/config-controller';
 import './controllers/cards-controller';
 import './controllers/card-controller';
-import './controllers/administration-controller';
 import './controllers/status-controller';
-import './controllers/charging-session-controller';
+import './controllers/date-controller';
 import './controllers/transactions-controller';
-import './controllers/split-billing-controller';
+import './controllers/upgrade-controller';
+import './controllers/administration-controller';
+
 import { RegisterRoutes } from './routes';
 
 export const server = (): Promise<https.Server> => {

@@ -1,30 +1,16 @@
-import { Controller, Security, Route, Tags, Get, Put, Body } from 'tsoa';
+import { Controller, Security, Route, Tags, Get } from 'tsoa';
 
-import { ChargePointStatus, ChargePointStatusUpdate } from '../types';
+import { ChargePointStatus } from '../types';
 
 import cpService from '../services/cp';
-import cp from '../services/cp';
-
-export { ChargePointStatus } from '../types';
 
 @Route('status')
+@Security('jwtAuth')
+@Tags('Charge point')
 export class StatusController extends Controller {
+  /** jwt scopes: `operator`, `installer` */
   @Get()
-  @Security('jwtAuth')
-  @Tags('Charge point')
   public getChargePointStatus(): ChargePointStatus {
-    const chargePointStatus = cpService.getChargePointStatus();
-    return chargePointStatus;
-  }
-
-  @Put()
-  @Security('jwtAuth')
-  @Tags('Charge point')
-  public updateChargePointStatus(
-    @Body() chargePointStatusUpdate: ChargePointStatusUpdate
-  ): ChargePointStatus {
-    console.log('chargePointStatusUpdate', chargePointStatusUpdate);
-    cp.updateChargePointStatus({ ...chargePointStatusUpdate });
     const chargePointStatus = cpService.getChargePointStatus();
     return chargePointStatus;
   }

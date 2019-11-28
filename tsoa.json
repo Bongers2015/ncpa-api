@@ -12,8 +12,6 @@
 			},
 			"jwtAuth": {
 				"type": "apiKey",
-				"scheme": "bearer",
-				"bearerFormat": "jwt",
 				"in": "header",
 				"name": "authorization"
 			}

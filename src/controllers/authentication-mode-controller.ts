@@ -7,11 +7,13 @@ import cpService from '../services/cp';
 @Tags('Charge point')
 @Security('jwtAuth')
 export class AuthenticationModeController extends Controller {
+  /** jwt scopes: `operator`, `installer` */
   @Get('/')
   public getAuthenticationMode(): AuthMode {
     return cpService.getAuthMode();
   }
 
+  /** jwt scopes: `operator`, `installer` */
   @Post()
   public setAuthenticationMode(
     @Query() authenticationMode: AuthMode

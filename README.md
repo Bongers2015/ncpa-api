@@ -63,9 +63,3 @@ you are able to create the schema in `./src/swagger/swagger.json`.
 ```
 $ yarn tsoa swagger
 ```
-
-
-
-
-
-

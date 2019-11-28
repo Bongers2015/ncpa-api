@@ -1,26 +1,11 @@
-import {
-  Controller,
-  Security,
-  Put,
-  Delete,
-  Route,
-  Tags,
-  Get,
-  Body,
-  Query
-} from 'tsoa';
+import { Controller, Security, Delete, Route, Tags, Get } from 'tsoa';
 
 import cpService from '../services/cp';
-import { Card, ChargingTransaction } from '../types';
+import { Card } from '../types';
 
-export { Card } from '../types';
-
-export interface UpdateCardRequest {
-  owner: string;
-}
-
-@Route('cards')
+@Route('whitelist/cards')
 export class CardsController extends Controller {
+  /** jwt scopes: `operator`, `installer` */
   @Get()
   @Security('jwtAuth')
   @Tags('Charge point')
@@ -30,46 +15,24 @@ export class CardsController extends Controller {
     });
   }
 
-  @Get('{cardId}/transactions')
+  /** jwt scopes: `operator`, `installer` */
+  @Get('{token}')
   @Security('jwtAuth')
   @Tags('Charge point')
-  public async getCardTransations(
-    cardId: string,
-    @Query() after?: string
-  ): Promise<ChargingTransaction[]> {
-    console.log('after', after);
+  public async getCard(token: string): Promise<Card> {
     return new Promise(resolve => {
-      resolve(cpService.getCardTransactions(cardId));
+      resolve(cpService.getCardById(token));
     });
   }
 
-  @Put('{cardId}')
+  /** jwt scopes: `operator`, `installer` */
+  @Delete('{token}')
   @Security('jwtAuth')
   @Tags('Charge point')
-  public async updateCard(
-    cardId: string,
-    @Body() updateCardRequest: UpdateCardRequest
-  ): Promise<Card> {
+  public async deleteCard(token: string): Promise<Card> {
     return new Promise(resolve => {
       try {
-        const card = cpService.updateCardById(cardId, updateCardRequest);
-        if (card) {
-          resolve(card);
-        }
-      } catch (e) {
-        this.setStatus(403);
-        resolve(e);
-      }
-    });
-  }
-
-  @Delete('{cardId}')
-  @Security('jwtAuth')
-  @Tags('Charge point')
-  public async deleteCard(cardId: string): Promise<Card> {
-    return new Promise(resolve => {
-      try {
-        const card = cpService.deleteCardById(cardId);
+        const card = cpService.deleteCardById(token);
         if (card) {
           resolve(card);
         }

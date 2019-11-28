@@ -1,26 +1,34 @@
-/* eslint-disable max-classes-per-file */
-/* eslint-disable no-undef */
 import fs from 'fs';
 import path from 'path';
 
 import jwt from 'jsonwebtoken';
-import {
-  Controller,
-  Get,
-  Route,
-  Tags
-  // SuccessResponse
-} from 'tsoa';
+import { Controller, Get, Route, Tags, Query } from 'tsoa';
 
+import { decrypt } from '../services/qr';
 @Route('auth')
 @Tags('Charge point')
 export class AuthController extends Controller {
-  @Get('{jwtToken}')
-  public async validateAuthToken(jwtToken: string): Promise<string> {
+  /** 
+    
+    
+    jwt scopes:
+   * expects the following
+```json
+{
+      scope: ['operator'],
+      sub: '{mobile client id}'
+}
+```
+   *
+   */
+
+  @Get()
+  public async validateAuthToken(@Query() token: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const serverCert = fs.readFileSync(
         path.resolve(process.cwd(), './certs/server.crt')
       );
+      const jwtToken = decrypt(decodeURIComponent(token));
 
       jwt.verify(jwtToken, serverCert, err => {
         if (err) {
@@ -30,9 +38,7 @@ export class AuthController extends Controller {
             path.resolve(process.cwd(), './certs/server.key')
           );
           const payload = {
-            claims: {
-              rudi: 'mag alles'
-            }
+            scope: 'operator'
           };
           const appToken = jwt.sign(payload, privateKey, {
             algorithm: 'RS256'

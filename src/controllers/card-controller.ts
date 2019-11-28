@@ -3,10 +3,9 @@ import { Controller, Security, Route, Tags, Get } from 'tsoa';
 import { CardRegistration } from '../types';
 import cpService from '../services/cp';
 
-export { CardRegistration } from '../types';
-
-@Route('card')
+@Route('whitelist/card')
 export class CardController extends Controller {
+  /** jwt scopes: `operator`, `installer` */
   @Get()
   @Security('jwtAuth')
   @Tags('Charge point')

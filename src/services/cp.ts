@@ -3,15 +3,14 @@ import v4 from 'uuid/v4';
 import {
   AuthMode,
   CardId,
-  // CardOwner,
-  // CardRegistrationStatus,
   CardRegistrationResponse,
   Card,
   CardRegistration,
   ChargePointStatuCode,
   ChargePointStatusMessage,
   ChargePointStatus,
-  ChargingTransaction,
+  Transaction,
+  SocketLockMode,
   ChargingTransactionPerCard
 } from '../types';
 
@@ -29,9 +28,8 @@ export const chargePointStatuses: {
   6: 'Faulted'
 };
 const baseRfidCard: Card = {
-  id: v4(),
-  owner: `chargepoint-${v4()}`,
-  editable: false
+  token: v4(),
+  status: 'ACCEPTED'
 };
 
 let cards: Card[] = [baseRfidCard];
@@ -93,31 +91,37 @@ let cardRegistrationResponse: CardRegistrationResponse = {
 };
 
 const findCardById = (cardId: CardId): Card | undefined => {
-  return cards.find(card => card.id === cardId);
+  return cards.find(card => card.token === cardId);
 };
 
 const addCardById = (cardId: string): boolean => {
   if (cards.length < MAX_NUMBER_OF_CARDS && !findCardById(cardId)) {
-    cards.push({ id: cardId });
+    cards.push({ token: cardId, status: 'ACCEPTED' });
     updateChargePointStatus({ numberOfRFIDCardsRegistered: cards.length });
     return true;
   }
   return false;
 };
 
-const getCardTransactions = (cardId: string): ChargingTransaction[] => {
-  return [{ cardId, startedAt: 'now', duration: 6, WattHourCharged: 4 }];
+const getCardTransactions = (cardId: string): Transaction[] => {
+  return [{ id: v4(), token: cardId, startDate: 'now', startKWattHour: 4 }];
 };
-const getTransactions = (): ChargingTransaction[] => {
+const getTransactions = (): Transaction[] => {
   return [
-    { cardId: cards[0].id, startedAt: 'now', duration: 6, WattHourCharged: 4 }
+    {
+      id: v4(),
+      token: cards[0].token,
+      startDate: 'now',
+      stopDate: '',
+      startKWattHour: 123
+    }
   ];
 };
 const getSplitBilling = (): ChargingTransactionPerCard[] => {
   return cards.map(card => {
     const totalDuration = Math.round(Math.random() * 1000);
     return {
-      cardId: card.id,
+      cardId: card.token,
       startDate: 'some start date',
       endDate: 'some end date',
       totalDuration,
@@ -132,20 +136,31 @@ const setAuthMode = (newAuthMode: AuthMode): AuthMode => {
   authMode = newAuthMode;
   return authMode;
 };
+let socketLockMode: SocketLockMode = 'UNLOCKED';
+const getSocketLockMode = (): SocketLockMode => socketLockMode;
+const setSocketLockMode = (
+  newSocketLockMode: SocketLockMode
+): SocketLockMode => {
+  socketLockMode = newSocketLockMode;
+  return socketLockMode;
+};
 export default {
   getCards: (): Card[] => {
     return cards.map(card => ({ ...card }));
   },
   addCardById,
+  getCardById: (cardId: CardId): Card | undefined => {
+    return findCardById(cardId);
+  },
   deleteCardById: (cardId: CardId): Card | undefined | never => {
-    if (cardId && cardId === baseRfidCard.id) {
+    if (cardId && cardId === baseRfidCard.token) {
       throw new Error(
         'This card is bound to the device, and can not be deleted'
       );
     }
     const [foundCard, newCards] = cards.reduce(
       ([foundCard, newCards], card) => {
-        if (card.id === cardId) {
+        if (card.token === cardId) {
           return [card, newCards];
         }
         return [foundCard, [...newCards, card]];
@@ -164,14 +179,14 @@ export default {
     cardId: CardId,
     cardData: Partial<Omit<Card, 'id'>>
   ): Card | undefined | never => {
-    if (cardId && cardId === baseRfidCard.id) {
+    if (cardId && cardId === baseRfidCard.token) {
       throw new Error(
         'This card is bound to the device, and can not be updated'
       );
     }
     const [foundCard, newCards] = cards.reduce(
       ([foundCard, newCards], card) => {
-        if (card.id === cardId) {
+        if (card.token === cardId) {
           const updatedCard = { ...card, ...cardData };
           return [updatedCard, [...newCards, updatedCard]];
         }
@@ -186,14 +201,14 @@ export default {
     }
   },
   updateCard: (givenCard: Card): Card | undefined | never => {
-    if (givenCard && givenCard.id === baseRfidCard.id) {
+    if (givenCard && givenCard.token === baseRfidCard.token) {
       throw new Error(
         'This card is bound to the device, and can not be updated'
       );
     }
     const [foundCard, newCards] = cards.reduce(
       ([foundCard, newCards], card) => {
-        if (card.id === givenCard.id) {
+        if (card.token === givenCard.token) {
           const updatedCard = { ...card, ...givenCard };
           return [updatedCard, [...newCards, updatedCard]];
         }
@@ -244,5 +259,7 @@ export default {
   getTransactions,
   getSplitBilling,
   getAuthMode,
-  setAuthMode
+  setAuthMode,
+  getSocketLockMode,
+  setSocketLockMode
 };

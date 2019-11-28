@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import e, * as express from 'express';
+import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 
 const skipAuth = true;
@@ -11,6 +11,7 @@ export function expressAuthentication(
   securityName: string,
   scopes?: string[]
 ): Promise<any> {
+  console.log('scopes', scopes);
   if (securityName === 'api_key') {
     let token;
     if (request.query && request.query.access_token) {

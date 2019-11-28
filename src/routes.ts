@@ -3,31 +3,76 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute } from 'tsoa';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AuthController } from './controllers/auth-controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthenticationModeController } from './controllers/authentication-mode-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { UpgradeController } from './controllers/upgrade-controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { AuthController } from './controllers/auth-controller';
+import { ConfigController } from './controllers/config-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CardsController } from './controllers/cards-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CardController } from './controllers/card-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { AdminController } from './controllers/administration-controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { StatusController } from './controllers/status-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { ChargingSessionsController } from './controllers/charging-session-controller';
+import { DateController } from './controllers/date-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TransactionsController } from './controllers/transactions-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { SplitBillingController } from './controllers/split-billing-controller';
+import { UpgradeController } from './controllers/upgrade-controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AdminController } from './controllers/administration-controller';
 import { expressAuthentication } from './authentication';
 import * as express from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "Card": {
+        "dataType": "refObject",
+        "properties": {
+            "token": { "dataType": "string", "required": true },
+            "status": { "dataType": "enum", "enums": ["ACCEPTED", "BLOCKED", "EXPIRED", "INVALID"], "required": true },
+            "expirationDate": { "dataType": "string" },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CardRegistration": {
+        "dataType": "refObject",
+        "properties": {
+            "card": { "ref": "Card" },
+            "status": { "dataType": "enum", "enums": ["SUCCESS", "FAILURE", "TIMEOUT"], "required": true },
+            "statusMessage": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ChargePointStatus": {
+        "dataType": "refObject",
+        "properties": {
+            "code": { "dataType": "enum", "enums": ["0", "1", "2", "3", "4", "5", "6"], "required": true },
+            "statusMessage": { "dataType": "enum", "enums": ["Available", "Preparing", "Charging", "SuspendedEV", "SuspendedEVSE", "Finishing", "Faulted"], "required": true },
+            "plugAndChargeEnabled": { "dataType": "boolean", "required": true },
+            "numberOfRFIDCardsRegistered": { "dataType": "double", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Transaction": {
+        "dataType": "refObject",
+        "properties": {
+            "id": { "dataType": "string", "required": true },
+            "token": { "dataType": "string", "required": true },
+            "startDate": { "dataType": "string", "required": true },
+            "stopDate": { "dataType": "string" },
+            "stopReason": { "dataType": "string" },
+            "startKWattHour": { "dataType": "double", "required": true },
+            "stopKWattHour": { "dataType": "double" },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Upgrade": {
         "dataType": "refObject",
         "properties": {
@@ -52,65 +97,10 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Card": {
-        "dataType": "refObject",
-        "properties": {
-            "id": { "dataType": "string", "required": true },
-            "owner": { "dataType": "string" },
-            "status": { "dataType": "string" },
-            "exp": { "dataType": "string" },
-            "editable": { "dataType": "boolean" },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Seconds": {
-        "dataType": "refObject",
-        "properties": {
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CPWattHourCharged": {
-        "dataType": "refObject",
-        "properties": {
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ChargingTransaction": {
-        "dataType": "refObject",
-        "properties": {
-            "startedAt": { "dataType": "string", "required": true },
-            "duration": { "ref": "Seconds", "required": true },
-            "WattHourCharged": { "ref": "CPWattHourCharged", "required": true },
-            "cardId": { "dataType": "string", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UpdateCardRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "owner": { "dataType": "string", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CardRegistration": {
-        "dataType": "refObject",
-        "properties": {
-            "card": { "ref": "Card" },
-            "status": { "dataType": "enum", "enums": ["SUCCESS", "FAILURE", "TIMEOUT"], "required": true },
-            "statusMessage": { "dataType": "string", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CreateCardRequest": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
+            "token": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
@@ -125,58 +115,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ChargePointStatus": {
-        "dataType": "refObject",
-        "properties": {
-            "code": { "dataType": "enum", "enums": ["0", "1", "2", "3", "4", "5", "6"], "required": true },
-            "statusMessage": { "dataType": "enum", "enums": ["Available", "Preparing", "Charging", "SuspendedEV", "SuspendedEVSE", "Finishing", "Faulted"], "required": true },
-            "plugAndChargeEnabled": { "dataType": "boolean", "required": true },
-            "numberOfRFIDCardsRegistered": { "dataType": "double", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ChargePointStatusUpdate": {
-        "dataType": "refObject",
-        "properties": {
-            "plugAndChargeEnabled": { "dataType": "boolean", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ChargingSession": {
-        "dataType": "refObject",
-        "properties": {
-            "id": { "dataType": "string", "required": true },
-            "userIdThatStartedTransaction": { "dataType": "string", "required": true },
-            "transationStartedAt": { "dataType": "string", "required": true },
-            "transactionDuration": { "dataType": "string" },
-            "transactionWattHourCharged": { "dataType": "string" },
-            "state": { "dataType": "enum", "enums": ["started", "stopped", "scheduled"], "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UpdateChargingSession": {
-        "dataType": "refObject",
-        "properties": {
-            "state": { "dataType": "enum", "enums": ["started", "stopped", "scheduled"], "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ChargingTransactionPerCard": {
-        "dataType": "refObject",
-        "properties": {
-            "startDate": { "dataType": "string", "required": true },
-            "endDate": { "dataType": "string", "required": true },
-            "totalDuration": { "ref": "Seconds", "required": true },
-            "totalWattHourCharged": { "ref": "CPWattHourCharged", "required": true },
-            "cardId": { "dataType": "string", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -187,6 +125,28 @@ export function RegisterRoutes(app: express.Express) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+    app.get('/api/tnm/freeapp/v1/auth',
+        function(request: any, response: any, next: any) {
+            const args = {
+                token: { "in": "query", "name": "token", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AuthController();
+
+
+            const promise = controller.validateAuthToken.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/tnm/freeapp/v1/authentication-mode',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
@@ -232,11 +192,10 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/upgrade',
+    app.get('/api/tnm/freeapp/v1/config/socket-lock-mode',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -248,17 +207,18 @@ export function RegisterRoutes(app: express.Express) {
                 return next(err);
             }
 
-            const controller = new UpgradeController();
+            const controller = new ConfigController();
 
 
-            const promise = controller.upgrade.apply(controller, validatedArgs as any);
+            const promise = controller.getSocketLockMode.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/auth/:jwtToken',
+    app.post('/api/tnm/freeapp/v1/config/socket-lock-mode',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                jwtToken: { "in": "path", "name": "jwtToken", "required": true, "dataType": "string" },
+                socketLockMode: { "in": "query", "name": "socketLockMode", "required": true, "dataType": "enum", "enums": ["TRANSACTION", "LOCKED", "UNLOCKED"] },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -270,14 +230,14 @@ export function RegisterRoutes(app: express.Express) {
                 return next(err);
             }
 
-            const controller = new AuthController();
+            const controller = new ConfigController();
 
 
-            const promise = controller.validateAuthToken.apply(controller, validatedArgs as any);
+            const promise = controller.setSocketLockMode.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/cards',
+    app.get('/api/tnm/freeapp/v1/whitelist/cards',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -299,12 +259,11 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/cards/:cardId/transactions',
+    app.get('/api/tnm/freeapp/v1/whitelist/cards/:token',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                cardId: { "in": "path", "name": "cardId", "required": true, "dataType": "string" },
-                after: { "in": "query", "name": "after", "dataType": "string" },
+                token: { "in": "path", "name": "token", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -319,39 +278,15 @@ export function RegisterRoutes(app: express.Express) {
             const controller = new CardsController();
 
 
-            const promise = controller.getCardTransations.apply(controller, validatedArgs as any);
+            const promise = controller.getCard.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/tnm/freeapp/v1/cards/:cardId',
+    app.delete('/api/tnm/freeapp/v1/whitelist/cards/:token',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                cardId: { "in": "path", "name": "cardId", "required": true, "dataType": "string" },
-                updateCardRequest: { "in": "body", "name": "updateCardRequest", "required": true, "ref": "UpdateCardRequest" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new CardsController();
-
-
-            const promise = controller.updateCard.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/tnm/freeapp/v1/cards/:cardId',
-        authenticateMiddleware([{ "jwtAuth": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                cardId: { "in": "path", "name": "cardId", "required": true, "dataType": "string" },
+                token: { "in": "path", "name": "token", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -370,7 +305,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/card',
+    app.get('/api/tnm/freeapp/v1/whitelist/card',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -389,74 +324,6 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.registerCard.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/admin/cards',
-        authenticateMiddleware([{ "jwtAuth": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                createCardRequest: { "in": "body", "name": "createCardRequest", "required": true, "ref": "CreateCardRequest" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new AdminController();
-
-
-            const promise = controller.addCard.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/admin/card/registration-response',
-        authenticateMiddleware([{ "jwtAuth": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                cardRegistrationResponse: { "in": "body", "name": "cardRegistrationResponse", "required": true, "ref": "CardRegistration" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new AdminController();
-
-
-            const promise = controller.updateCardRegistrationResponse.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/admin/qr/:host',
-        function(request: any, response: any, next: any) {
-            const args = {
-                host: { "in": "path", "name": "host", "required": true, "dataType": "string" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new AdminController();
-
-
-            const promise = controller.getAuthQr.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -482,11 +349,10 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/tnm/freeapp/v1/status',
+    app.get('/api/tnm/freeapp/v1/date',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                chargePointStatusUpdate: { "in": "body", "name": "chargePointStatusUpdate", "required": true, "ref": "ChargePointStatusUpdate" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -498,17 +364,18 @@ export function RegisterRoutes(app: express.Express) {
                 return next(err);
             }
 
-            const controller = new StatusController();
+            const controller = new DateController();
 
 
-            const promise = controller.updateChargePointStatus.apply(controller, validatedArgs as any);
+            const promise = controller.getDate.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/charging-session',
+    app.post('/api/tnm/freeapp/v1/date',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                now: { "in": "query", "name": "now", "required": true, "dataType": "double" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -520,34 +387,10 @@ export function RegisterRoutes(app: express.Express) {
                 return next(err);
             }
 
-            const controller = new ChargingSessionsController();
+            const controller = new DateController();
 
 
-            const promise = controller.createChargingSession.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/tnm/freeapp/v1/charging-session/:sessionId',
-        authenticateMiddleware([{ "jwtAuth": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                sessionId: { "in": "path", "name": "sessionId", "required": true, "dataType": "string" },
-                updateChargingSession: { "in": "body", "name": "updateChargingSession", "required": true, "ref": "UpdateChargingSession" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new ChargingSessionsController();
-
-
-            const promise = controller.endChargingSession.apply(controller, validatedArgs as any);
+            const promise = controller.setDate.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -555,7 +398,6 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                after: { "in": "query", "name": "after", "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -574,10 +416,11 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/split-billing',
+    app.post('/api/tnm/freeapp/v1/upgrade',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -589,10 +432,78 @@ export function RegisterRoutes(app: express.Express) {
                 return next(err);
             }
 
-            const controller = new SplitBillingController();
+            const controller = new UpgradeController();
 
 
-            const promise = controller.getSplitBilling.apply(controller, validatedArgs as any);
+            const promise = controller.upgrade.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/tnm/freeapp/v1/development/cards',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                createCardRequest: { "in": "body", "name": "createCardRequest", "required": true, "ref": "CreateCardRequest" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdminController();
+
+
+            const promise = controller.addCard.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/tnm/freeapp/v1/development/card/registration-response',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                cardRegistrationResponse: { "in": "body", "name": "cardRegistrationResponse", "required": true, "ref": "CardRegistration" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdminController();
+
+
+            const promise = controller.updateCardRegistrationResponse.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/tnm/freeapp/v1/development/qr/:host',
+        function(request: any, response: any, next: any) {
+            const args = {
+                host: { "in": "path", "name": "host", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdminController();
+
+
+            const promise = controller.getAuthQr.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
