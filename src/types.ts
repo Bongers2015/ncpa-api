@@ -125,3 +125,5 @@ export interface UpgradeResponse {
   filename: string;
   data: Upgrade;
 }
+
+export type AuthorizationScope = 'operator' | 'installer';

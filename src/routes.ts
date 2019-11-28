@@ -491,6 +491,7 @@ export function RegisterRoutes(app: express.Express) {
                 host: { "in": "path", "name": "host", "required": true, "dataType": "string" },
                 chargePointId: { "in": "query", "name": "chargePointId", "required": true, "dataType": "string" },
                 clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
+                scope: { "in": "query", "name": "scope", "required": true, "dataType": "enum", "enums": ["operator", "installer"] },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

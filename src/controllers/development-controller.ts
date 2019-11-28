@@ -21,7 +21,8 @@ import jwt from 'jsonwebtoken';
 import {
   CardRegistration,
   CreateCardRequest,
-  GetAuthQrResponse
+  GetAuthQrResponse,
+  AuthorizationScope
 } from '../types';
 
 import cpService from '../services/cp';
@@ -97,7 +98,8 @@ export class AdminController extends Controller {
     host: string,
     /** valid chargePointId for this application would be `12345` */
     @Query() chargePointId: string,
-    @Query() clientId: string
+    @Query() clientId: string,
+    @Query() scope: AuthorizationScope
   ): Promise<GetAuthQrResponse> {
     const privateKey = fs.readFileSync(
       path.resolve(process.cwd(), './certs/server.key')
@@ -106,7 +108,7 @@ export class AdminController extends Controller {
     const payload = {
       iss: 'TNM Auth Server',
       sub: `${chargePointId}`,
-      aud: ['operator', clientId],
+      aud: [scope, clientId],
 
       wifi: {
         ssid: 'my-ssid',

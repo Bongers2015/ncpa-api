@@ -267,7 +267,7 @@
 						}
 					}
 				},
-				"description": "jwt scopes:\n expects token as url encoded cyphered jwt token like so:\n```json\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": [\"operator\", \"{client-id}\"],\n\"iat\": {unix time}},\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n```\nreturns an access token:\n\n```json\n{\n\"iss\": \"{cp-uuid}\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"{client-uuid}\",\n\"iat\": 1516239022,\n\"scopes\": [\"operator\"]\n}\n```",
+				"description": "expects token as url encoded cyphered jwt token like so:\n```json\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": [\"operator\" | \"installer\", \"{client-id}\"],\n\"iat\": {unix time}},\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n```\nreturns an access token:\n\n```json\n{\n\"iss\": \"{cp-uuid}\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"{client-uuid}\",\n\"iat\": 1516239022,\n\"scopes\": [\"operator\" | \"installer\"]\n}\n```",
 				"tags": [
 					"operator"
 				],
@@ -798,6 +798,16 @@
 						"name": "clientId",
 						"required": true,
 						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "scope",
+						"required": true,
+						"type": "string",
+						"enum": [
+							"operator",
+							"installer"
+						]
 					}
 				]
 			}

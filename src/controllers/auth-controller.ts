@@ -10,15 +10,12 @@ import { CHARGE_POINT_ID } from '../constants';
 @Tags('operator')
 export class AuthController extends Controller {
   /** 
-    
-    
-    jwt scopes:
    * expects token as url encoded cyphered jwt token like so:
 ```json
 {
   "iss": "TNM Auth server",
   "sub": "{cp-uuid}",
-  "aud": ["operator", "{client-id}"],
+  "aud": ["operator" | "installer", "{client-id}"],
   "iat": {unix time}},
   "wifi": {
     "ssid": "my-ssid",
@@ -35,7 +32,7 @@ returns an access token:
   "sub": "{cp-uuid}",
   "aud": "{client-uuid}",
   "iat": 1516239022,
-  "scopes": ["operator"]
+  "scopes": ["operator" | "installer"]
 }
 ```
    *
@@ -65,20 +62,23 @@ returns an access token:
               reject(new Error('aud is bad'));
             } else {
               const [scope, clientId] = aud;
-
-              const privateKey = fs.readFileSync(
-                path.resolve(process.cwd(), './certs/server.key')
-              );
-              const payload = {
-                scope,
-                iss: chargePointId,
-                sub: chargePointId,
-                aud: clientId
-              };
-              const appToken = jwt.sign(payload, privateKey, {
-                algorithm: 'RS256'
-              });
-              resolve(appToken);
+              if (scope !== 'installer' || scope !== 'operator') {
+                reject(new Error('bad scope'));
+              } else {
+                const privateKey = fs.readFileSync(
+                  path.resolve(process.cwd(), './certs/server.key')
+                );
+                const payload = {
+                  scope,
+                  iss: chargePointId,
+                  sub: chargePointId,
+                  aud: clientId
+                };
+                const appToken = jwt.sign(payload, privateKey, {
+                  algorithm: 'RS256'
+                });
+                resolve(appToken);
+              }
             }
           } else {
             reject(new Error('no'));
