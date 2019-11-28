@@ -15,6 +15,7 @@ import './controllers/config-controller';
 import './controllers/cards-controller';
 import './controllers/card-controller';
 import './controllers/status-controller';
+import './controllers/charging-controller';
 import './controllers/transactions-controller';
 import './controllers/upgrade-controller';
 import './controllers/development-controller';

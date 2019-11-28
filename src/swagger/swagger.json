@@ -568,6 +568,52 @@
 				"parameters": []
 			}
 		},
+		"/charging/start": {
+			"get": {
+				"operationId": "StartCharging",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"description": "jwt scopes: `operator` `",
+				"tags": [
+					"Charge point"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/charging/stop": {
+			"get": {
+				"operationId": "StopCharging",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"description": "jwt scopes: `operator`",
+				"tags": [
+					"Charge point"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/transactions": {
 			"get": {
 				"operationId": "GetTransactions",
