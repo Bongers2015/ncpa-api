@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-const QR_SECRET = 'SUPER_MAGIC_SECRET';
+import { QR_SECRET } from '../constants';
 
 export const encrypt = (message: string): string => {
   return CryptoJS.AES.encrypt(message, QR_SECRET).toString();

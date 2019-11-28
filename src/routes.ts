@@ -109,6 +109,7 @@ const models: TsoaRoute.Models = {
             "host": { "dataType": "string", "required": true },
             "qrDataUrl": { "dataType": "string", "required": true },
             "requestUrl": { "dataType": "string", "required": true },
+            "tokenCipher": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },

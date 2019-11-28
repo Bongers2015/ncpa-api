@@ -97,6 +97,8 @@ export interface GetAuthQrResponse {
   qrDataUrl: string;
   /** authorization request url */
   requestUrl: string;
+  /** url encoded encrypted jwt token */
+  tokenCipher: string;
 }
 export type SocketLockMode = 'TRANSACTION' | 'LOCKED' | 'UNLOCKED';
 

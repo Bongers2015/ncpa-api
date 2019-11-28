@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { Controller, Get, Route, Tags, Query } from 'tsoa';
 
 import { decrypt } from '../services/qr';
+import { CHARGE_POINT_ID } from '../constants';
 @Route('auth')
 @Tags('Charge point')
 export class AuthController extends Controller {
@@ -53,7 +54,11 @@ returns an access token:
           reject(err);
         } else {
           const { iss, sub: chargePointId, aud: clientId } = decoded;
-          if (iss === 'TNM Auth Server' && clientId) {
+          if (
+            iss === 'TNM Auth Server' &&
+            clientId &&
+            chargePointId === CHARGE_POINT_ID
+          ) {
             const privateKey = fs.readFileSync(
               path.resolve(process.cwd(), './certs/server.key')
             );
