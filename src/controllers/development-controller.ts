@@ -63,7 +63,7 @@ export class AdminController extends Controller {
    * {
   "iss": "TNM Auth server",
   "sub": "{cp-uuid}",
-  "aud": "operator",
+  "aud": "{client-id}",
   "iat": 1516239022,
   "wifi": {
     "ssid": "my-ssid",
@@ -85,7 +85,8 @@ export class AdminController extends Controller {
   })
   public async getAuthQr(
     host: string,
-    @Query() chargePointId: string
+    @Query() chargePointId: string,
+    @Query() clientId: string
   ): Promise<GetAuthQrResponse> {
     const privateKey = fs.readFileSync(
       path.resolve(process.cwd(), './certs/server.key')
@@ -94,7 +95,8 @@ export class AdminController extends Controller {
     const payload = {
       iss: 'TNM Auth server',
       sub: `${chargePointId}`,
-      aud: 'operator',
+      aud: clientId,
+
       wifi: {
         ssid: 'my-ssid',
         password: 'strong-wifi-password',

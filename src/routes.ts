@@ -18,6 +18,8 @@ import { StatusController } from './controllers/status-controller';
 import { TransactionsController } from './controllers/transactions-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UpgradeController } from './controllers/upgrade-controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AdminController } from './controllers/development-controller';
 import { expressAuthentication } from './authentication';
 import * as express from 'express';
 
@@ -89,6 +91,24 @@ const models: TsoaRoute.Models = {
         "properties": {
             "filename": { "dataType": "string", "required": true },
             "data": { "ref": "Upgrade", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateCardRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "token": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetAuthQrResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "host": { "dataType": "string", "required": true },
+            "qrDataUrl": { "dataType": "string", "required": true },
+            "requestUrl": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
@@ -369,6 +389,76 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.upgrade.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/tnm/freeapp/v1/development/cards',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                createCardRequest: { "in": "body", "name": "createCardRequest", "required": true, "ref": "CreateCardRequest" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdminController();
+
+
+            const promise = controller.addCard.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/tnm/freeapp/v1/development/card/registration-response',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                cardRegistrationResponse: { "in": "body", "name": "cardRegistrationResponse", "required": true, "ref": "CardRegistration" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdminController();
+
+
+            const promise = controller.updateCardRegistrationResponse.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/tnm/freeapp/v1/development/qr/:host',
+        function(request: any, response: any, next: any) {
+            const args = {
+                host: { "in": "path", "name": "host", "required": true, "dataType": "string" },
+                chargePointId: { "in": "query", "name": "chargePointId", "required": true, "dataType": "string" },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdminController();
+
+
+            const promise = controller.getAuthQr.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
