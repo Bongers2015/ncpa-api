@@ -9,7 +9,7 @@
 	"scripts": {
 		"lint": "eslint --fix ./src/*",
 		"dev": "nodemon -e ts -w ./src/index.ts -w ./src/server.ts -w ./src/controllers -x yarn run serve",
-		"serve": "tsoa routes && tsoa swagger && ts-node src/index.ts"
+		"serve": "tsoa routes && tsoa swagger && swagger-markdown -i ./src/swagger/swagger.json -o ./API-DOCS.md && ts-node src/index.ts"
 	},
 	"devDependencies": {
 		"@types/crypto-js": "^3.1.43",
@@ -25,6 +25,7 @@
 		"eslint-plugin-import": "^2.18.2",
 		"eslint-plugin-prettier": "^3.1.1",
 		"prettier": "^1.18.2",
+		"swagger-markdown": "^1.2.0",
 		"ts-node": "^8.5.0",
 		"tsc-watch": "^4.0.0",
 		"typescript": "^3.7.2"

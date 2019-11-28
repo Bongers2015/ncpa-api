@@ -2,8 +2,9 @@
 
 This package generates a reference API for the Nissan Charge Point Application, NCPA for short.
 
-## Usage
+> TL;DR see `./src/swagger/swagger.json` for latest swagger spec. For human readable documentation please look at `./API-DOCS.md`
 
+## Usage
 
 ### Requirements
 
