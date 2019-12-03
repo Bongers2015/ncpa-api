@@ -16,7 +16,8 @@
 						"ACCEPTED",
 						"BLOCKED",
 						"EXPIRED",
-						"INVALID"
+						"INVALID",
+						"UNKNOWN"
 					]
 				},
 				"expirationDate": {
@@ -56,44 +57,59 @@
 			"type": "object",
 			"additionalProperties": false
 		},
-		"ChargePointStatus": {
+		"Status": {
 			"properties": {
-				"code": {
+				"chargePointStatus": {
 					"type": "string",
 					"enum": [
-						"0",
-						"1",
-						"2",
-						"3",
-						"4",
-						"5",
-						"6"
+						"OPERATIVE",
+						"INOPERATIVE",
+						"FAULTED"
 					]
 				},
-				"statusMessage": {
+				"transactionStatus": {
+					"items": {
+						"type": "string",
+						"enum": [
+							"AVAILABLE",
+							"PREPARING",
+							"CHARGING",
+							"SUSPENDED_EV",
+							"SUSPENDED_EVSE",
+							"FINISHING",
+							"FAULTED"
+						]
+					},
+					"type": "array"
+				},
+				"connectorStatus": {
+					"items": {
+						"type": "string",
+						"enum": [
+							"OPERATIVE",
+							"INOPERATIVE",
+							"FAULTED"
+						]
+					},
+					"type": "array"
+				},
+				"authorizationMode": {
 					"type": "string",
 					"enum": [
-						"Available",
-						"Preparing",
-						"Charging",
-						"SuspendedEV",
-						"SuspendedEVSE",
-						"Finishing",
-						"Faulted"
+						"PLUGNCHARGE",
+						"WHITELIST"
 					]
-				},
-				"plugAndChargeEnabled": {
-					"type": "boolean"
 				},
 				"numberOfRFIDCardsRegistered": {
-					"type": "number",
-					"format": "double"
+					"type": "integer",
+					"format": "int64"
 				}
 			},
 			"required": [
-				"code",
-				"statusMessage",
-				"plugAndChargeEnabled",
+				"chargePointStatus",
+				"transactionStatus",
+				"connectorStatus",
+				"authorizationMode",
 				"numberOfRFIDCardsRegistered"
 			],
 			"type": "object",
@@ -104,36 +120,47 @@
 				"id": {
 					"type": "string"
 				},
+				"remoteId": {
+					"type": "string",
+					"x-nullable": true
+				},
 				"token": {
 					"type": "string",
 					"description": "card token id"
 				},
 				"startDate": {
-					"type": "string"
+					"type": "integer",
+					"format": "int64"
 				},
 				"stopDate": {
-					"type": "string",
+					"type": "integer",
+					"format": "int64",
 					"x-nullable": true
 				},
 				"stopReason": {
 					"type": "string",
 					"x-nullable": true
 				},
-				"startKWattHour": {
-					"type": "number",
-					"format": "double"
+				"startWattHour": {
+					"type": "integer",
+					"format": "int64"
 				},
-				"stopKWattHour": {
-					"type": "number",
-					"format": "double",
+				"stopWattHour": {
+					"type": "integer",
+					"format": "int64",
 					"x-nullable": true
+				},
+				"consumedWattHours": {
+					"type": "integer",
+					"format": "int64"
 				}
 			},
 			"required": [
 				"id",
 				"token",
 				"startDate",
-				"startKWattHour"
+				"startWattHour",
+				"consumedWattHours"
 			],
 			"type": "object",
 			"additionalProperties": false
@@ -154,8 +181,7 @@
 				},
 				"size": {
 					"type": "number",
-					"format": "double",
-					"description": "Size of the file in bytes"
+					"format": "double"
 				},
 				"destination": {
 					"type": "string",
@@ -183,22 +209,6 @@
 				"location",
 				"filename",
 				"path"
-			],
-			"type": "object",
-			"additionalProperties": false
-		},
-		"UpgradeResponse": {
-			"properties": {
-				"filename": {
-					"type": "string"
-				},
-				"data": {
-					"$ref": "#/definitions/Upgrade"
-				}
-			},
-			"required": [
-				"filename",
-				"data"
 			],
 			"type": "object",
 			"additionalProperties": false
@@ -267,7 +277,7 @@
 						}
 					}
 				},
-				"description": "expects token as url encoded cyphered jwt token like so:\n```json\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": [\"operator\" | \"installer\", \"{client-id}\"],\n\"iat\": {unix time}},\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n```\nreturns an access token:\n\n```json\n{\n\"iss\": \"{cp-uuid}\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"{client-uuid}\",\n\"iat\": 1516239022,\n\"scopes\": [\"operator\" | \"installer\"]\n}\n```",
+				"description": "expects token as url encoded cyphered jwt token like so:\n```json\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"operator\" | \"installer\",\n\"iat\": {unix time}},\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n```\nreturns an access token:\n\n```json\n{\n\"iss\": \"{cp-uuid}\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"{client-uuid}\",\n\"iat\": 1516239022,\n\"scopes\": [\"operator\" | \"installer\"]\n}\n```",
 				"tags": [
 					"operator"
 				],
@@ -277,6 +287,12 @@
 						"in": "query",
 						"name": "token",
 						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": false,
 						"type": "string"
 					}
 				]
@@ -552,7 +568,7 @@
 					"200": {
 						"description": "Ok",
 						"schema": {
-							"$ref": "#/definitions/ChargePointStatus"
+							"$ref": "#/definitions/Status"
 						}
 					}
 				},
@@ -569,7 +585,7 @@
 			}
 		},
 		"/charging/start": {
-			"get": {
+			"post": {
 				"operationId": "StartCharging",
 				"produces": [
 					"application/json"
@@ -588,12 +604,49 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		},
 		"/charging/stop": {
-			"get": {
+			"post": {
 				"operationId": "StopCharging",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"description": "jwt scopes: `operator`",
+				"tags": [
+					"operator"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/charging/unlock": {
+			"post": {
+				"operationId": "Unlock",
 				"produces": [
 					"application/json"
 				],
@@ -653,7 +706,7 @@
 					"200": {
 						"description": "Ok",
 						"schema": {
-							"$ref": "#/definitions/UpgradeResponse"
+							"$ref": "#/definitions/Upgrade"
 						}
 					}
 				},
@@ -672,12 +725,6 @@
 						"name": "data",
 						"required": true,
 						"type": "file"
-					},
-					{
-						"in": "formData",
-						"name": "filename",
-						"required": true,
-						"type": "string"
 					}
 				],
 				"consumes": [
@@ -774,7 +821,7 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `developer` \n\nCreates a QR code containing an identity token\n\n\n```\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": [\"operator\", \"{client-id}\"],\n\"iat\": 1516239022,\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n}\n```",
+				"description": "jwt scopes: `developer` \n\nCreates a QR code containing an identity token\n\n\n```\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"operator\" | \"installer\",\n\"iat\": 1516239022,\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n}\n```",
 				"tags": [
 					"developer"
 				],

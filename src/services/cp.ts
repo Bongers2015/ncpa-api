@@ -1,14 +1,13 @@
 import v4 from 'uuid/v4';
 
 import {
-  AuthMode,
+  AuthorizationMode,
   CardId,
   CardRegistrationResponse,
   Card,
   CardRegistration,
-  ChargePointStatuCode,
-  ChargePointStatusMessage,
   ChargePointStatus,
+  Status,
   Transaction,
   SocketLockMode,
   ChargingTransactionPerCard
@@ -16,51 +15,39 @@ import {
 
 const MAX_NUMBER_OF_CARDS = 3;
 
-export const chargePointStatuses: {
-  [key in ChargePointStatuCode]: ChargePointStatusMessage;
-} = {
-  0: 'Available',
-  1: 'Preparing',
-  2: 'Charging',
-  3: 'SuspendedEV',
-  4: 'SuspendedEVSE',
-  5: 'Finishing',
-  6: 'Faulted'
-};
 const baseRfidCard: Card = {
   token: v4(),
   status: 'ACCEPTED'
 };
 
 let cards: Card[] = [baseRfidCard];
-let chargePointStatus: ChargePointStatus = {
-  code: 0,
-  statusMessage: 'Available',
+let chargePointStatus: Status = {
+  // code: 0,
+  chargePointStatus: 'OPERATIVE',
   numberOfRFIDCardsRegistered: cards.length,
-  plugAndChargeEnabled: false
+  transactionStatus: [],
+  connectorStatus: [],
+  authorizationMode: 'WHITELIST'
 };
 const updateChargePointStatus = ({
-  code: newCode,
+  // code: newCode,
+  statusMessage: newStatusMessage,
   numberOfRFIDCardsRegistered: newNumberOfRFIDCardsRegistered,
-  plugAndChargeEnabled: newPlugAndChargeEnabled
+  authorizationMode: newAuthorizationMode
 }: {
-  code?: ChargePointStatus['code'];
+  statusMessage?: ChargePointStatus;
   numberOfRFIDCardsRegistered?: number;
-  plugAndChargeEnabled?: boolean;
-}): ChargePointStatus => {
+  authorizationMode?: AuthorizationMode;
+}): Status => {
+  const { transactionStatus, connectorStatus }: Status = chargePointStatus;
   let {
-    code,
-    statusMessage,
+    chargePointStatus: statusMessage,
     numberOfRFIDCardsRegistered,
-    plugAndChargeEnabled
-  }: ChargePointStatus = chargePointStatus;
+    authorizationMode
+  }: Status = chargePointStatus;
 
-  if (newCode !== undefined && newCode !== chargePointStatus[newCode]) {
-    code = newCode;
-    const newStatusMessage = chargePointStatuses[code];
-    if (newStatusMessage) {
-      statusMessage = newStatusMessage;
-    }
+  if (newStatusMessage !== undefined && newStatusMessage !== statusMessage) {
+    statusMessage = newStatusMessage;
   }
 
   if (
@@ -70,18 +57,19 @@ const updateChargePointStatus = ({
     numberOfRFIDCardsRegistered = newNumberOfRFIDCardsRegistered;
   }
   if (
-    newPlugAndChargeEnabled !== undefined &&
-    newPlugAndChargeEnabled !== plugAndChargeEnabled
+    newAuthorizationMode !== undefined &&
+    newAuthorizationMode !== authorizationMode
   ) {
-    plugAndChargeEnabled = newPlugAndChargeEnabled;
+    authorizationMode = newAuthorizationMode;
   }
 
   chargePointStatus = {
-    code,
-    statusMessage,
+    chargePointStatus: statusMessage,
     numberOfRFIDCardsRegistered,
-    plugAndChargeEnabled
-  } as ChargePointStatus;
+    authorizationMode,
+    transactionStatus,
+    connectorStatus
+  } as Status;
   return chargePointStatus;
 };
 
@@ -104,16 +92,25 @@ const addCardById = (cardId: string): boolean => {
 };
 
 const getCardTransactions = (cardId: string): Transaction[] => {
-  return [{ id: v4(), token: cardId, startDate: 'now', startKWattHour: 4 }];
+  return [
+    {
+      id: v4(),
+      token: cardId,
+      startDate: 1231023123123,
+      startWattHour: 4,
+      consumedWattHours: 0
+    }
+  ];
 };
 const getTransactions = (): Transaction[] => {
   return [
     {
       id: v4(),
       token: cards[0].token,
-      startDate: 'now',
-      stopDate: '',
-      startKWattHour: 123
+      startDate: 1231023123123,
+      stopDate: 1231023140000,
+      startWattHour: 123,
+      consumedWattHours: 0
     }
   ];
 };
@@ -130,9 +127,9 @@ const getSplitBilling = (): ChargingTransactionPerCard[] => {
   });
 };
 
-let authMode: AuthMode = 'WHITELIST';
-const getAuthMode = (): AuthMode => authMode;
-const setAuthMode = (newAuthMode: AuthMode): AuthMode => {
+let authMode: AuthorizationMode = 'WHITELIST';
+const getAuthMode = (): AuthorizationMode => authMode;
+const setAuthMode = (newAuthMode: AuthorizationMode): AuthorizationMode => {
   authMode = newAuthMode;
   return authMode;
 };
@@ -251,7 +248,7 @@ export default {
   ): void => {
     cardRegistrationResponse = giveCardRegistrationResponse;
   },
-  getChargePointStatus: (): ChargePointStatus => {
+  getChargePointStatus: (): Status => {
     return chargePointStatus;
   },
   updateChargePointStatus,

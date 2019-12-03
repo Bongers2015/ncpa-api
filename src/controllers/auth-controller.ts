@@ -15,7 +15,7 @@ export class AuthController extends Controller {
 {
   "iss": "TNM Auth server",
   "sub": "{cp-uuid}",
-  "aud": ["operator" | "installer", "{client-id}"],
+  "aud": "operator" | "installer",
   "iat": {unix time}},
   "wifi": {
     "ssid": "my-ssid",
@@ -39,7 +39,10 @@ returns an access token:
    */
 
   @Get()
-  public async validateAuthToken(@Query() token: string): Promise<string> {
+  public async validateAuthToken(
+    @Query() token: string,
+    @Query() clientId?: string
+  ): Promise<string> {
     return new Promise((resolve, reject) => {
       const serverCert = fs.readFileSync(
         path.resolve(process.cwd(), './certs/server.crt')
@@ -55,31 +58,24 @@ returns an access token:
           if (
             iss === 'TNM Auth Server' &&
             aud &&
+            (aud === 'operator' || aud === 'installer') &&
             chargePointId === CHARGE_POINT_ID
           ) {
             // select scope
-            if (!Array.isArray(aud) || aud.length !== 2) {
-              reject(new Error('aud is bad'));
-            } else {
-              const [scope, clientId] = aud;
-              if (scope !== 'installer' || scope !== 'operator') {
-                reject(new Error('bad scope'));
-              } else {
-                const privateKey = fs.readFileSync(
-                  path.resolve(process.cwd(), './certs/server.key')
-                );
-                const payload = {
-                  scope,
-                  iss: chargePointId,
-                  sub: chargePointId,
-                  aud: clientId
-                };
-                const appToken = jwt.sign(payload, privateKey, {
-                  algorithm: 'RS256'
-                });
-                resolve(appToken);
-              }
-            }
+
+            const privateKey = fs.readFileSync(
+              path.resolve(process.cwd(), './certs/server.key')
+            );
+            const payload = {
+              scope: aud,
+              iss: chargePointId,
+              sub: chargePointId,
+              aud: clientId
+            };
+            const appToken = jwt.sign(payload, privateKey, {
+              algorithm: 'RS256'
+            });
+            resolve(appToken);
           } else {
             reject(new Error('no'));
           }

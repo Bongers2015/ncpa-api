@@ -5,9 +5,9 @@ module.exports = {
     node: true,
     jest: true
   },
-  extends: ['airbnb-typescript/base', 'plugin:@typescript-eslint/recommended',  // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+  extends: ['eslint-config-airbnb-base', 'plugin:@typescript-eslint/recommended',  // Uses the recommended rules from the @typescript-eslint/eslint-plugin
     'prettier/@typescript-eslint',  // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
-    'plugin:prettier/recommended'],
+    'plugin:prettier/recommended'],  
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'

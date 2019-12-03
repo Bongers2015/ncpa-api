@@ -2,7 +2,7 @@ import { Controller, Post, Request, Route, Security, Tags } from 'tsoa';
 import Express from 'express';
 import multer from 'multer';
 
-import { Upgrade, UpgradeResponse } from '../types';
+import { Upgrade } from '../types';
 
 @Route('upgrade')
 @Tags('installer')
@@ -10,19 +10,16 @@ import { Upgrade, UpgradeResponse } from '../types';
 export class UpgradeController extends Controller {
   /** jwt scopes: `installer` */
   @Post()
-  public async upgrade(
-    @Request() request: Express.Request
-  ): Promise<UpgradeResponse> {
+  public async upgrade(@Request() request: Express.Request): Promise<Upgrade> {
     const upgradeResponse = await this.handleFile(request);
     return upgradeResponse;
   }
 
-  private handleFile(request: Express.Request): Promise<UpgradeResponse> {
+  private handleFile(request: Express.Request): Promise<Upgrade> {
     const multerSingle = multer().single('data');
     return new Promise((resolve, reject) => {
       multerSingle(request, undefined, async error => {
         const file: Upgrade = request.file;
-        const { filename } = request.body;
 
         if (error) {
           reject(error);
@@ -34,22 +31,19 @@ export class UpgradeController extends Controller {
           size,
           destination,
           location,
-          filename: uploadFilename,
+          filename,
           path: uploadPath
         } = file;
 
         resolve({
+          originalname,
+          encoding,
+          mimetype,
+          size,
+          destination,
+          location,
           filename,
-          data: {
-            originalname,
-            encoding,
-            mimetype,
-            size,
-            destination,
-            location,
-            filename: uploadFilename,
-            path: uploadPath
-          }
+          path: uploadPath
         });
       });
     });

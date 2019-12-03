@@ -30,7 +30,7 @@ expects token as url encoded cyphered jwt token like so:
 {
 "iss": "TNM Auth server",
 "sub": "{cp-uuid}",
-"aud": ["operator" | "installer", "{client-id}"],
+"aud": "operator" | "installer",
 "iat": {unix time}},
 "wifi": {
 "ssid": "my-ssid",
@@ -56,6 +56,7 @@ returns an access token:
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | token | query |  | Yes | string |
+| clientId | query |  | No | string |
 
 ##### Responses
 
@@ -271,7 +272,7 @@ jwt scopes: `operator`, `installer`
 
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
-| 200 | Ok | [ChargePointStatus](#chargepointstatus) |
+| 200 | Ok | [Status](#status) |
 
 ##### Security
 
@@ -281,7 +282,7 @@ jwt scopes: `operator`, `installer`
 
 ### /charging/start
 
-#### GET
+#### POST
 ##### Description:
 
 jwt scopes: `operator` `
@@ -290,6 +291,7 @@ jwt scopes: `operator` `
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -305,7 +307,32 @@ jwt scopes: `operator` `
 
 ### /charging/stop
 
-#### GET
+#### POST
+##### Description:
+
+jwt scopes: `operator`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| 204 | No content |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
+### /charging/unlock
+
+#### POST
 ##### Description:
 
 jwt scopes: `operator`
@@ -363,13 +390,12 @@ jwt scopes: `installer`
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | data | formData |  | Yes | file |
-| filename | formData |  | Yes | string |
 
 ##### Responses
 
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
-| 200 | Ok | [UpgradeResponse](#upgraderesponse) |
+| 200 | Ok | [Upgrade](#upgrade) |
 
 ##### Security
 
@@ -445,7 +471,7 @@ Creates a QR code containing an identity token
 {
 "iss": "TNM Auth server",
 "sub": "{cp-uuid}",
-"aud": ["operator", "{client-id}"],
+"aud": "operator" | "installer",
 "iat": 1516239022,
 "wifi": {
 "ssid": "my-ssid",
@@ -492,26 +518,29 @@ null
 | status | string |  | Yes |
 | statusMessage | string |  | Yes |
 
-#### ChargePointStatus
+#### Status
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| code | string |  | Yes |
-| statusMessage | string |  | Yes |
-| plugAndChargeEnabled | boolean |  | Yes |
-| numberOfRFIDCardsRegistered | double |  | Yes |
+| chargePointStatus | string |  | Yes |
+| transactionStatus | [ string ] |  | Yes |
+| connectorStatus | [ string ] |  | Yes |
+| authorizationMode | string |  | Yes |
+| numberOfRFIDCardsRegistered | long |  | Yes |
 
 #### Transaction
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 | id | string |  | Yes |
+| remoteId | string |  | No |
 | token | string | card token id | Yes |
-| startDate | string |  | Yes |
-| stopDate | string |  | No |
+| startDate | long |  | Yes |
+| stopDate | long |  | No |
 | stopReason | string |  | No |
-| startKWattHour | double |  | Yes |
-| stopKWattHour | double |  | No |
+| startWattHour | long |  | Yes |
+| stopWattHour | long |  | No |
+| consumedWattHours | long |  | Yes |
 
 #### Upgrade
 
@@ -520,18 +549,11 @@ null
 | originalname | string | Name of the file on the user's computer | Yes |
 | encoding | string | Encoding type of the file | Yes |
 | mimetype | string | Mime type of the file | Yes |
-| size | double | Size of the file in bytes | Yes |
+| size | double |  | Yes |
 | destination | string | The folder to which the file has been saved (DiskStorage) | Yes |
 | location | string | The url where to get the uploaded file (aws S3 for example) | Yes |
 | filename | string | The name of the file within the destination (DiskStorage) | Yes |
 | path | string | Location of the uploaded file (DiskStorage) | Yes |
-
-#### UpgradeResponse
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| filename | string |  | Yes |
-| data | [Upgrade](#upgrade) |  | Yes |
 
 #### CreateCardRequest
 

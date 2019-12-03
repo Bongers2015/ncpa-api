@@ -2,5 +2,9 @@
 
 Variable            | Development only  | NCPA          | CP             
 -------------       | -------------     | ------------- | -------------
-QR_SECRET           |                   | X             | X
+TNMAS               |                   | X             | X
 CHARGE_POINT_ID     | X                 |               | X
+
+The New Motion Identity And Authorization Server IaAS
+
+

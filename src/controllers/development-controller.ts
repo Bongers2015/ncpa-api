@@ -72,7 +72,7 @@ export class AdminController extends Controller {
    * {
   "iss": "TNM Auth server",
   "sub": "{cp-uuid}",
-  "aud": ["operator", "{client-id}"],
+  "aud": "operator" | "installer",
   "iat": 1516239022,
   "wifi": {
     "ssid": "my-ssid",
@@ -108,7 +108,7 @@ export class AdminController extends Controller {
     const payload = {
       iss: 'TNM Auth Server',
       sub: `${chargePointId}`,
-      aud: [scope, clientId],
+      aud: scope,
 
       wifi: {
         ssid: 'my-ssid',
@@ -125,7 +125,7 @@ export class AdminController extends Controller {
     const encodedTokenCipher = encodeURIComponent(encrypt(token));
 
     return new Promise((resolve, reject) => {
-      const requestUrl = `${host}/auth?token=${encodedTokenCipher}`;
+      const requestUrl = `${host}/auth?clientId=${clientId}&token=${encodedTokenCipher}`;
       qrcode.toDataURL(tokenCipher, (err, qrDataUrl) => {
         if (err) {
           reject(err);

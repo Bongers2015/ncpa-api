@@ -1,16 +1,26 @@
-import { Controller, Security, Route, Tags, Get } from 'tsoa';
+import { Controller, Security, Route, Tags, Post, Query } from 'tsoa';
 
 @Route('charging')
 export class ChargingController extends Controller {
   /** jwt scopes: `operator` ` */
-  @Get('/start')
+  @Post('/start')
   @Security('jwtAuth')
   @Tags('operator')
-  public startCharging(): void {}
+  public startCharging(@Query() clientId: string): void {
+    console.log('startCharging clientId', clientId);
+  }
 
   /** jwt scopes: `operator`  */
-  @Get('/stop')
+  @Post('/stop')
   @Security('jwtAuth')
   @Tags('operator')
-  public stopCharging(): void {}
+  public stopCharging(@Query() clientId: string): void {
+    console.log('stopCharging clientId', clientId);
+  }
+
+  /** jwt scopes: `operator`  */
+  @Post('/unlock')
+  @Security('jwtAuth')
+  @Tags('operator')
+  public unlock(): void {}
 }

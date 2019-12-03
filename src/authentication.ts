@@ -11,7 +11,6 @@ export function expressAuthentication(
   securityName: string,
   scopes?: string[]
 ): Promise<any> {
-  console.log('scopes', scopes);
   if (securityName === 'api_key') {
     let token;
     if (request.query && request.query.access_token) {

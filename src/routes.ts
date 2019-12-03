@@ -5,7 +5,7 @@ import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute } 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthController } from './controllers/auth-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { AuthenticationModeController } from './controllers/authentication-mode-controller';
+import { AuthorizationModeController } from './controllers/authentication-mode-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ConfigController } from './controllers/config-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -32,7 +32,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "token": { "dataType": "string", "required": true },
-            "status": { "dataType": "enum", "enums": ["ACCEPTED", "BLOCKED", "EXPIRED", "INVALID"], "required": true },
+            "status": { "dataType": "enum", "enums": ["ACCEPTED", "BLOCKED", "EXPIRED", "INVALID", "UNKNOWN"], "required": true },
             "expirationDate": { "dataType": "string" },
         },
         "additionalProperties": false,
@@ -48,13 +48,14 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ChargePointStatus": {
+    "Status": {
         "dataType": "refObject",
         "properties": {
-            "code": { "dataType": "enum", "enums": ["0", "1", "2", "3", "4", "5", "6"], "required": true },
-            "statusMessage": { "dataType": "enum", "enums": ["Available", "Preparing", "Charging", "SuspendedEV", "SuspendedEVSE", "Finishing", "Faulted"], "required": true },
-            "plugAndChargeEnabled": { "dataType": "boolean", "required": true },
-            "numberOfRFIDCardsRegistered": { "dataType": "double", "required": true },
+            "chargePointStatus": { "dataType": "enum", "enums": ["OPERATIVE", "INOPERATIVE", "FAULTED"], "required": true },
+            "transactionStatus": { "dataType": "array", "array": { "dataType": "enum", "enums": ["AVAILABLE", "PREPARING", "CHARGING", "SUSPENDED_EV", "SUSPENDED_EVSE", "FINISHING", "FAULTED"] }, "required": true },
+            "connectorStatus": { "dataType": "array", "array": { "dataType": "enum", "enums": ["OPERATIVE", "INOPERATIVE", "FAULTED"] }, "required": true },
+            "authorizationMode": { "dataType": "enum", "enums": ["PLUGNCHARGE", "WHITELIST"], "required": true },
+            "numberOfRFIDCardsRegistered": { "dataType": "long", "required": true, "validators": { "isLong": { "errorMsg": "longValue" } } },
         },
         "additionalProperties": false,
     },
@@ -63,12 +64,14 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "remoteId": { "dataType": "string" },
             "token": { "dataType": "string", "required": true },
-            "startDate": { "dataType": "string", "required": true },
-            "stopDate": { "dataType": "string" },
+            "startDate": { "dataType": "long", "required": true, "validators": { "isLong": { "errorMsg": "longValue" } } },
+            "stopDate": { "dataType": "long", "validators": { "isLong": { "errorMsg": "longValue" } } },
             "stopReason": { "dataType": "string" },
-            "startKWattHour": { "dataType": "double", "required": true },
-            "stopKWattHour": { "dataType": "double" },
+            "startWattHour": { "dataType": "long", "required": true, "validators": { "isLong": { "errorMsg": "longValue" } } },
+            "stopWattHour": { "dataType": "long", "validators": { "isLong": { "errorMsg": "longValue" } } },
+            "consumedWattHours": { "dataType": "long", "required": true, "validators": { "isLong": { "errorMsg": "longValue" } } },
         },
         "additionalProperties": false,
     },
@@ -84,15 +87,6 @@ const models: TsoaRoute.Models = {
             "location": { "dataType": "string", "required": true },
             "filename": { "dataType": "string", "required": true },
             "path": { "dataType": "string", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UpgradeResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "filename": { "dataType": "string", "required": true },
-            "data": { "ref": "Upgrade", "required": true },
         },
         "additionalProperties": false,
     },
@@ -130,6 +124,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 token: { "in": "query", "name": "token", "required": true, "dataType": "string" },
+                clientId: { "in": "query", "name": "clientId", "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -163,7 +158,7 @@ export function RegisterRoutes(app: express.Express) {
                 return next(err);
             }
 
-            const controller = new AuthenticationModeController();
+            const controller = new AuthorizationModeController();
 
 
             const promise = controller.getAuthenticationMode.apply(controller, validatedArgs as any);
@@ -186,7 +181,7 @@ export function RegisterRoutes(app: express.Express) {
                 return next(err);
             }
 
-            const controller = new AuthenticationModeController();
+            const controller = new AuthorizationModeController();
 
 
             const promise = controller.setAuthenticationMode.apply(controller, validatedArgs as any);
@@ -350,10 +345,11 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/charging/start',
+    app.post('/api/tnm/freeapp/v1/charging/start',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -372,7 +368,30 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/charging/stop',
+    app.post('/api/tnm/freeapp/v1/charging/stop',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new ChargingController();
+
+
+            const promise = controller.stopCharging.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/tnm/freeapp/v1/charging/unlock',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -390,7 +409,7 @@ export function RegisterRoutes(app: express.Express) {
             const controller = new ChargingController();
 
 
-            const promise = controller.stopCharging.apply(controller, validatedArgs as any);
+            const promise = controller.unlock.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

@@ -5,7 +5,7 @@ export type CardOwner = string;
 export interface Card {
   /** RFID  */
   token: string;
-  status: 'ACCEPTED' | 'BLOCKED' | 'EXPIRED' | 'INVALID';
+  status: 'ACCEPTED' | 'BLOCKED' | 'EXPIRED' | 'INVALID' | 'UNKNOWN';
   expirationDate?: string;
 }
 
@@ -20,7 +20,7 @@ export interface CardRegistrationResponse {
   statusMessage: string;
 }
 
-export type AuthMode = 'PLUGNCHARGE' | 'WHITELIST';
+export type AuthorizationMode = 'PLUGNCHARGE' | 'WHITELIST';
 export interface ChargingTransaction {
   startedAt: string;
   //   stoppedAt: ISODate;
@@ -32,13 +32,30 @@ export interface ChargingTransaction {
 // >>> /transactions
 export interface Transaction {
   id: string;
+  remoteId?: string;
   /** card token id */
   token: string;
-  startDate: string;
-  stopDate?: string;
+  /**
+   * @isLong longValue
+   */
+  startDate: number; // long
+  /**
+   * @isLong longValue
+   */
+  stopDate?: number; // long
   stopReason?: string;
-  startKWattHour: number;
-  stopKWattHour?: number;
+  /**
+   * @isLong longValue
+   */
+  startWattHour: number; // long
+  /**
+   * @isLong longValue
+   */
+  stopWattHour?: number; // long
+  /**
+   * @isLong longValue
+   */
+  consumedWattHours: number; // long
 }
 
 export interface ChargingTransactionPerCard {
@@ -49,38 +66,28 @@ export interface ChargingTransactionPerCard {
   totalWattHourCharged: CPWattHourCharged;
   cardId: string;
 }
-export type ChargePointStatuCode = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-export type ChargePointStatusMessage =
-  | 'Available'
-  | 'Preparing'
-  | 'Charging'
-  | 'SuspendedEV'
-  | 'SuspendedEVSE'
-  | 'Finishing'
-  | 'Faulted';
+export type ChargePointStatus = 'OPERATIVE' | 'INOPERATIVE' | 'FAULTED';
+export type TransactionStatus =
+  | 'AVAILABLE'
+  | 'PREPARING'
+  | 'CHARGING'
+  | 'SUSPENDED_EV'
+  | 'SUSPENDED_EVSE'
+  | 'FINISHING'
+  | 'FAULTED';
+export type ConnectorStatus = 'OPERATIVE' | 'INOPERATIVE' | 'FAULTED';
 
-// export type ChargePointStatuCode = ChargePointStatus['code'];
-
-// export type ChargePointStatus = (
-//   | { code: 0; statusMessage: 'Available' }
-//   | { code: 1; statusMessage: 'Preparing' }
-//   | { code: 2; statusMessage: 'Charging' }
-//   | { code: 3; statusMessage: 'SuspendedEV' }
-//   | { code: 4; statusMessage: 'SuspendedEVSE' }
-//   | { code: 5; statusMessage: 'Finishing' }
-//   | { code: 6; statusMessage: 'Faulted' }) & {
-//   plugAndChargeEnabled: boolean;
-//   numberOfRFIDCardsRegistered: number;
-// };
-
-export interface ChargePointStatus {
-  code: ChargePointStatuCode;
-  statusMessage: ChargePointStatusMessage;
-  plugAndChargeEnabled: boolean;
+export interface Status {
+  chargePointStatus: ChargePointStatus;
+  transactionStatus: TransactionStatus[];
+  connectorStatus: ConnectorStatus[];
+  authorizationMode: AuthorizationMode;
+  /**
+   * @isLong longValue
+   */
   numberOfRFIDCardsRegistered: number;
 }
 
-// export type ChargePointStatusMessage = ChargePointStatus['statusMessage'];
 export interface ChargePointStatusUpdate {
   plugAndChargeEnabled: boolean;
 }
@@ -110,6 +117,9 @@ export interface Upgrade {
   /** Mime type of the file */
   mimetype: string;
   /** Size of the file in bytes */
+  /**
+   * @isLong longValue
+   */
   size: number;
   /** The folder to which the file has been saved (DiskStorage) */
   destination: string;
