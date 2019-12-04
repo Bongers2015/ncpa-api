@@ -27,14 +27,14 @@ jobs:
       - run:
           name: build image
           command: |
-            docker build -t spronq/ncpa-app:$CIRCLE_SHA1 -t spronq/ncpa-app:latest .
+            docker build -t spronq/ncpa-api:$CIRCLE_SHA1 -t spronq/ncpa-api:latest .
 
       - run:
           name: Publish image
           command: |
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-            docker push spronq/ncpa-app:latest
-            docker push spronq/ncpa-app:$CIRCLE_SHA1
+            docker push spronq/ncpa-api:latest
+            docker push spronq/ncpa-api:$CIRCLE_SHA1
 
 workflows:
   version: 2
