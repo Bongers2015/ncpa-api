@@ -3,6 +3,13 @@ package-lock.json
 yarn-error.log
 .DS_Store
 src/swagger
-certs
+certs/*
 .temp
 src/routes.ts
+
+#
+#
+!certs/certs.sh
+!certs/server.cnf
+!certs/v3.ext
+#

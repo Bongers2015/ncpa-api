@@ -1,0 +1,49 @@
+ersion: 2.0
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+
+      - run:
+          name: Install 
+          command: yarn install
+
+  publish-image:
+    # Using a docker machine type combined with the setup_remote_docker step allow to run
+    # this job locally.
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: .
+
+      - setup_remote_docker:
+          docker_layer_caching: false
+
+      - run:
+          name: build image
+          command: |
+            docker build -t spronq/ncpa-app:$CIRCLE_SHA1 -t spronq/orinoqo-website:latest .
+
+      - run:
+          name: Publish image
+          command: |
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+            docker push spronq/ncpa-app:latest
+            docker push spronq/ncpa-app:$CIRCLE_SHA1
+
+workflows:
+  version: 2
+  newbuild:
+    jobs:
+      - build
+      - publish-image:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
