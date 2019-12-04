@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/interface-name-prefix */
 import https from 'https';
+import http from 'http';
 import fs from 'fs';
 
 import bodyParser from 'body-parser';
@@ -22,7 +23,7 @@ import './controllers/development-controller';
 
 import { RegisterRoutes } from './routes';
 
-export const server = (): Promise<https.Server> => {
+export const server = (): Promise<https.Server | http.Server> => {
   const app = express()
     .use(bodyParser.urlencoded({ extended: true }))
     .use(bodyParser.json())
@@ -78,14 +79,17 @@ export const server = (): Promise<https.Server> => {
 
   const port = 3000;
 
-  return new Promise<https.Server>(resolve => {
-    const server = https.createServer(
-      {
-        key: fs.readFileSync('./certs/server.key'),
-        cert: fs.readFileSync('./certs/server.crt')
-      },
-      app
-    );
+  return new Promise<https.Server | http.Server>(resolve => {
+    const isProduction = process.env.NODE_ENV === 'production';
+    const server = isProduction
+      ? https.createServer(
+          {
+            key: fs.readFileSync('./certs/server.key'),
+            cert: fs.readFileSync('./certs/server.crt')
+          },
+          app
+        )
+      : http.createServer(app);
 
     server.listen(3000, () => {
       console.log(`✓ Started API server at http://localhost:${port}`);
