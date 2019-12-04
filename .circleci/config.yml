@@ -27,7 +27,7 @@ jobs:
       - run:
           name: build image
           command: |
-            docker build -t spronq/ncpa-app:$CIRCLE_SHA1 -t spronq/orinoqo-website:latest .
+            docker build -t spronq/ncpa-app:$CIRCLE_SHA1 -t spronq/ncpa-app:latest .
 
       - run:
           name: Publish image
