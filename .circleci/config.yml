@@ -1,4 +1,4 @@
-ersion: 2.0
+version: 2.0
 jobs:
   build:
     docker:
@@ -46,4 +46,4 @@ workflows:
             - build
           filters:
             branches:
-              only: master
+              only: devops
