@@ -1,5 +1,5 @@
 {
-	"basePath": "/api/tnm/freeapp/v1",
+	"basePath": "/api/tnm/v1",
 	"consumes": [
 		"application/json"
 	],

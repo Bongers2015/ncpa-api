@@ -81,18 +81,17 @@ export const server = (): Promise<https.Server | http.Server> => {
 
   return new Promise<https.Server | http.Server>(resolve => {
     const isProduction = process.env.NODE_ENV === 'production';
-    const server = isProduction
-      ? https.createServer(
-          {
-            key: fs.readFileSync('./certs/server.key'),
-            cert: fs.readFileSync('./certs/server.crt')
-          },
-          app
-        )
-      : http.createServer(app);
+    const server = isProduction ?
+      http.createServer(app) : https.createServer(
+      {
+        key: fs.readFileSync('./certs/server.key'),
+        cert: fs.readFileSync('./certs/server.crt')
+      },
+      app
+    )
 
     server.listen(3000, () => {
-      console.log(`✓ Started API server at http://localhost:${port}`);
+      console.log(`✓ Started API server at ${isProduction?'http':'https'}://localhost:${port}`);
       resolve(server);
     });
   });
