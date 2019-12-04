@@ -2,7 +2,7 @@
 	"swagger": {
 		"outputDirectory": "./src/swagger",
 		"entryFile": "./src/server.ts",
-		"basePath": "/api/tnm/freeapp/v1",
+		"basePath": "/api/tnm/v1",
 		"noImplicitAdditionalProperties": "silently-remove-extras",
 		"securityDefinitions": {
 			"api_key": {
@@ -36,7 +36,7 @@
 		}
 	},
 	"routes": {
-		"basePath": "/api/tnm/freeapp/v1",
+		"basePath": "/api/tnm/v1",
 		"entryFile": "./src/server.ts",
 		"routesDir": "./src",
 		"authenticationModule": "./src/authentication.ts"
