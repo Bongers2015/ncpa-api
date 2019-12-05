@@ -35,6 +35,18 @@ jobs:
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
             docker push spronq/ncpa-api:latest
             docker push spronq/ncpa-api:$CIRCLE_SHA1
+            
+  deploy-image:
+    docker: 
+      - image: circleci/node:12
+    steps: 
+      - add_ssh_keys:
+          fingerprints:
+            - "91:53:8e:28:f4:7c:ec:d9:59:78:98:fc:7e:8c:58:87"
+      - run:
+          name: deploy
+          command: |
+            ssh rudi_vandrunen_spronq_com@ncpapi.spronq.com "ls"
 
 workflows:
   version: 2
@@ -47,3 +59,10 @@ workflows:
           filters:
             branches:
               only: master
+      - deploy-image:
+          requires:
+            - publish-image
+          filters:
+            branches:
+              only: master
+      
