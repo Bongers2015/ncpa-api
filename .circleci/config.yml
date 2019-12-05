@@ -46,7 +46,7 @@ jobs:
       - run:
           name: deploy
           command: |
-            ssh rudi_vandrunen_spronq_com@ncpapi.spronq.com "ls"
+            ssh -o "StrictHostKeyChecking no" rudi_vandrunen_spronq_com@ncpapi.spronq.com "ls"
 
 workflows:
   version: 2
