@@ -120,7 +120,7 @@ export function RegisterRoutes(app: express.Express) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-    app.get('/api/tnm/freeapp/v1/auth',
+    app.get('/api/tnm/v1/auth',
         function(request: any, response: any, next: any) {
             const args = {
                 token: { "in": "query", "name": "token", "required": true, "dataType": "string" },
@@ -143,7 +143,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/authentication-mode',
+    app.get('/api/tnm/v1/authentication-mode',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -165,7 +165,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/authentication-mode',
+    app.post('/api/tnm/v1/authentication-mode',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -188,7 +188,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/config/socket-lock-mode',
+    app.get('/api/tnm/v1/config/socket-lock-mode',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -210,7 +210,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/config/socket-lock-mode',
+    app.post('/api/tnm/v1/config/socket-lock-mode',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -233,7 +233,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/whitelist/cards',
+    app.get('/api/tnm/v1/whitelist/cards',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -255,7 +255,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/whitelist/cards/:token',
+    app.get('/api/tnm/v1/whitelist/cards/:token',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -278,7 +278,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/tnm/freeapp/v1/whitelist/cards/:token',
+    app.delete('/api/tnm/v1/whitelist/cards/:token',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -301,7 +301,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/whitelist/card',
+    app.get('/api/tnm/v1/whitelist/card',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -323,7 +323,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/status',
+    app.get('/api/tnm/v1/status',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -345,7 +345,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/charging/start',
+    app.post('/api/tnm/v1/charging/start',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -368,7 +368,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/charging/stop',
+    app.post('/api/tnm/v1/charging/stop',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -391,7 +391,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/charging/unlock',
+    app.post('/api/tnm/v1/charging/unlock',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -413,7 +413,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/transactions',
+    app.get('/api/tnm/v1/transactions',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -435,7 +435,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/upgrade',
+    app.post('/api/tnm/v1/upgrade',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -458,7 +458,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/development/whitelist/cards',
+    app.post('/api/tnm/v1/development/whitelist/cards',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -481,7 +481,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/freeapp/v1/development/card/registration-response',
+    app.post('/api/tnm/v1/development/card/registration-response',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -504,7 +504,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/freeapp/v1/development/qr/:host',
+    app.get('/api/tnm/v1/development/qr/:host',
         function(request: any, response: any, next: any) {
             const args = {
                 host: { "in": "path", "name": "host", "required": true, "dataType": "string" },
