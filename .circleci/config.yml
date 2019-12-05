@@ -23,6 +23,12 @@ jobs:
 
       - setup_remote_docker:
           docker_layer_caching: false
+          
+      - run:
+          name: add cert and key
+          command: |
+            echo $SERVER_CRT > certs/server.crt
+            echo $SERVER_KEY > certs/server.key
 
       - run:
           name: build image
