@@ -55,6 +55,12 @@ $ yarn dev
 $ open https://localhost:3000/api-docs
 ```
 
+for prd start the application as follows. You will need a ssl-offloading loadbalancer as non ssl on port 3000
+
+```
+$ yarn serve-prd
+```
+
 
 ### OpenAPI specification
 
