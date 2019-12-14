@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+cat server.key  | tr '\n' ' ' > server.key_env
+cat server.cert | tr '\n' ' ' > server.crt_env
+#
+SERVER_KEY=`cat server.key_env`
+server_CRT=`cat server.crt_env`
