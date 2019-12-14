@@ -29,7 +29,8 @@ jobs:
           command: |
             echo $SERVER_CRT | sed 's/- /-\n/g; s/ -/\n-/g' | sed '/CERTIFICATE/! s/ /\n/g' > certs/server.crt
             cat certs/server.crt
-            echo $SERVER_KEY > certs/server.key
+            echo $SERVER_KEY | sed 's/- /-\n/g; s/ -/\n-/g' | sed '/PRIVATE KEY/! s/ /\n/g' > certs/server.key
+            cat certs/server.key
 
       - run:
           name: build image
