@@ -6,16 +6,16 @@ export class ChargingController extends Controller {
   @Post('/start')
   @Security('jwtAuth')
   @Tags('operator')
-  public startCharging(@Query() clientId: string): void {
-    console.log('startCharging clientId', clientId);
+  public startCharging(@Query() tag: string): void {
+    console.log('startCharging tag', tag);
   }
 
   /** jwt scopes: `operator`  */
   @Post('/stop')
   @Security('jwtAuth')
   @Tags('operator')
-  public stopCharging(@Query() clientId: string): void {
-    console.log('stopCharging clientId', clientId);
+  public stopCharging(@Query() tag: string): void {
+    console.log('stopCharging tag', tag);
   }
 
   /** jwt scopes: `operator`  */

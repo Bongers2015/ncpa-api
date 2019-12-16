@@ -10,12 +10,15 @@ import methodOverride from 'method-override';
 
 import swaggerDocument from './swagger/swagger.json';
 
+import './controllers/keys-controller';
 import './controllers/auth-controller';
 import './controllers/authentication-mode-controller';
 import './controllers/config-controller';
 import './controllers/cards-controller';
 import './controllers/card-controller';
+import './controllers/device-info-controller';
 import './controllers/status-controller';
+import './controllers/installer-status-controller';
 import './controllers/charging-controller';
 import './controllers/transactions-controller';
 import './controllers/upgrade-controller';
@@ -81,17 +84,22 @@ export const server = (): Promise<https.Server | http.Server> => {
 
   return new Promise<https.Server | http.Server>(resolve => {
     const isProduction = process.env.NODE_ENV === 'production';
-    const server = isProduction ?
-      http.createServer(app) : https.createServer(
-      {
-        key: fs.readFileSync('./certs/server.key'),
-        cert: fs.readFileSync('./certs/server.crt')
-      },
-      app
-    )
+    const server = isProduction
+      ? http.createServer(app)
+      : https.createServer(
+          {
+            key: fs.readFileSync('./certs/server.key'),
+            cert: fs.readFileSync('./certs/server.crt')
+          },
+          app
+        );
 
     server.listen(3000, () => {
-      console.log(`✓ Started API server at ${isProduction?'http':'https'}://localhost:${port}`);
+      console.log(
+        `✓ Started API server at ${
+          isProduction ? 'http' : 'https'
+        }://localhost:${port}`
+      );
       resolve(server);
     });
   });

@@ -88,6 +88,12 @@ export interface Status {
   numberOfRFIDCardsRegistered: number;
 }
 
+export interface InstallerStatus {
+  onOffPeak: Peak;
+  loadSheddingModule: LoadSheddingStatus;
+  installationUsage: InstallationUsage;
+}
+
 export interface ChargePointStatusUpdate {
   plugAndChargeEnabled: boolean;
 }
@@ -105,7 +111,7 @@ export interface GetAuthQrResponse {
   /** authorization request url */
   requestUrl: string;
   /** url encoded encrypted jwt token */
-  tokenCipher: string;
+  encryptedToken: string;
 }
 export type SocketLockMode = 'TRANSACTION' | 'LOCKED' | 'UNLOCKED';
 
@@ -137,3 +143,12 @@ export interface UpgradeResponse {
 }
 
 export type AuthorizationScope = 'operator' | 'installer';
+export type LoadShedding = 'NO' | 'P1' | 'XEMEX_BLACK';
+export type LoadSheddingStatus = 'CONNECTED' | 'NOT_CONNECTED';
+export type Peak = 'ON_PEAK' | 'OFF_PEAK' | 'TRANSACTION_PEAK';
+export type DeviceInfo = {
+  softwareVersion: string;
+  firmwareVersion: string;
+  serial: string;
+};
+export type InstallationUsage = [number, number, number];

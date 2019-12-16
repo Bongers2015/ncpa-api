@@ -7,11 +7,12 @@ import { Controller, Get, Route, Tags, Query } from 'tsoa';
 import { decrypt } from '../services/qr';
 import { CHARGE_POINT_ID } from '../constants';
 @Route('auth')
-@Tags('operator')
+@Tags('public')
 export class AuthController extends Controller {
   /** 
-   * expects token as url encoded cyphered jwt token like so:
-```json
+   * expects token as url encoded ciphered jwt token like so:
+```js
+  const payload =
 {
   "iss": "TNM Auth server",
   "sub": "{cp-uuid}",
@@ -22,17 +23,22 @@ export class AuthController extends Controller {
     "password": "strong-wifi-password",
     "type": "wpa2",
     "hidden": true
-  }
+  };
+
+  const jwtToken = jwt.sign(payload, privateKey, {
+    algorithm: 'RS256'
+  });
+
+  const token = encodeURIComponent(encrypt(jwtToken));
+  
+
 ```
-returns an access token:
+returns an access token and its accompanying public key for signature validation
 
 ```json
 {
-  "iss": "{cp-uuid}",
-  "sub": "{cp-uuid}",
-  "aud": "{client-uuid}",
-  "iat": 1516239022,
-  "scopes": ["operator" | "installer"]
+  accessToken: "eyJhbGciOiJSUzI1NiI...",
+  publicKey: "-----BEGIN CERTIFI..."
 }
 ```
    *
@@ -42,13 +48,13 @@ returns an access token:
   public async validateAuthToken(
     @Query() token: string,
     @Query() clientId?: string
-  ): Promise<string> {
+  ): Promise<{ accessToken: string; publicKey: string }> {
     return new Promise((resolve, reject) => {
       const serverCert = fs.readFileSync(
         path.resolve(process.cwd(), './certs/server.crt')
       );
       const jwtToken = decrypt(decodeURIComponent(token));
-
+      console.log('token', jwtToken);
       jwt.verify(jwtToken, serverCert, (err, decoded) => {
         if (err) {
           reject(err);
@@ -75,7 +81,7 @@ returns an access token:
             const appToken = jwt.sign(payload, privateKey, {
               algorithm: 'RS256'
             });
-            resolve(appToken);
+            resolve({ accessToken: appToken, publicKey: 'asasd' });
           } else {
             reject(new Error('no'));
           }

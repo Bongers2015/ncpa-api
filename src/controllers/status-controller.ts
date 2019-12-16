@@ -8,7 +8,7 @@ import cpService from '../services/cp';
 @Security('jwtAuth')
 @Tags('operator')
 export class StatusController extends Controller {
-  /** jwt scopes: `operator`, `installer` */
+  /** jwt scopes: `operator` */
   @Get()
   public getChargePointStatus(): Status {
     const chargePointStatus = cpService.getChargePointStatus();

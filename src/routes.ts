@@ -3,6 +3,8 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute } from 'tsoa';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { KeysController } from './controllers/keys-controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthController } from './controllers/auth-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthorizationModeController } from './controllers/authentication-mode-controller';
@@ -13,7 +15,11 @@ import { CardsController } from './controllers/cards-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CardController } from './controllers/card-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { DeviceInfoController } from './controllers/device-info-controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { StatusController } from './controllers/status-controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { InstallerStatusController } from './controllers/installer-status-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ChargingController } from './controllers/charging-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -48,6 +54,13 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DeviceInfo": {
+        "dataType": "refObject",
+        "properties": {
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Status": {
         "dataType": "refObject",
         "properties": {
@@ -56,6 +69,23 @@ const models: TsoaRoute.Models = {
             "connectorStatus": { "dataType": "array", "array": { "dataType": "enum", "enums": ["OPERATIVE", "INOPERATIVE", "FAULTED"] }, "required": true },
             "authorizationMode": { "dataType": "enum", "enums": ["PLUGNCHARGE", "WHITELIST"], "required": true },
             "numberOfRFIDCardsRegistered": { "dataType": "long", "required": true, "validators": { "isLong": { "errorMsg": "longValue" } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "InstallationUsage": {
+        "dataType": "refObject",
+        "properties": {
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "InstallerStatus": {
+        "dataType": "refObject",
+        "properties": {
+            "onOffPeak": { "dataType": "enum", "enums": ["ON_PEAK", "OFF_PEAK", "TRANSACTION_PEAK"], "required": true },
+            "loadSheddingModule": { "dataType": "enum", "enums": ["CONNECTED", "NOT_CONNECTED"], "required": true },
+            "installationUsage": { "ref": "InstallationUsage", "required": true },
         },
         "additionalProperties": false,
     },
@@ -105,7 +135,7 @@ const models: TsoaRoute.Models = {
             "host": { "dataType": "string", "required": true },
             "qrDataUrl": { "dataType": "string", "required": true },
             "requestUrl": { "dataType": "string", "required": true },
-            "tokenCipher": { "dataType": "string", "required": true },
+            "encryptedToken": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
@@ -120,6 +150,28 @@ export function RegisterRoutes(app: express.Express) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
+    app.get('/api/tnm/v1/keys',
+        function(request: any, response: any, next: any) {
+            const args = {
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new KeysController();
+
+
+            const promise = controller.getIdTokenPublicKey.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/tnm/v1/auth',
         function(request: any, response: any, next: any) {
             const args = {
@@ -233,6 +285,75 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/tnm/v1/config/grid-max-current',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                maxCurrent: { "in": "query", "name": "maxCurrent", "required": true, "dataType": "double" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new ConfigController();
+
+
+            const promise = controller.setGridMaxCurrent.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/tnm/v1/config/load-shedding',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                loadShedding: { "in": "query", "name": "loadShedding", "required": true, "dataType": "enum", "enums": ["NO", "P1", "XEMEX_BLACK"] },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new ConfigController();
+
+
+            const promise = controller.setLoadShedding.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/tnm/v1/config/charge-station-max-current',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                chargeStationMaxCurrent: { "in": "query", "name": "chargeStationMaxCurrent", "required": true, "dataType": "double" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new ConfigController();
+
+
+            const promise = controller.setChargeStationMaxCurrent.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/tnm/v1/whitelist/cards',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
@@ -323,6 +444,28 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/tnm/v1/device-info',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new DeviceInfoController();
+
+
+            const promise = controller.getDeviceInfo.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/tnm/v1/status',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
@@ -345,11 +488,33 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/tnm/v1/installer-status',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new InstallerStatusController();
+
+
+            const promise = controller.getInstallerStatus.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.post('/api/tnm/v1/charging/start',
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
+                tag: { "in": "query", "name": "tag", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -372,7 +537,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
+                tag: { "in": "query", "name": "tag", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

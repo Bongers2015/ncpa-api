@@ -57,6 +57,11 @@
 			"type": "object",
 			"additionalProperties": false
 		},
+		"DeviceInfo": {
+			"properties": {},
+			"type": "object",
+			"additionalProperties": false
+		},
 		"Status": {
 			"properties": {
 				"chargePointStatus": {
@@ -111,6 +116,40 @@
 				"connectorStatus",
 				"authorizationMode",
 				"numberOfRFIDCardsRegistered"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"InstallationUsage": {
+			"properties": {},
+			"type": "object",
+			"additionalProperties": false
+		},
+		"InstallerStatus": {
+			"properties": {
+				"onOffPeak": {
+					"type": "string",
+					"enum": [
+						"ON_PEAK",
+						"OFF_PEAK",
+						"TRANSACTION_PEAK"
+					]
+				},
+				"loadSheddingModule": {
+					"type": "string",
+					"enum": [
+						"CONNECTED",
+						"NOT_CONNECTED"
+					]
+				},
+				"installationUsage": {
+					"$ref": "#/definitions/InstallationUsage"
+				}
+			},
+			"required": [
+				"onOffPeak",
+				"loadSheddingModule",
+				"installationUsage"
 			],
 			"type": "object",
 			"additionalProperties": false
@@ -239,7 +278,7 @@
 					"type": "string",
 					"description": "authorization request url"
 				},
-				"tokenCipher": {
+				"encryptedToken": {
 					"type": "string",
 					"description": "url encoded encrypted jwt token"
 				}
@@ -248,7 +287,7 @@
 				"host",
 				"qrDataUrl",
 				"requestUrl",
-				"tokenCipher"
+				"encryptedToken"
 			],
 			"type": "object",
 			"additionalProperties": false
@@ -263,9 +302,9 @@
 		}
 	},
 	"paths": {
-		"/auth": {
+		"/keys": {
 			"get": {
-				"operationId": "ValidateAuthToken",
+				"operationId": "GetIdTokenPublicKey",
 				"produces": [
 					"application/json"
 				],
@@ -277,9 +316,43 @@
 						}
 					}
 				},
-				"description": "expects token as url encoded cyphered jwt token like so:\n```json\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"operator\" | \"installer\",\n\"iat\": {unix time}},\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n```\nreturns an access token:\n\n```json\n{\n\"iss\": \"{cp-uuid}\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"{client-uuid}\",\n\"iat\": 1516239022,\n\"scopes\": [\"operator\" | \"installer\"]\n}\n```",
+				"description": "return public key for validation id token signature\n```\n-----BEGIN CERTIFICATE-----\nMIIDpDCCAoygAwIBAgIJAL7MzZaZlELpMA0GCSqGSIb3DQEBCwUAMBQxEjAQBgNV\nBAMMCWxvY2FsaG9zdDAeFw0xODA5MTcxOTMwNDZaFw0yMDAxMzAxOTMwNDZaMIGs\nMQswCQYDVQQGEwJOTDEUMBIGA1UECAwLUmFuZG9tU3RhdGUxEzARBgNVBAcMClJh\nbmRvbUNpdHkxGzAZBgNVBAoMElJhbmRvbU9yZ2FuaXphdGlvbjEfMB0GA1UECwwW\n```",
 				"tags": [
-					"operator"
+					"public"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/auth": {
+			"get": {
+				"operationId": "ValidateAuthToken",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"properties": {
+								"accessToken": {
+									"type": "string"
+								},
+								"publicKey": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"publicKey",
+								"accessToken"
+							],
+							"type": "object"
+						}
+					}
+				},
+				"description": "expects token as url encoded ciphered jwt token like so:\n```js\nconst payload =\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"operator\" | \"installer\",\n\"iat\": {unix time}},\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n};\n\nconst jwtToken = jwt.sign(payload, privateKey, {\nalgorithm: 'RS256'\n});\n\nconst token = encodeURIComponent(encrypt(jwtToken));\n\n\n```\nreturns an access token and its accompanying public key for signature validation\n\n```json\n{\naccessToken: \"eyJhbGciOiJSUzI1NiI...\",\npublicKey: \"-----BEGIN CERTIFI...\"\n}\n```",
+				"tags": [
+					"public"
 				],
 				"security": [],
 				"parameters": [
@@ -386,7 +459,7 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `operator`, `installer`",
+				"description": "jwt scopes: `operator`",
 				"tags": [
 					"operator"
 				],
@@ -415,9 +488,9 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `operator`, `installer`",
+				"description": "jwt scopes: `operator`",
 				"tags": [
-					"operator"
+					"installer"
 				],
 				"security": [
 					{
@@ -435,6 +508,119 @@
 							"LOCKED",
 							"UNLOCKED"
 						]
+					}
+				]
+			}
+		},
+		"/config/grid-max-current": {
+			"post": {
+				"operationId": "SetGridMaxCurrent",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "number",
+							"format": "double"
+						}
+					}
+				},
+				"description": "jwt scopes: `installer`",
+				"tags": [
+					"installer"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "maxCurrent",
+						"required": true,
+						"format": "double",
+						"type": "number"
+					}
+				]
+			}
+		},
+		"/config/load-shedding": {
+			"post": {
+				"operationId": "SetLoadShedding",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "string",
+							"enum": [
+								"NO",
+								"P1",
+								"XEMEX_BLACK"
+							]
+						}
+					}
+				},
+				"description": "jwt scopes: `installer`",
+				"tags": [
+					"installer"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "loadShedding",
+						"required": true,
+						"type": "string",
+						"enum": [
+							"NO",
+							"P1",
+							"XEMEX_BLACK"
+						]
+					}
+				]
+			}
+		},
+		"/config/charge-station-max-current": {
+			"post": {
+				"operationId": "SetChargeStationMaxCurrent",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "number",
+							"format": "double"
+						}
+					}
+				},
+				"description": "jwt scopes: `installer`",
+				"tags": [
+					"installer"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "chargeStationMaxCurrent",
+						"required": true,
+						"format": "double",
+						"type": "number"
 					}
 				]
 			}
@@ -558,6 +744,32 @@
 				"parameters": []
 			}
 		},
+		"/device-info": {
+			"get": {
+				"operationId": "GetDeviceInfo",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/DeviceInfo"
+						}
+					}
+				},
+				"description": "jwt scopes: `operator`",
+				"tags": [
+					"operator"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/status": {
 			"get": {
 				"operationId": "GetChargePointStatus",
@@ -572,9 +784,35 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `operator`, `installer`",
+				"description": "jwt scopes: `operator`",
 				"tags": [
 					"operator"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/installer-status": {
+			"get": {
+				"operationId": "GetInstallerStatus",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/InstallerStatus"
+						}
+					}
+				},
+				"description": "jwt scopes: `installer`",
+				"tags": [
+					"installer"
 				],
 				"security": [
 					{
@@ -607,7 +845,7 @@
 				"parameters": [
 					{
 						"in": "query",
-						"name": "clientId",
+						"name": "tag",
 						"required": true,
 						"type": "string"
 					}
@@ -637,7 +875,7 @@
 				"parameters": [
 					{
 						"in": "query",
-						"name": "clientId",
+						"name": "tag",
 						"required": true,
 						"type": "string"
 					}
@@ -816,7 +1054,7 @@
 								"host": "https://localhost:3000/api/tnm/freeapp/v1",
 								"requestUrl": "https://localhost:3000/api/tnm/freeapp/v1/auth?token=U2FsdGVkX19UjqHxvsfJ%2BSvaean7RNS40GIBGdRGsNOT%2BW7lMzLKoz1A%2BPNumYC%2Fr6wXOyXRgz2p1P0CWSwH0p2NOXywE%2FcxRAbqnt0oLUf8KC5PL1%2FlBWjPwUwYNqvFJUTK82bbXO2Vf9VFzaUw12oUT1eTPoPgcuOcFzF8x%2FdptaCB1AtPp5uDd6LAqFRG51QlIwRDtxahDK95Fj%2FdC9ccnX1Rf3WQeleoBqvrbstWSzZpFiQRk%2BzWzbA36RWRtwiKj%2B%2BJlBUcPDrPIgeifkjL6tBKvdFW1KB0dTqicty%2BUC12BI50FeBtbK1e%2FTofzq%2FOT0FGBGnVk3F0w82wtYtgbtW%2F3kJoGqiuIfHH02%2BA2AwR%2BSgYzME12%2FX0DLVX5i58K3nB13TI5jNYoV6TqQvTeiP6irqukMqpyWcCP1FeXTD72SQvtRqEbNwjTfKSAgCoF%2B%2BA0g%2F800mLGjSBOk5jcZLxsn3PyALzHDVkEaQxShj3wLH1uQcBX630caSH%2Fm6WNQd4X8a2cY06QQk65JJ8ky7BtFq9BaLKmxjVRle%2FHBZlc4ipi3gYv2iczhLvzXxkBUNH6R%2F1%2FWIc9GUhOHPWMtmQE7QmHI0KQq%2B%2FeQRTVMjoA4Va6d91b4epGszQViKdyRInT47a8cRHMqJSBC%2FJ2wMOURluRy%2BXSQMPsfwncOPie2swMMWLrfPSEtAKmYs4asTdu%2FusX9v9FryyztmGosnAZzgL7wgUjrGVIOjvX3DN33%2F4KIE4Tl5C3JrdfdLf4ZhlGTo0ElDdP%2BUsCx%2B1eoytP54Nj%2BOHs8ccTR0%3D",
 								"qrDataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdQAAAHUCAYAAACDJ9lsAAAbZElEQVR4AezBQY4cupLAQLLQ978yx8tcCRBUbb8/yAj7g7XWWms9+bDWWmutZx/WWmut9ezDWmuttZ59WGuttdazD2uttdZ69mGttdZazz6stdZa69mHtdZaaz37sNZaa61nH9Zaa6317MNaa621nn1Ya6211rMPa6211nr2Ya211lrPPqy11lrr2Q+PVP6mihsqJxUnKlPFpHKj4obKVDGp3Kg4UTmpOFGZKiaVqWJSmSomlaniN6l8U8WkMlVMKlPFicpUMancqJhUpooTlaniROVFxaQyVdxQmSpuqEwVL1ReVEwqJxU3VKaKE5WpYlL5mypefFhrrbXWsw9rrbXWevZhrbXWWs9++LKKb1K5oTJVnKhMFVPFjYobKlPFicqNihOVqeKGylTxmyomlRcVJxWTylQxqUwVk8qJyouKk4oTlZOKSWWqOFGZKqaKE5Wp4qRiUvkmlaliqphUpopJZar4JpUXKlPFVDGpTBUvKr5J5Zs+rLXWWuvZh7XWWms9+7DWWmutZz/8MpUbFTdUvknlpGKquKEyVbyouKEyVdxQOVE5qbihMlVMFTdUbqicqNyouKEyqUwVk8pUMal8U8WkMlVMKicqU8WJyouKGypTxYnKicqLit+kcqIyVZyofJPKjYrf9GGttdZazz6stdZa69mHtdZaaz374f+ZihOVGxUnKjcqblR8U8WkclIxVUwqU8Wk8k0qLypuVJyoTBUvVE4qJpX/MpWp4m+qmFQmlaliUjlROamYVG6oTBWTylRxovKi4kTlRsX/Jx/WWmut9ezDWmuttZ59WGuttdazH9aRyknFDZWp4obKScWkMlXcUHlR8TdVTConKlPFpDJVTBU3VF6o3FB5oXKj4kTlpOKk4kRlUrmh8k0qJxWTyonKVHGj4kRlqjhRmSomlROVqeJ/2Ye11lprPfuw1lprrWcf1lprrfXsh19W8Tep3KiYVL5J5X9JxQ2VE5WpYlL5JpUTlROVqeJE5aTiRsUNlZOKSWWqeKEyqZxU/E0VJypTxQ2VqeKGyknFicqNikllqnihMlVMKlPFi4r/kg9rrbXWevZhrbXWWs8+rLXWWuvZD1...",
-								"tokenCipher": "U2FsdGVkX19UjqHxvsfJ%2BSvaean7RNS40GIBGdRGsNOT%2BW7lMzLKoz1A%2BPNumYC%2Fr6wXOyXRgz2p1P0CWSwH0p2NOXywE%2FcxRAbqnt0oLUf8KC5PL1%2FlBWjPwUwYNqvFJUTK82bbXO2Vf9VFzaUw12oUT1eTPoPgcuOcFzF8x%2FdptaCB1AtPp5uDd6LAqFRG51QlIwRDtxahDK95Fj%2FdC9ccnX1Rf3WQeleoBqvrbstWSzZpFiQRk%2BzWzbA36RWRtwiKj%2B%2BJlBUcPDrPIgeifkjL6tBKvdFW1KB0dTqicty%2BUC12BI50FeBtbK1e%2FTofzq%2FOT0FGBGnVk3F0w82wtYtgbtW%2F3kJoGqiuIfHH02%2BA2AwR%2BSgYzME12%2FX0DLVX5i58K3nB13TI5jNYoV6TqQvTeiP6irqukMqpyWcCP1FeXTD72SQvtRqEbNwjTfKSAgCoF%2B%2BA0g%2F800mLGjSBOk5jcZLxsn3PyALzHDVkEaQxShj3wLH1uQcBX630caSH%2Fm6WNQd4X8a2cY06QQk65JJ8ky7BtFq9BaLKmxjVRle%2FHBZlc4ipi3gYv2iczhLvzXxkBUNH6R%2F1%2FWIc9GUhOHPWMtmQE7QmHI0KQq%2B%2FeQRTVMjoA4Va6d91b4epGszQViKdyRInT47a8cRHMqJSBC%2FJ2wMOURluRy%2BXSQMPsfwncOPie2swMMWLrfPSEtAKmYs4asTdu%2FusX9v9FryyztmGosnAZzgL7wgUjrGVIOjvX3DN33%2F4KIE4Tl5C3JrdfdLf4ZhlGTo0ElDdP%2BUsCx%2B1eoytP54Nj%2BOHs8ccTR0%3D"
+								"encryptedToken": "U2FsdGVkX19UjqHxvsfJ%2BSvaean7RNS40GIBGdRGsNOT%2BW7lMzLKoz1A%2BPNumYC%2Fr6wXOyXRgz2p1P0CWSwH0p2NOXywE%2FcxRAbqnt0oLUf8KC5PL1%2FlBWjPwUwYNqvFJUTK82bbXO2Vf9VFzaUw12oUT1eTPoPgcuOcFzF8x%2FdptaCB1AtPp5uDd6LAqFRG51QlIwRDtxahDK95Fj%2FdC9ccnX1Rf3WQeleoBqvrbstWSzZpFiQRk%2BzWzbA36RWRtwiKj%2B%2BJlBUcPDrPIgeifkjL6tBKvdFW1KB0dTqicty%2BUC12BI50FeBtbK1e%2FTofzq%2FOT0FGBGnVk3F0w82wtYtgbtW%2F3kJoGqiuIfHH02%2BA2AwR%2BSgYzME12%2FX0DLVX5i58K3nB13TI5jNYoV6TqQvTeiP6irqukMqpyWcCP1FeXTD72SQvtRqEbNwjTfKSAgCoF%2B%2BA0g%2F800mLGjSBOk5jcZLxsn3PyALzHDVkEaQxShj3wLH1uQcBX630caSH%2Fm6WNQd4X8a2cY06QQk65JJ8ky7BtFq9BaLKmxjVRle%2FHBZlc4ipi3gYv2iczhLvzXxkBUNH6R%2F1%2FWIc9GUhOHPWMtmQE7QmHI0KQq%2B%2FeQRTVMjoA4Va6d91b4epGszQViKdyRInT47a8cRHMqJSBC%2FJ2wMOURluRy%2BXSQMPsfwncOPie2swMMWLrfPSEtAKmYs4asTdu%2FusX9v9FryyztmGosnAZzgL7wgUjrGVIOjvX3DN33%2F4KIE4Tl5C3JrdfdLf4ZhlGTo0ElDdP%2BUsCx%2B1eoytP54Nj%2BOHs8ccTR0%3D"
 							}
 						}
 					}

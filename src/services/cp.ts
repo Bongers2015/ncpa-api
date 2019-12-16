@@ -10,7 +10,12 @@ import {
   Status,
   Transaction,
   SocketLockMode,
-  ChargingTransactionPerCard
+  ChargingTransactionPerCard,
+  Peak,
+  LoadShedding,
+  DeviceInfo,
+  LoadSheddingStatus,
+  InstallationUsage
 } from '../types';
 
 const MAX_NUMBER_OF_CARDS = 3;
@@ -133,6 +138,7 @@ const setAuthMode = (newAuthMode: AuthorizationMode): AuthorizationMode => {
   authMode = newAuthMode;
   return authMode;
 };
+
 let socketLockMode: SocketLockMode = 'UNLOCKED';
 const getSocketLockMode = (): SocketLockMode => socketLockMode;
 const setSocketLockMode = (
@@ -140,6 +146,57 @@ const setSocketLockMode = (
 ): SocketLockMode => {
   socketLockMode = newSocketLockMode;
   return socketLockMode;
+};
+let gridMaxCurrent = 0;
+const getGridMaxCurrent = (): number => gridMaxCurrent;
+const setGridMaxCurrent = (newGridMaxCurrent: number): number => {
+  gridMaxCurrent = newGridMaxCurrent;
+  return gridMaxCurrent;
+};
+const serial = '123123123123';
+const getSerial = (): string => serial;
+const peak: Peak = 'ON_PEAK';
+const getOnOffPeak = (): Peak => peak;
+
+let loadShedding: LoadShedding = 'NO';
+const getLoadShedding = (): LoadShedding => loadShedding;
+const setLoadShedding = (newLoadShedding: LoadShedding): LoadShedding => {
+  loadShedding = newLoadShedding;
+  return loadShedding;
+};
+
+let chargeStationMaxCurrent = 3;
+const getChargeStationMaxCurrent = (): number => chargeStationMaxCurrent;
+const setChargeStationMaxCurrent = (
+  newChargeStationMaxCurrent: number
+): number => {
+  chargeStationMaxCurrent = newChargeStationMaxCurrent;
+  return chargeStationMaxCurrent;
+};
+
+const getDeviceInfo = (): DeviceInfo => {
+  return {
+    softwareVersion: 'v1.0.90',
+    firmwareVersion: 'v1.1.1',
+    serial: getSerial()
+  };
+};
+
+const loadSheddingStatus: LoadSheddingStatus = 'CONNECTED';
+const getLoadSheddingStatus = (): LoadSheddingStatus => loadSheddingStatus;
+
+const getInstallationUsage = (): InstallationUsage => [1, 2, 3];
+
+let shuntActive = false;
+
+const activateShunt = ():  boolean => {
+  shuntActive = true;
+  return shuntActive;
+};
+
+const deactivateShunt = ():  boolean => {
+  shuntActive = false;
+  return shuntActive;
 };
 export default {
   getCards: (): Card[] => {
@@ -258,5 +315,18 @@ export default {
   getAuthMode,
   setAuthMode,
   getSocketLockMode,
-  setSocketLockMode
+  setSocketLockMode,
+  setGridMaxCurrent,
+  getGridMaxCurrent,
+  getSerial,
+  getOnOffPeak,
+  getLoadShedding,
+  setLoadShedding,
+  getChargeStationMaxCurrent,
+  setChargeStationMaxCurrent,
+  getDeviceInfo,
+  getLoadSheddingStatus,
+  getInstallationUsage,
+  activateShunt,
+  deactivateShunt
 };

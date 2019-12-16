@@ -20,13 +20,41 @@ Reference API for NCPA
 |In|header|
 |Name|authorization|
 
+### /keys
+
+#### GET
+##### Description:
+
+return public key for validation id token signature
+```
+-----BEGIN CERTIFICATE-----
+MIIDpDCCAoygAwIBAgIJAL7MzZaZlELpMA0GCSqGSIb3DQEBCwUAMBQxEjAQBgNV
+BAMMCWxvY2FsaG9zdDAeFw0xODA5MTcxOTMwNDZaFw0yMDAxMzAxOTMwNDZaMIGs
+MQswCQYDVQQGEwJOTDEUMBIGA1UECAwLUmFuZG9tU3RhdGUxEzARBgNVBAcMClJh
+bmRvbUNpdHkxGzAZBgNVBAoMElJhbmRvbU9yZ2FuaXphdGlvbjEfMB0GA1UECwwW
+```
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | string |
+
+null
+
 ### /auth
 
 #### GET
 ##### Description:
 
-expects token as url encoded cyphered jwt token like so:
-```json
+expects token as url encoded ciphered jwt token like so:
+```js
+const payload =
 {
 "iss": "TNM Auth server",
 "sub": "{cp-uuid}",
@@ -37,17 +65,22 @@ expects token as url encoded cyphered jwt token like so:
 "password": "strong-wifi-password",
 "type": "wpa2",
 "hidden": true
-}
+};
+
+const jwtToken = jwt.sign(payload, privateKey, {
+algorithm: 'RS256'
+});
+
+const token = encodeURIComponent(encrypt(jwtToken));
+
+
 ```
-returns an access token:
+returns an access token and its accompanying public key for signature validation
 
 ```json
 {
-"iss": "{cp-uuid}",
-"sub": "{cp-uuid}",
-"aud": "{client-uuid}",
-"iat": 1516239022,
-"scopes": ["operator" | "installer"]
+accessToken: "eyJhbGciOiJSUzI1NiI...",
+publicKey: "-----BEGIN CERTIFI..."
 }
 ```
 
@@ -62,7 +95,7 @@ returns an access token:
 
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
-| 200 | Ok | string |
+| 200 | Ok | object |
 
 null
 
@@ -118,7 +151,7 @@ jwt scopes: `operator`, `installer`
 #### GET
 ##### Description:
 
-jwt scopes: `operator`, `installer`
+jwt scopes: `operator`
 
 ##### Parameters
 
@@ -140,7 +173,7 @@ jwt scopes: `operator`, `installer`
 #### POST
 ##### Description:
 
-jwt scopes: `operator`, `installer`
+jwt scopes: `operator`
 
 ##### Parameters
 
@@ -153,6 +186,81 @@ jwt scopes: `operator`, `installer`
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | Ok | string |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
+### /config/grid-max-current
+
+#### POST
+##### Description:
+
+jwt scopes: `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| maxCurrent | query |  | Yes | double |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | double |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
+### /config/load-shedding
+
+#### POST
+##### Description:
+
+jwt scopes: `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| loadShedding | query |  | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | string |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
+### /config/charge-station-max-current
+
+#### POST
+##### Description:
+
+jwt scopes: `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| chargeStationMaxCurrent | query |  | Yes | double |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | double |
 
 ##### Security
 
@@ -256,12 +364,36 @@ jwt scopes: `operator`, `installer`
 | --- | --- |
 | jwtAuth | |
 
+### /device-info
+
+#### GET
+##### Description:
+
+jwt scopes: `operator`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | [DeviceInfo](#deviceinfo) |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
 ### /status
 
 #### GET
 ##### Description:
 
-jwt scopes: `operator`, `installer`
+jwt scopes: `operator`
 
 ##### Parameters
 
@@ -280,6 +412,30 @@ jwt scopes: `operator`, `installer`
 | --- | --- |
 | jwtAuth | |
 
+### /installer-status
+
+#### GET
+##### Description:
+
+jwt scopes: `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | [InstallerStatus](#installerstatus) |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
 ### /charging/start
 
 #### POST
@@ -291,7 +447,7 @@ jwt scopes: `operator` `
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
-| clientId | query |  | Yes | string |
+| tag | query |  | Yes | string |
 
 ##### Responses
 
@@ -316,7 +472,7 @@ jwt scopes: `operator`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
-| clientId | query |  | Yes | string |
+| tag | query |  | Yes | string |
 
 ##### Responses
 
@@ -518,6 +674,11 @@ null
 | status | string |  | Yes |
 | statusMessage | string |  | Yes |
 
+#### DeviceInfo
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+
 #### Status
 
 | Name | Type | Description | Required |
@@ -527,6 +688,19 @@ null
 | connectorStatus | [ string ] |  | Yes |
 | authorizationMode | string |  | Yes |
 | numberOfRFIDCardsRegistered | long |  | Yes |
+
+#### InstallationUsage
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+
+#### InstallerStatus
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| onOffPeak | string |  | Yes |
+| loadSheddingModule | string |  | Yes |
+| installationUsage | [InstallationUsage](#installationusage) |  | Yes |
 
 #### Transaction
 
@@ -568,4 +742,4 @@ null
 | host | string | {protocol}://{host}:{port}/{path} | Yes |
 | qrDataUrl | string | QR bitmap encoded as data url | Yes |
 | requestUrl | string | authorization request url | Yes |
-| tokenCipher | string | url encoded encrypted jwt token | Yes |
+| encryptedToken | string | url encoded encrypted jwt token | Yes |
