@@ -10,7 +10,7 @@ import methodOverride from 'method-override';
 
 import swaggerDocument from './swagger/swagger.json';
 
-import './controllers/keys-controller';
+// import './controllers/keys-controller';
 import './controllers/auth-controller';
 import './controllers/authentication-mode-controller';
 import './controllers/config-controller';

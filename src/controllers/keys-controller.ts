@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import express from 'express';
-import { Security, Controller, Get, Request, Route, Tags } from 'tsoa';
+import { Controller, Get, Request, Route, Tags } from 'tsoa';
 
 @Route('keys')
 export class KeysController extends Controller {
