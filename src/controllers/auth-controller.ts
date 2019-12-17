@@ -4,7 +4,7 @@ import path from 'path';
 import jwt from 'jsonwebtoken';
 import { Controller, Get, Route, Tags, Query } from 'tsoa';
 
-import { decrypt } from '../services/qr';
+import { decrypt, encrypt } from '../services/qr';
 import { CHARGE_POINT_ID } from '../constants';
 @Route('auth')
 @Tags('public')
@@ -54,7 +54,6 @@ returns an access token and its accompanying public key for signature validation
         path.resolve(process.cwd(), './certs/server.crt')
       );
       const jwtToken = decrypt(decodeURIComponent(token));
-      console.log('token', jwtToken);
       jwt.verify(jwtToken, serverCert, (err, decoded) => {
         if (err) {
           reject(err);
@@ -81,7 +80,11 @@ returns an access token and its accompanying public key for signature validation
             const appToken = jwt.sign(payload, privateKey, {
               algorithm: 'RS256'
             });
-            resolve({ accessToken: appToken, publicKey: 'asasd' });
+
+            resolve({
+              accessToken: encodeURIComponent(encrypt(appToken)),
+              publicKey: serverCert.toString()
+            });
           } else {
             reject(new Error('no'));
           }
