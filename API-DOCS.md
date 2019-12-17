@@ -20,33 +20,6 @@ Reference API for NCPA
 |In|header|
 |Name|authorization|
 
-### /keys
-
-#### GET
-##### Description:
-
-return public key for validation id token signature
-```
------BEGIN CERTIFICATE-----
-MIIDpDCCAoygAwIBAgIJAL7MzZaZlELpMA0GCSqGSIb3DQEBCwUAMBQxEjAQBgNV
-BAMMCWxvY2FsaG9zdDAeFw0xODA5MTcxOTMwNDZaFw0yMDAxMzAxOTMwNDZaMIGs
-MQswCQYDVQQGEwJOTDEUMBIGA1UECAwLUmFuZG9tU3RhdGUxEzARBgNVBAcMClJh
-bmRvbUNpdHkxGzAZBgNVBAoMElJhbmRvbU9yZ2FuaXphdGlvbjEfMB0GA1UECwwW
-```
-
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-
-##### Responses
-
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | Ok | string |
-
-null
-
 ### /auth
 
 #### GET

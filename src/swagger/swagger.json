@@ -302,28 +302,6 @@
 		}
 	},
 	"paths": {
-		"/keys": {
-			"get": {
-				"operationId": "GetIdTokenPublicKey",
-				"produces": [
-					"application/json"
-				],
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"schema": {
-							"type": "string"
-						}
-					}
-				},
-				"description": "return public key for validation id token signature\n```\n-----BEGIN CERTIFICATE-----\nMIIDpDCCAoygAwIBAgIJAL7MzZaZlELpMA0GCSqGSIb3DQEBCwUAMBQxEjAQBgNV\nBAMMCWxvY2FsaG9zdDAeFw0xODA5MTcxOTMwNDZaFw0yMDAxMzAxOTMwNDZaMIGs\nMQswCQYDVQQGEwJOTDEUMBIGA1UECAwLUmFuZG9tU3RhdGUxEzARBgNVBAcMClJh\nbmRvbUNpdHkxGzAZBgNVBAoMElJhbmRvbU9yZ2FuaXphdGlvbjEfMB0GA1UECwwW\n```",
-				"tags": [
-					"public"
-				],
-				"security": [],
-				"parameters": []
-			}
-		},
 		"/auth": {
 			"get": {
 				"operationId": "ValidateAuthToken",
