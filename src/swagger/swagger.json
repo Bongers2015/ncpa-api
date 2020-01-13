@@ -870,6 +870,32 @@
 				"parameters": []
 			}
 		},
+		"/tests/shunt/activate": {
+			"post": {
+				"operationId": "SetActivateShunt",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				},
+				"description": "jwt scopes: `installer`",
+				"tags": [
+					"installer"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/whitelist/cards": {
 			"get": {
 				"operationId": "GetCards",

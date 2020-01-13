@@ -429,6 +429,30 @@ Reboots CP
 | --- | --- |
 | jwtAuth | |
 
+### /tests/shunt/activate
+
+#### POST
+##### Description:
+
+jwt scopes: `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | boolean |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
 ### /whitelist/cards
 
 #### GET

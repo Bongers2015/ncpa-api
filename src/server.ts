@@ -14,6 +14,7 @@ import swaggerDocument from './swagger/swagger.json';
 import './controllers/auth-controller';
 import './controllers/authentication-mode-controller';
 import './controllers/config-controller';
+import './controllers/test-controller';
 import './controllers/cards-controller';
 import './controllers/card-controller';
 import './controllers/device-info-controller';
@@ -95,6 +96,7 @@ export const server = (): Promise<https.Server | http.Server> => {
         );
 
     server.listen(3000, () => {
+      /* eslint-disable-next-line */
       console.log(
         `✓ Started API server at ${
           isProduction ? 'http' : 'https'
