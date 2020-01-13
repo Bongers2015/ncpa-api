@@ -60,6 +60,7 @@ export class AdminController extends Controller {
     @Body() cardRegistrationResponse: CardRegistration
   ): void {
     cpService.setCardRegistrationResponse(cardRegistrationResponse);
+    /* eslint-disable-next-line */
     console.log('cardRegistrationResponse', cardRegistrationResponse);
   }
 

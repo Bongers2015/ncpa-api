@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Route,
-  Security,
-  Tags,
-  Query,
-  Body
-} from 'tsoa';
+import { Controller, Get, Post, Route, Security, Tags, Query } from 'tsoa';
 
 import { GridCurrents, SocketLockMode, LoadShedding, Peak } from '../types';
 import cpService from '../services/cp';
@@ -117,5 +108,8 @@ Reboots CP
   */
   @Tags('installer')
   @Post('reboot')
-  public reboot(): void {}
+  public reboot(): void {
+    /* eslint-disable-next-line */
+    console.log('reboot!')
+  }
 }

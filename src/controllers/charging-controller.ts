@@ -7,6 +7,7 @@ export class ChargingController extends Controller {
   @Security('jwtAuth')
   @Tags('operator')
   public startCharging(@Query() tag: string): void {
+    /* eslint-disable-next-line */
     console.log('startCharging tag', tag);
   }
 
@@ -15,6 +16,7 @@ export class ChargingController extends Controller {
   @Security('jwtAuth')
   @Tags('operator')
   public stopCharging(@Query() tag: string): void {
+    /* eslint-disable-next-line */
     console.log('stopCharging tag', tag);
   }
 
@@ -22,5 +24,8 @@ export class ChargingController extends Controller {
   @Post('/unlock')
   @Security('jwtAuth')
   @Tags('operator')
-  public unlock(): void {}
+  public unlock(): void {
+    /* eslint-disable-next-line */
+    console.log('unlock!')
+  }
 }

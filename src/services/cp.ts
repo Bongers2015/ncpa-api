@@ -217,6 +217,7 @@ export default {
   getCardById: (cardId: CardId): Card | undefined => {
     return findCardById(cardId);
   },
+  // eslint-disable-next-line consistent-return
   deleteCardById: (cardId: CardId): Card | undefined | never => {
     if (cardId && cardId === baseRfidCard.token) {
       throw new Error(
@@ -243,6 +244,7 @@ export default {
   updateCardById: (
     cardId: CardId,
     cardData: Partial<Omit<Card, 'id'>>
+    // eslint-disable-next-line consistent-return
   ): Card | undefined | never => {
     if (cardId && cardId === baseRfidCard.token) {
       throw new Error(
@@ -265,6 +267,7 @@ export default {
       return foundCard;
     }
   },
+  // eslint-disable-next-line consistent-return
   updateCard: (givenCard: Card): Card | undefined | never => {
     if (givenCard && givenCard.token === baseRfidCard.token) {
       throw new Error(

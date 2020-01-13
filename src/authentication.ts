@@ -10,7 +10,7 @@ export function expressAuthentication(
   request: express.Request,
   securityName: string,
   scopes?: string[]
-): Promise<any> {
+): Promise<{ id: number; name: string }> {
   if (securityName === 'api_key') {
     let token;
     if (request.query && request.query.access_token) {
@@ -49,8 +49,8 @@ export function expressAuthentication(
           );
 
           jwt.verify(strippedToken, serverCert, function secrets(
-            err: any,
-            decoded: any
+            err: jwt.VerifyErrors,
+            decoded: { scopes: string[] }
           ) {
             if (err) {
               reject(err);
