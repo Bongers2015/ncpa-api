@@ -288,7 +288,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                loadShedding: { "in": "query", "name": "loadShedding", "required": true, "dataType": "enum", "enums": ["NO", "P1", "XEMEX_BLACK"] },
+                loadShedding: { "in": "query", "name": "loadShedding", "required": true, "dataType": "enum", "enums": ["NO", "P1", "XEMEX_BLACK", "XEMEX_9600"] },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

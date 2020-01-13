@@ -143,7 +143,7 @@ export interface UpgradeResponse {
 }
 
 export type AuthorizationScope = 'operator' | 'installer';
-export type LoadShedding = 'NO' | 'P1' | 'XEMEX_BLACK';
+export type LoadShedding = 'NO' | 'P1' | 'XEMEX_BLACK' | 'XEMEX_9600';
 export type LoadSheddingStatus = 'CONNECTED' | 'NOT_CONNECTED';
 export type Peak = 'ON_PEAK' | 'OFF_PEAK' | 'TRANSACTION_PEAK';
 export type DeviceInfo = {

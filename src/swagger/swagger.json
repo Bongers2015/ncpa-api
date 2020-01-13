@@ -539,7 +539,8 @@
 							"enum": [
 								"NO",
 								"P1",
-								"XEMEX_BLACK"
+								"XEMEX_BLACK",
+								"XEMEX_9600"
 							]
 						}
 					}
@@ -562,7 +563,8 @@
 						"enum": [
 							"NO",
 							"P1",
-							"XEMEX_BLACK"
+							"XEMEX_BLACK",
+							"XEMEX_9600"
 						]
 					}
 				]
