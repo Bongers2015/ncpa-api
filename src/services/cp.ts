@@ -15,7 +15,8 @@ import {
   LoadShedding,
   DeviceInfo,
   LoadSheddingStatus,
-  InstallationUsage
+  InstallationUsage,
+  GridCurrents
 } from '../types';
 
 const MAX_NUMBER_OF_CARDS = 3;
@@ -155,8 +156,6 @@ const setGridMaxCurrent = (newGridMaxCurrent: number): number => {
 };
 const serial = '123123123123';
 const getSerial = (): string => serial;
-const peak: Peak = 'ON_PEAK';
-const getOnOffPeak = (): Peak => peak;
 
 let loadShedding: LoadShedding = 'NO';
 const getLoadShedding = (): LoadShedding => loadShedding;
@@ -185,16 +184,28 @@ const getDeviceInfo = (): DeviceInfo => {
 const loadSheddingStatus: LoadSheddingStatus = 'CONNECTED';
 const getLoadSheddingStatus = (): LoadSheddingStatus => loadSheddingStatus;
 
+let onOffPeak: Peak = 'ON_PEAK';
+const getOnOffPeak = (): Peak => onOffPeak;
+const setOnOffPeak = (newOnOffPeak: Peak): Peak => {
+  onOffPeak = newOnOffPeak;
+  return onOffPeak;
+};
+let gridCurrents: GridCurrents = [3, 2, 1];
+const getGridCurrents = (): GridCurrents => gridCurrents;
+const setGridCurrents = (newGridCurrents: GridCurrents): GridCurrents => {
+  gridCurrents = newGridCurrents;
+  return gridCurrents;
+};
 const getInstallationUsage = (): InstallationUsage => [1, 2, 3];
 
 let shuntActive = false;
 
-const activateShunt = ():  boolean => {
+const activateShunt = (): boolean => {
   shuntActive = true;
   return shuntActive;
 };
 
-const deactivateShunt = ():  boolean => {
+const deactivateShunt = (): boolean => {
   shuntActive = false;
   return shuntActive;
 };
@@ -320,6 +331,7 @@ export default {
   getGridMaxCurrent,
   getSerial,
   getOnOffPeak,
+  setOnOffPeak,
   getLoadShedding,
   setLoadShedding,
   getChargeStationMaxCurrent,
@@ -328,5 +340,7 @@ export default {
   getLoadSheddingStatus,
   getInstallationUsage,
   activateShunt,
-  deactivateShunt
+  deactivateShunt,
+  getGridCurrents,
+  setGridCurrents
 };

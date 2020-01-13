@@ -89,8 +89,11 @@ export interface Status {
 }
 
 export interface InstallerStatus {
-  onOffPeak: Peak;
+  socketLockMode: SocketLockMode;
+  gridMaxCurrent: number;
   loadSheddingModule: LoadSheddingStatus;
+  chargeStationMaxCurrent: number;
+  onOffPeak: Peak;
   installationUsage: InstallationUsage;
 }
 
@@ -152,3 +155,5 @@ export type DeviceInfo = {
   serial: string;
 };
 export type InstallationUsage = [number, number, number];
+
+export type GridCurrents = number[];

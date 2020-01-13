@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
-    jest: true
+    jest: true 
   },
   extends: ['eslint-config-airbnb-base', 'plugin:@typescript-eslint/recommended',  // Uses the recommended rules from the @typescript-eslint/eslint-plugin
     'prettier/@typescript-eslint',  // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
@@ -14,12 +14,18 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: ['./tsconfig.json'],
     ecmaVersion: 2018,
     sourceType: 'module'
   },
   plugins: ['@typescript-eslint','prettier'],
- 
+  settings: {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
   rules: {
     'no-unused-vars': ["error", { "varsIgnorePattern": "Service" }],
     'class-methods-use-this': 0,

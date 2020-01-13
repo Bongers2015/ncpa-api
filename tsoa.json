@@ -19,6 +19,23 @@
 		"specMerging": "recursive",
 		"spec": {
 			"paths": {
+				"/config/grid-currents": {
+					"post": {
+						"parameters": [
+							{
+								"in": "query",
+								"name": "gridCurrents",
+								"required": true,
+								"type": "array",
+								"items": {
+									"type": "number"
+								},
+								"minItems": 1,
+								"maxItems": 3
+							}
+						]
+					}
+				},
 				"/upgrade": {
 					"post": {
 						"consumes": [ "multipart/form-data" ],

@@ -5,7 +5,7 @@ import multer from 'multer';
 import { Upgrade } from '../types';
 
 @Route('upgrade')
-@Tags('installer')
+@Tags('operator')
 @Security('jwtAuth')
 export class UpgradeController extends Controller {
   /** jwt scopes: `operator` */

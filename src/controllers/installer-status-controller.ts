@@ -12,8 +12,11 @@ export class InstallerStatusController extends Controller {
   @Get()
   public getInstallerStatus(): InstallerStatus {
     return {
-      onOffPeak: cpService.getOnOffPeak(),
+      socketLockMode: cpService.getSocketLockMode(),
+      gridMaxCurrent: cpService.getGridMaxCurrent(),
       loadSheddingModule: cpService.getLoadSheddingStatus(),
+      chargeStationMaxCurrent: cpService.getChargeStationMaxCurrent(),
+      onOffPeak: cpService.getOnOffPeak(),
       installationUsage: cpService.getInstallationUsage()
     };
   }

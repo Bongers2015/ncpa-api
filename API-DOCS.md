@@ -124,7 +124,7 @@ jwt scopes: `operator`, `installer`
 #### GET
 ##### Description:
 
-jwt scopes: `operator`
+jwt scopes: `installer`
 
 ##### Parameters
 
@@ -146,7 +146,7 @@ jwt scopes: `operator`
 #### POST
 ##### Description:
 
-jwt scopes: `operator`
+jwt scopes: `installer`
 
 ##### Parameters
 
@@ -167,6 +167,28 @@ jwt scopes: `operator`
 | jwtAuth | |
 
 ### /config/grid-max-current
+
+#### GET
+##### Description:
+
+jwt scopes: `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | double |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
 
 #### POST
 ##### Description:
@@ -193,6 +215,28 @@ jwt scopes: `installer`
 
 ### /config/load-shedding
 
+#### GET
+##### Description:
+
+jwt scopes: `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | string |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
 #### POST
 ##### Description:
 
@@ -218,6 +262,28 @@ jwt scopes: `installer`
 
 ### /config/charge-station-max-current
 
+#### GET
+##### Description:
+
+jwt scopes: `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | double |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
 #### POST
 ##### Description:
 
@@ -234,6 +300,128 @@ jwt scopes: `installer`
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | Ok | double |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
+### /config/on-off-peak
+
+#### GET
+##### Description:
+
+jwt scopes: `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | string |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
+#### POST
+##### Description:
+
+jwt scopes: `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| onOffPeak | query |  | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | string |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
+### /config/grid-currents
+
+#### GET
+##### Description:
+
+jwt scopes: `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | [GridCurrents](#gridcurrents) |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
+#### POST
+##### Description:
+
+jwt scopes: `installer` 
+
+min 1 item, max 3
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| gridCurrents | query |  | Yes | [ number ] |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | [GridCurrents](#gridcurrents) |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
+### /config/reboot
+
+#### POST
+##### Description:
+
+jwt scopes: `installer` 
+
+Reboots CP
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description |
+| ---- | ----------- |
+| 204 | No content |
 
 ##### Security
 
@@ -631,6 +819,11 @@ null
 ### Models
 
 
+#### GridCurrents
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+
 #### Card
 
 | Name | Type | Description | Required |
@@ -671,8 +864,11 @@ null
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| onOffPeak | string |  | Yes |
+| socketLockMode | string |  | Yes |
+| gridMaxCurrent | double |  | Yes |
 | loadSheddingModule | string |  | Yes |
+| chargeStationMaxCurrent | double |  | Yes |
+| onOffPeak | string |  | Yes |
 | installationUsage | [InstallationUsage](#installationusage) |  | Yes |
 
 #### Transaction
