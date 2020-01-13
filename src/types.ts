@@ -95,6 +95,7 @@ export interface InstallerStatus {
   chargeStationMaxCurrent: number;
   onOffPeak: Peak;
   installationUsage: InstallationUsage;
+  gridCurrents: GridCurrents;
 }
 
 export interface ChargePointStatusUpdate {

@@ -17,7 +17,8 @@ export class InstallerStatusController extends Controller {
       loadSheddingModule: cpService.getLoadSheddingStatus(),
       chargeStationMaxCurrent: cpService.getChargeStationMaxCurrent(),
       onOffPeak: cpService.getOnOffPeak(),
-      installationUsage: cpService.getInstallationUsage()
+      installationUsage: cpService.getInstallationUsage(),
+      gridCurrents: cpService.getGridCurrents()
     };
   }
 }

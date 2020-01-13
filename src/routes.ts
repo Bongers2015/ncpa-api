@@ -94,6 +94,7 @@ const models: TsoaRoute.Models = {
             "chargeStationMaxCurrent": { "dataType": "double", "required": true },
             "onOffPeak": { "dataType": "enum", "enums": ["ON_PEAK", "OFF_PEAK", "TRANSACTION_PEAK"], "required": true },
             "installationUsage": { "ref": "InstallationUsage", "required": true },
+            "gridCurrents": { "ref": "GridCurrents", "required": true },
         },
         "additionalProperties": false,
     },

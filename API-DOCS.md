@@ -870,6 +870,7 @@ null
 | chargeStationMaxCurrent | double |  | Yes |
 | onOffPeak | string |  | Yes |
 | installationUsage | [InstallationUsage](#installationusage) |  | Yes |
+| gridCurrents | [GridCurrents](#gridcurrents) |  | Yes |
 
 #### Transaction
 
