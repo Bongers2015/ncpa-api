@@ -10,7 +10,7 @@ export function expressAuthentication(
   request: express.Request,
   securityName: string,
   scopes?: string[]
-): Promise<{ id?: number; name?: string; scopes?: string[] }> {
+): Promise<{ id?: number; name?: string } | { scopes: string[] }> {
   if (securityName === 'api_key') {
     let token;
     if (request.query && request.query.access_token) {
