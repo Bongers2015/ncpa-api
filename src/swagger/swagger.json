@@ -926,7 +926,7 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `installer`",
+				"description": "jwt scopes: `operator`",
 				"tags": [
 					"installer"
 				],

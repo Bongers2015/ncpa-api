@@ -8,7 +8,7 @@ import { Upgrade } from '../types';
 @Tags('installer')
 @Security('jwtAuth')
 export class UpgradeController extends Controller {
-  /** jwt scopes: `installer` */
+  /** jwt scopes: `operator` */
   @Post()
   public async upgrade(@Request() request: Express.Request): Promise<Upgrade> {
     const upgradeResponse = await this.handleFile(request);

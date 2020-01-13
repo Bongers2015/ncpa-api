@@ -512,7 +512,7 @@ jwt scopes: `operator`, `installer`
 #### POST
 ##### Description:
 
-jwt scopes: `installer`
+jwt scopes: `operator`
 
 ##### Parameters
 
