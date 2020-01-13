@@ -158,3 +158,12 @@ export type DeviceInfo = {
 export type InstallationUsage = [number, number, number];
 
 export type GridCurrents = number[];
+
+export interface ChargingScheduleSection {
+  time: number;
+  limit: number;
+}
+export interface ChargingSchedule {
+  recurring: 'weekly';
+  sections: ChargingScheduleSection[];
+}

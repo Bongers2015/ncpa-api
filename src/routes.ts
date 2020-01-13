@@ -25,6 +25,8 @@ import { ChargingController } from './controllers/charging-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TransactionsController } from './controllers/transactions-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ScheduleController } from './controllers/schedule.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UpgradeController } from './controllers/upgrade-controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AdminController } from './controllers/development-controller';
@@ -113,6 +115,24 @@ const models: TsoaRoute.Models = {
             "startWattHour": { "dataType": "long", "required": true, "validators": { "isLong": { "errorMsg": "longValue" } } },
             "stopWattHour": { "dataType": "long", "validators": { "isLong": { "errorMsg": "longValue" } } },
             "consumedWattHours": { "dataType": "long", "required": true, "validators": { "isLong": { "errorMsg": "longValue" } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ChargingScheduleSection": {
+        "dataType": "refObject",
+        "properties": {
+            "time": { "dataType": "double", "required": true },
+            "limit": { "dataType": "double", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ChargingSchedule": {
+        "dataType": "refObject",
+        "properties": {
+            "recurring": { "dataType": "enum", "enums": ["weekly"], "required": true },
+            "sections": { "dataType": "array", "array": { "ref": "ChargingScheduleSection" }, "required": true },
         },
         "additionalProperties": false,
     },
@@ -786,6 +806,51 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getTransactions.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/tnm/v1/schedules/chargepoint',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new ScheduleController();
+
+
+            const promise = controller.getSchedule.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/tnm/v1/schedules/chargepoint',
+        authenticateMiddleware([{ "jwtAuth": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                chargingSchedule: { "in": "body", "name": "chargingSchedule", "required": true, "ref": "ChargingSchedule" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new ScheduleController();
+
+
+            const promise = controller.setSchedule.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

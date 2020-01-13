@@ -232,6 +232,46 @@
 			"type": "object",
 			"additionalProperties": false
 		},
+		"ChargingScheduleSection": {
+			"properties": {
+				"time": {
+					"type": "number",
+					"format": "double"
+				},
+				"limit": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"time",
+				"limit"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
+		"ChargingSchedule": {
+			"properties": {
+				"recurring": {
+					"type": "string",
+					"enum": [
+						"weekly"
+					]
+				},
+				"sections": {
+					"items": {
+						"$ref": "#/definitions/ChargingScheduleSection"
+					},
+					"type": "array"
+				}
+			},
+			"required": [
+				"recurring",
+				"sections"
+			],
+			"type": "object",
+			"additionalProperties": false
+		},
 		"Upgrade": {
 			"properties": {
 				"originalname": {
@@ -1203,6 +1243,65 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/schedules/chargepoint": {
+			"get": {
+				"operationId": "GetSchedule",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ChargingSchedule"
+						}
+					}
+				},
+				"description": "jwt scopes: `operator` `",
+				"tags": [
+					"operator"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "SetSchedule",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/ChargingSchedule"
+						}
+					}
+				},
+				"description": "jwt scopes: `operator` `",
+				"tags": [
+					"operator"
+				],
+				"security": [
+					{
+						"jwtAuth": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "chargingSchedule",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ChargingSchedule"
+						}
+					}
+				]
 			}
 		},
 		"/upgrade": {

@@ -22,6 +22,7 @@ import './controllers/status-controller';
 import './controllers/installer-status-controller';
 import './controllers/charging-controller';
 import './controllers/transactions-controller';
+import './controllers/schedule.controller';
 import './controllers/upgrade-controller';
 import './controllers/development-controller';
 

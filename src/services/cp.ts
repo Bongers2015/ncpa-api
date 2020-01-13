@@ -16,7 +16,8 @@ import {
   DeviceInfo,
   LoadSheddingStatus,
   InstallationUsage,
-  GridCurrents
+  GridCurrents,
+  ChargingSchedule
 } from '../types';
 
 const MAX_NUMBER_OF_CARDS = 3;
@@ -196,6 +197,15 @@ const setGridCurrents = (newGridCurrents: GridCurrents): GridCurrents => {
   gridCurrents = newGridCurrents;
   return gridCurrents;
 };
+let chargingSchedule: ChargingSchedule = { recurring: 'weekly', sections: [] };
+
+const getChargingSchedule = (): ChargingSchedule => chargingSchedule;
+const setChargingSchedule = (
+  newChargingSchedule: ChargingSchedule
+): ChargingSchedule => {
+  chargingSchedule = newChargingSchedule;
+  return chargingSchedule;
+};
 const getInstallationUsage = (): InstallationUsage => [1, 2, 3];
 
 let shuntActive = false;
@@ -345,5 +355,7 @@ export default {
   activateShunt,
   deactivateShunt,
   getGridCurrents,
-  setGridCurrents
+  setGridCurrents,
+  getChargingSchedule,
+  setChargingSchedule
 };

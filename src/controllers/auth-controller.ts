@@ -58,7 +58,11 @@ returns an access token and its accompanying public key for signature validation
         if (err) {
           reject(err);
         } else {
-          const { iss, sub: chargePointId, aud } = decoded;
+          const { iss, sub: chargePointId, aud } = decoded as {
+            iss: string;
+            sub: string;
+            aud: string | string[];
+          };
 
           if (
             iss === 'TNM Auth Server' &&

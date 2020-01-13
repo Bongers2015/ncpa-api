@@ -719,6 +719,53 @@ jwt scopes: `operator`, `installer`
 | --- | --- |
 | jwtAuth | |
 
+### /schedules/chargepoint
+
+#### GET
+##### Description:
+
+jwt scopes: `operator` `
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | [ChargingSchedule](#chargingschedule) |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
+#### POST
+##### Description:
+
+jwt scopes: `operator` `
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| chargingSchedule | body |  | Yes | [ChargingSchedule](#chargingschedule) |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | [ChargingSchedule](#chargingschedule) |
+
+##### Security
+
+| Security Schema | Scopes |
+| --- | --- |
+| jwtAuth | |
+
 ### /upgrade
 
 #### POST
@@ -909,6 +956,20 @@ null
 | startWattHour | long |  | Yes |
 | stopWattHour | long |  | No |
 | consumedWattHours | long |  | Yes |
+
+#### ChargingScheduleSection
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| time | double |  | Yes |
+| limit | double |  | Yes |
+
+#### ChargingSchedule
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| recurring | string |  | Yes |
+| sections | [ [ChargingScheduleSection](#chargingschedulesection) ] |  | Yes |
 
 #### Upgrade
 
