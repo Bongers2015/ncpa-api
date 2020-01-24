@@ -6,6 +6,12 @@ import { Controller, Get, Route, Tags, Query } from 'tsoa';
 
 import { QRPayload } from 'src/types';
 
+import {
+  ExpandedAuthorizationScope,
+  AuthorizationMode,
+  AuthorizationScope
+} from 'src/shared-types';
+
 import { decrypt2, encrypt } from '../services/qr';
 import { CHARGE_POINT_ID } from '../constants';
 @Route('auth')
@@ -72,15 +78,25 @@ returns an access token and its accompanying public key for signature validation
             if (
               !!iat &&
               !!role &&
-              (role === 'operator' || role === 'installer') &&
+              (role === 'identity_operator' || role === 'identity_installer') &&
               !!chargePointId
             ) {
+              const lookupHell: {
+                [key in ExpandedAuthorizationScope]: AuthorizationScope;
+              } = {
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                identity_installer: 'installer',
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                identity_operator: 'operator'
+              };
+
+              const implodedRole = lookupHell[role];
               // select scope
               const privateKey = fs.readFileSync(
                 path.resolve(process.cwd(), './certs/server.key')
               );
               const payload = {
-                role,
+                role: implodedRole,
                 sub: clientId
               };
               const appToken = jwt.sign(payload, privateKey, {

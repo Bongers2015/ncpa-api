@@ -19,7 +19,12 @@ import jwt from 'jsonwebtoken';
 
 import { QR_SECRET, QR_SHARED_SECRET } from '../constants';
 
-import { QRPayload, AuthorizationScope, IDTokenPayload } from '../types';
+import {
+  QRPayload,
+  AuthorizationScope,
+  IDTokenPayload,
+  ExpandedAuthorizationScope
+} from '../types';
 
 export const encrypt = (message: string): string => {
   return CryptoJS.AES.encrypt(message, QR_SECRET).toString();
@@ -95,8 +100,14 @@ export const createIdToken = async ({
     path.resolve(process.cwd(), './certs/server.key')
   );
 
+  const lookup: { [key in AuthorizationScope]: ExpandedAuthorizationScope } = {
+    operator: 'identity_operator',
+    installer: 'identity_installer'
+  };
+  const expandedRoleName = lookup[scope];
+
   const idTokenPayload: IDTokenPayload = {
-    role: scope
+    role: expandedRoleName
   };
 
   const idToken = jwt.sign(idTokenPayload, privateKey, {

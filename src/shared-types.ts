@@ -4,6 +4,9 @@ export type CardOwner = string;
 export type AuthorizationMode = 'PLUGNCHARGE' | 'WHITELIST';
 
 export type AuthorizationScope = 'operator' | 'installer';
+export type ExpandedAuthorizationScope =
+  | 'identity_operator'
+  | 'identity_installer';
 export type LoadSheddingStatus = 'CONNECTED' | 'NOT_CONNECTED';
 
 export type LoadShedding = 'NO' | 'P1' | 'XEMEX_BLACK' | 'XEMEX_9600';
@@ -43,7 +46,7 @@ export interface ChargingSchedule {
 
 // eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IDTokenPayload {
-  role: AuthorizationScope;
+  role: ExpandedAuthorizationScope;
 }
 export interface QRPayload {
   SSID: string;
