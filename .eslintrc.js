@@ -18,12 +18,13 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module'
   },
-  plugins: ['@typescript-eslint','prettier'],
+  plugins: ['@typescript-eslint','prettier', 'import'],
   settings: {
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
+      },
+      "typescript": {}
     }
   },
   rules: {

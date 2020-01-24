@@ -9,7 +9,8 @@ export class ConfigController extends Controller {
   /** jwt scopes: `installer` */
   @Tags('installer')
   @Get('socket-lock-mode')
-  public getSocketLockMode(): SocketLockMode {
+  public getSocketLockMode(@Query() clientId: string): SocketLockMode {
+    cpService.checkClientId(clientId);
     return cpService.getSocketLockMode();
   }
 
@@ -17,43 +18,56 @@ export class ConfigController extends Controller {
   @Tags('installer')
   @Post('socket-lock-mode')
   public setSocketLockMode(
-    @Query() socketLockMode: SocketLockMode
+    @Query() socketLockMode: SocketLockMode,
+    @Query() clientId: string
   ): SocketLockMode {
+    cpService.checkClientId(clientId);
     return cpService.setSocketLockMode(socketLockMode);
   }
 
   /** jwt scopes: `installer` */
   @Tags('installer')
   @Get('grid-max-current')
-  public getGridMaxCurrent(): number {
+  public getGridMaxCurrent(@Query() clientId: string): number {
+    cpService.checkClientId(clientId);
     return cpService.getGridMaxCurrent();
   }
 
   /** jwt scopes: `installer` */
   @Tags('installer')
   @Post('grid-max-current')
-  public setGridMaxCurrent(@Query() maxCurrent: number): number {
+  public setGridMaxCurrent(
+    @Query() maxCurrent: number,
+    @Query() clientId: string
+  ): number {
+    cpService.checkClientId(clientId);
     return cpService.setGridMaxCurrent(maxCurrent);
   }
 
   /** jwt scopes: `installer` */
   @Tags('installer')
   @Get('load-shedding')
-  public getLoadShedding(): LoadShedding {
+  public getLoadShedding(@Query() clientId: string): LoadShedding {
+    cpService.checkClientId(clientId);
     return cpService.getLoadShedding();
   }
 
   /** jwt scopes: `installer` */
   @Tags('installer')
   @Post('load-shedding')
-  public setLoadShedding(@Query() loadShedding: LoadShedding): LoadShedding {
+  public setLoadShedding(
+    @Query() loadShedding: LoadShedding,
+    @Query() clientId: string
+  ): LoadShedding {
+    cpService.checkClientId(clientId);
     return cpService.setLoadShedding(loadShedding);
   }
 
   /** jwt scopes: `installer` */
   @Tags('installer')
   @Get('charge-station-max-current')
-  public getChargeStationMaxCurrent(): number {
+  public getChargeStationMaxCurrent(@Query() clientId: string): number {
+    cpService.checkClientId(clientId);
     return cpService.getChargeStationMaxCurrent();
   }
 
@@ -61,22 +75,29 @@ export class ConfigController extends Controller {
   @Tags('installer')
   @Post('charge-station-max-current')
   public setChargeStationMaxCurrent(
-    @Query() chargeStationMaxCurrent: number
+    @Query() chargeStationMaxCurrent: number,
+    @Query() clientId: string
   ): number {
+    cpService.checkClientId(clientId);
     return cpService.setChargeStationMaxCurrent(chargeStationMaxCurrent);
   }
 
   /** jwt scopes: `installer` */
   @Tags('installer')
   @Get('on-off-peak')
-  public getOnOffPeak(): Peak {
+  public getOnOffPeak(@Query() clientId: string): Peak {
+    cpService.checkClientId(clientId);
     return cpService.getOnOffPeak();
   }
 
   /** jwt scopes: `installer` */
   @Tags('installer')
   @Post('on-off-peak')
-  public setOnOffPeak(@Query() onOffPeak: Peak): Peak {
+  public setOnOffPeak(
+    @Query() onOffPeak: Peak,
+    @Query() clientId: string
+  ): Peak {
+    cpService.checkClientId(clientId);
     return cpService.setOnOffPeak(onOffPeak);
   }
 
@@ -85,7 +106,8 @@ export class ConfigController extends Controller {
   */
   @Tags('installer')
   @Get('grid-currents')
-  public getGridCurrents(): GridCurrents {
+  public getGridCurrents(@Query() clientId: string): GridCurrents {
+    cpService.checkClientId(clientId);
     return cpService.getGridCurrents();
   }
 
@@ -97,8 +119,10 @@ export class ConfigController extends Controller {
   @Post('grid-currents')
   public setGridCurrents(
     @Query()
-    gridCurrents: string
+    gridCurrents: string,
+    @Query() clientId: string
   ): GridCurrents {
+    cpService.checkClientId(clientId);
     return cpService.setGridCurrents(gridCurrents.split(',').map(Number));
   }
 
@@ -108,7 +132,8 @@ Reboots CP
   */
   @Tags('installer')
   @Post('reboot')
-  public reboot(): void {
+  public reboot(@Query() clientId: string): void {
+    cpService.checkClientId(clientId);
     /* eslint-disable-next-line */
     console.log('reboot!')
   }

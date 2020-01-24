@@ -164,6 +164,6 @@ export interface ChargingScheduleSection {
   limit: number;
 }
 export interface ChargingSchedule {
-  recurring: 'weekly';
+  recurring: 'weekly' | 'daily' | 'none';
   sections: ChargingScheduleSection[];
 }

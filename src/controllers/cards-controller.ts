@@ -1,4 +1,4 @@
-import { Controller, Security, Delete, Route, Tags, Get } from 'tsoa';
+import { Controller, Security, Delete, Route, Tags, Get, Query } from 'tsoa';
 
 import cpService from '../services/cp';
 import { Card } from '../types';
@@ -9,7 +9,8 @@ export class CardsController extends Controller {
   @Get()
   @Security('jwtAuth')
   @Tags('operator')
-  public async getCards(): Promise<Card[]> {
+  public async getCards(@Query() clientId: string): Promise<Card[]> {
+    cpService.checkClientId(clientId);
     return new Promise(resolve => {
       resolve(cpService.getCards());
     });
@@ -19,7 +20,11 @@ export class CardsController extends Controller {
   @Get('{token}')
   @Security('jwtAuth')
   @Tags('operator')
-  public async getCard(token: string): Promise<Card> {
+  public async getCard(
+    token: string,
+    @Query() clientId: string
+  ): Promise<Card> {
+    cpService.checkClientId(clientId);
     return new Promise(resolve => {
       resolve(cpService.getCardById(token));
     });
@@ -29,7 +34,11 @@ export class CardsController extends Controller {
   @Delete('{token}')
   @Security('jwtAuth')
   @Tags('operator')
-  public async deleteCard(token: string): Promise<Card> {
+  public async deleteCard(
+    token: string,
+    @Query() clientId: string
+  ): Promise<Card> {
+    cpService.checkClientId(clientId);
     return new Promise(resolve => {
       try {
         const card = cpService.deleteCardById(token);

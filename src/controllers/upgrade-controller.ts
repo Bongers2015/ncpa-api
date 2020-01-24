@@ -1,6 +1,8 @@
-import { Controller, Post, Request, Route, Security, Tags } from 'tsoa';
+import { Controller, Post, Request, Route, Security, Tags, Query } from 'tsoa';
 import Express from 'express';
 import multer from 'multer';
+
+import cpService from '../services/cp';
 
 import { Upgrade } from '../types';
 
@@ -10,7 +12,11 @@ import { Upgrade } from '../types';
 export class UpgradeController extends Controller {
   /** jwt scopes: `operator` */
   @Post()
-  public async upgrade(@Request() request: Express.Request): Promise<Upgrade> {
+  public async upgrade(
+    @Request() request: Express.Request,
+    @Query() clientId: string
+  ): Promise<Upgrade> {
+    cpService.checkClientId(clientId);
     const upgradeResponse = await this.handleFile(request);
     return upgradeResponse;
   }

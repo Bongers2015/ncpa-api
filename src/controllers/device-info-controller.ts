@@ -1,4 +1,4 @@
-import { Controller, Security, Route, Tags, Get } from 'tsoa';
+import { Controller, Security, Route, Tags, Get, Query } from 'tsoa';
 
 import { DeviceInfo } from '../types';
 
@@ -10,7 +10,8 @@ import cpService from '../services/cp';
 export class DeviceInfoController extends Controller {
   /** jwt scopes: `operator` */
   @Get()
-  public getDeviceInfo(): DeviceInfo {
+  public getDeviceInfo(@Query() clientId: string): DeviceInfo {
+    cpService.checkClientId(clientId);
     return cpService.getDeviceInfo();
   }
 }

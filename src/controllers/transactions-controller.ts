@@ -1,4 +1,4 @@
-import { Controller, Security, Route, Tags, Get } from 'tsoa';
+import { Controller, Security, Route, Tags, Get, Query } from 'tsoa';
 
 import cpService from '../services/cp';
 import { Transaction } from '../types';
@@ -11,7 +11,10 @@ export class TransactionsController extends Controller {
   @Get()
   @Security('jwtAuth')
   @Tags('operator')
-  public async getTransactions(): Promise<Transaction[]> {
+  public async getTransactions(
+    @Query() clientId: string
+  ): Promise<Transaction[]> {
+    cpService.checkClientId(clientId);
     return new Promise(resolve => {
       resolve(cpService.getTransactions());
     });

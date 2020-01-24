@@ -219,6 +219,11 @@ const deactivateShunt = (): boolean => {
   shuntActive = false;
   return shuntActive;
 };
+
+const checkClientId = (clientId: string): boolean => {
+  // eslint-disable-next-line no-self-compare
+  return clientId === clientId;
+};
 export default {
   getCards: (): Card[] => {
     return cards.map(card => ({ ...card }));
@@ -357,5 +362,6 @@ export default {
   getGridCurrents,
   setGridCurrents,
   getChargingSchedule,
-  setChargingSchedule
+  setChargingSchedule,
+  checkClientId
 };

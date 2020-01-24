@@ -1,4 +1,13 @@
-import { Controller, Security, Route, Tags, Post, Get, Body } from 'tsoa';
+import {
+  Controller,
+  Security,
+  Route,
+  Tags,
+  Post,
+  Get,
+  Body,
+  Query
+} from 'tsoa';
 
 import cpService from '../services/cp';
 import { ChargingSchedule } from '../types';
@@ -9,7 +18,11 @@ export class ScheduleController extends Controller {
   @Get('/chargepoint')
   @Security('jwtAuth')
   @Tags('operator')
-  public async getSchedule(): Promise<ChargingSchedule> {
+  public async getSchedule(
+    @Query() clientId: string
+  ): Promise<ChargingSchedule> {
+    cpService.checkClientId(clientId);
+
     return new Promise(resolve => {
       resolve(cpService.getChargingSchedule());
     });
@@ -20,8 +33,11 @@ export class ScheduleController extends Controller {
   @Security('jwtAuth')
   @Tags('operator')
   public async setSchedule(
-    @Body() chargingSchedule: ChargingSchedule
+    @Body() chargingSchedule: ChargingSchedule,
+    @Query() clientId: string
   ): Promise<ChargingSchedule> {
+    cpService.checkClientId(clientId);
+
     return new Promise(resolve => {
       resolve(cpService.setChargingSchedule(chargingSchedule));
     });

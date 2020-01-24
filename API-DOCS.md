@@ -83,6 +83,7 @@ jwt scopes: `operator`, `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -106,6 +107,7 @@ jwt scopes: `operator`, `installer`
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | authenticationMode | query |  | Yes | string |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -130,6 +132,7 @@ jwt scopes: `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -153,6 +156,7 @@ jwt scopes: `installer`
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | socketLockMode | query |  | Yes | string |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -177,6 +181,7 @@ jwt scopes: `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -200,6 +205,7 @@ jwt scopes: `installer`
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | maxCurrent | query |  | Yes | double |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -224,6 +230,7 @@ jwt scopes: `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -247,6 +254,7 @@ jwt scopes: `installer`
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | loadShedding | query |  | Yes | string |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -271,6 +279,7 @@ jwt scopes: `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -294,6 +303,7 @@ jwt scopes: `installer`
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | chargeStationMaxCurrent | query |  | Yes | double |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -318,6 +328,7 @@ jwt scopes: `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -341,6 +352,7 @@ jwt scopes: `installer`
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | onOffPeak | query |  | Yes | string |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -365,6 +377,7 @@ jwt scopes: `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -390,6 +403,7 @@ min 1 item, max 3
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | gridCurrents | query |  | Yes | [ number ] |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -416,6 +430,7 @@ Reboots CP
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -440,6 +455,7 @@ jwt scopes: `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -464,6 +480,7 @@ jwt scopes: `operator`, `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -489,6 +506,7 @@ jwt scopes: `operator`, `installer`
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | token | path |  | Yes | string |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -512,6 +530,7 @@ jwt scopes: `operator`, `installer`
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | token | path |  | Yes | string |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -536,6 +555,7 @@ jwt scopes: `operator`, `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -560,6 +580,7 @@ jwt scopes: `operator`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -584,6 +605,7 @@ jwt scopes: `operator`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -608,6 +630,7 @@ jwt scopes: `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -633,6 +656,7 @@ jwt scopes: `operator` `
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | tag | query |  | Yes | string |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -658,6 +682,7 @@ jwt scopes: `operator`
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | tag | query |  | Yes | string |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -682,6 +707,7 @@ jwt scopes: `operator`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -706,6 +732,7 @@ jwt scopes: `operator`, `installer`
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -730,6 +757,7 @@ jwt scopes: `operator` `
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -753,6 +781,7 @@ jwt scopes: `operator` `
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | chargingSchedule | body |  | Yes | [ChargingSchedule](#chargingschedule) |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 
@@ -778,6 +807,7 @@ jwt scopes: `operator`
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
 | data | formData |  | Yes | file |
+| clientId | query |  | Yes | string |
 
 ##### Responses
 

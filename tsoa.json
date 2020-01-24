@@ -32,6 +32,12 @@
 								},
 								"minItems": 1,
 								"maxItems": 3
+							},
+							{
+								"in": "query",
+								"name": "clientId",
+								"required": true,
+								"type": "string"
 							}
 						]
 					}
@@ -45,6 +51,12 @@
 								"name": "data",
 								"required": true,
 								"type": "file"
+							},
+							{
+								"in": "query",
+								"name": "clientId",
+								"required": true,
+								"type": "string"
 							}
 						]
 					}

@@ -110,7 +110,6 @@ export class AdminController extends Controller {
       iss: 'TNM Auth Server',
       sub: `${chargePointId}`,
       aud: scope,
-
       wifi: {
         ssid: 'my-ssid',
         password: 'strong-wifi-password',

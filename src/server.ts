@@ -12,6 +12,7 @@ import swaggerDocument from './swagger/swagger.json';
 
 // import './controllers/keys-controller';
 import './controllers/auth-controller';
+// import './controllers/auth-controller';
 import './controllers/authentication-mode-controller';
 import './controllers/config-controller';
 import './controllers/test-controller';

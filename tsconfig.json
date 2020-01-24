@@ -27,7 +27,8 @@
     "paths": {
       "json/*": [
         "dist/*"
-      ]
+      ],
+      "@controllers/*": ["src/controllers/*"]
       /*
       ,
       "baseline/*": [

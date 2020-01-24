@@ -255,7 +255,9 @@
 				"recurring": {
 					"type": "string",
 					"enum": [
-						"weekly"
+						"weekly",
+						"daily",
+						"none"
 					]
 				},
 				"sections": {
@@ -444,7 +446,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			},
 			"post": {
 				"operationId": "SetAuthenticationMode",
@@ -482,6 +491,12 @@
 							"PLUGNCHARGE",
 							"WHITELIST"
 						]
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
 					}
 				]
 			}
@@ -514,7 +529,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			},
 			"post": {
 				"operationId": "SetSocketLockMode",
@@ -554,6 +576,12 @@
 							"LOCKED",
 							"UNLOCKED"
 						]
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
 					}
 				]
 			}
@@ -582,7 +610,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			},
 			"post": {
 				"operationId": "SetGridMaxCurrent",
@@ -614,6 +649,12 @@
 						"required": true,
 						"format": "double",
 						"type": "number"
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
 					}
 				]
 			}
@@ -647,7 +688,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			},
 			"post": {
 				"operationId": "SetLoadShedding",
@@ -689,6 +737,12 @@
 							"XEMEX_BLACK",
 							"XEMEX_9600"
 						]
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
 					}
 				]
 			}
@@ -717,7 +771,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			},
 			"post": {
 				"operationId": "SetChargeStationMaxCurrent",
@@ -749,6 +810,12 @@
 						"required": true,
 						"format": "double",
 						"type": "number"
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
 					}
 				]
 			}
@@ -781,7 +848,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			},
 			"post": {
 				"operationId": "SetOnOffPeak",
@@ -821,6 +895,12 @@
 							"OFF_PEAK",
 							"TRANSACTION_PEAK"
 						]
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
 					}
 				]
 			}
@@ -848,7 +928,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			},
 			"post": {
 				"operationId": "SetGridCurrents",
@@ -883,6 +970,12 @@
 						},
 						"minItems": 1,
 						"maxItems": 3
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
 					}
 				]
 			}
@@ -907,7 +1000,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		},
 		"/tests/shunt/activate": {
@@ -933,7 +1033,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		},
 		"/whitelist/cards": {
@@ -962,7 +1069,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		},
 		"/whitelist/cards/{token}": {
@@ -992,6 +1106,12 @@
 					{
 						"in": "path",
 						"name": "token",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "clientId",
 						"required": true,
 						"type": "string"
 					}
@@ -1025,6 +1145,12 @@
 						"name": "token",
 						"required": true,
 						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
 					}
 				]
 			}
@@ -1052,7 +1178,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		},
 		"/device-info": {
@@ -1078,7 +1211,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		},
 		"/status": {
@@ -1104,7 +1244,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		},
 		"/installer-status": {
@@ -1130,7 +1277,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		},
 		"/charging/start": {
@@ -1157,6 +1311,12 @@
 					{
 						"in": "query",
 						"name": "tag",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "clientId",
 						"required": true,
 						"type": "string"
 					}
@@ -1189,6 +1349,12 @@
 						"name": "tag",
 						"required": true,
 						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
 					}
 				]
 			}
@@ -1213,7 +1379,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		},
 		"/transactions": {
@@ -1242,7 +1415,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			}
 		},
 		"/schedules/chargepoint": {
@@ -1268,7 +1448,14 @@
 						"jwtAuth": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
 			},
 			"post": {
 				"operationId": "SetSchedule",
@@ -1300,6 +1487,12 @@
 						"schema": {
 							"$ref": "#/definitions/ChargingSchedule"
 						}
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
 					}
 				]
 			}
@@ -1333,6 +1526,12 @@
 						"name": "data",
 						"required": true,
 						"type": "file"
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
 					}
 				],
 				"consumes": [

@@ -131,7 +131,7 @@ const models: TsoaRoute.Models = {
     "ChargingSchedule": {
         "dataType": "refObject",
         "properties": {
-            "recurring": { "dataType": "enum", "enums": ["weekly"], "required": true },
+            "recurring": { "dataType": "enum", "enums": ["weekly", "daily", "none"], "required": true },
             "sections": { "dataType": "array", "array": { "ref": "ChargingScheduleSection" }, "required": true },
         },
         "additionalProperties": false,
@@ -208,6 +208,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -231,6 +232,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 authenticationMode: { "in": "query", "name": "authenticationMode", "required": true, "dataType": "enum", "enums": ["PLUGNCHARGE", "WHITELIST"] },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -253,6 +255,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -276,6 +279,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 socketLockMode: { "in": "query", "name": "socketLockMode", "required": true, "dataType": "enum", "enums": ["TRANSACTION", "LOCKED", "UNLOCKED"] },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -298,6 +302,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -321,6 +326,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 maxCurrent: { "in": "query", "name": "maxCurrent", "required": true, "dataType": "double" },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -343,6 +349,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -366,6 +373,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 loadShedding: { "in": "query", "name": "loadShedding", "required": true, "dataType": "enum", "enums": ["NO", "P1", "XEMEX_BLACK", "XEMEX_9600"] },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -388,6 +396,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -411,6 +420,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 chargeStationMaxCurrent: { "in": "query", "name": "chargeStationMaxCurrent", "required": true, "dataType": "double" },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -433,6 +443,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -456,6 +467,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 onOffPeak: { "in": "query", "name": "onOffPeak", "required": true, "dataType": "enum", "enums": ["ON_PEAK", "OFF_PEAK", "TRANSACTION_PEAK"] },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -478,6 +490,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -501,6 +514,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 gridCurrents: { "in": "query", "name": "gridCurrents", "required": true, "dataType": "string" },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -523,6 +537,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -545,6 +560,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -567,6 +583,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -590,6 +607,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 token: { "in": "path", "name": "token", "required": true, "dataType": "string" },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -613,6 +631,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 token: { "in": "path", "name": "token", "required": true, "dataType": "string" },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -635,6 +654,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -657,6 +677,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -679,6 +700,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -701,6 +723,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -724,6 +747,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 tag: { "in": "query", "name": "tag", "required": true, "dataType": "string" },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -747,6 +771,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 tag: { "in": "query", "name": "tag", "required": true, "dataType": "string" },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -769,6 +794,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -791,6 +817,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -813,6 +840,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwtAuth": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -836,6 +864,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 chargingSchedule: { "in": "body", "name": "chargingSchedule", "required": true, "ref": "ChargingSchedule" },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -859,6 +888,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

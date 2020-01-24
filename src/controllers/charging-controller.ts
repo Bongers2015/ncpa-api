@@ -1,12 +1,15 @@
 import { Controller, Security, Route, Tags, Post, Query } from 'tsoa';
 
+import cpService from '../services/cp';
+
 @Route('charging')
 export class ChargingController extends Controller {
   /** jwt scopes: `operator` ` */
   @Post('/start')
   @Security('jwtAuth')
   @Tags('operator')
-  public startCharging(@Query() tag: string): void {
+  public startCharging(@Query() tag: string, @Query() clientId: string): void {
+    cpService.checkClientId(clientId);
     /* eslint-disable-next-line */
     console.log('startCharging tag', tag);
   }
@@ -15,7 +18,8 @@ export class ChargingController extends Controller {
   @Post('/stop')
   @Security('jwtAuth')
   @Tags('operator')
-  public stopCharging(@Query() tag: string): void {
+  public stopCharging(@Query() tag: string, @Query() clientId: string): void {
+    cpService.checkClientId(clientId);
     /* eslint-disable-next-line */
     console.log('stopCharging tag', tag);
   }
@@ -24,7 +28,8 @@ export class ChargingController extends Controller {
   @Post('/unlock')
   @Security('jwtAuth')
   @Tags('operator')
-  public unlock(): void {
+  public unlock(@Query() clientId: string): void {
+    cpService.checkClientId(clientId);
     /* eslint-disable-next-line */
     console.log('unlock!')
   }

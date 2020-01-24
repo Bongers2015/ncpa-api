@@ -1,4 +1,4 @@
-import { Controller, Security, Route, Tags, Get } from 'tsoa';
+import { Controller, Security, Route, Tags, Get, Query } from 'tsoa';
 
 import { InstallerStatus } from '../types';
 
@@ -10,7 +10,8 @@ import cpService from '../services/cp';
 export class InstallerStatusController extends Controller {
   /** jwt scopes: `installer` */
   @Get()
-  public getInstallerStatus(): InstallerStatus {
+  public getInstallerStatus(@Query() clientId: string): InstallerStatus {
+    cpService.checkClientId(clientId);
     return {
       socketLockMode: cpService.getSocketLockMode(),
       gridMaxCurrent: cpService.getGridMaxCurrent(),

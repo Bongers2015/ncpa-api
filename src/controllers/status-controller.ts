@@ -1,4 +1,4 @@
-import { Controller, Security, Route, Tags, Get } from 'tsoa';
+import { Controller, Security, Route, Tags, Get, Query } from 'tsoa';
 
 import { Status } from '../types';
 
@@ -10,7 +10,9 @@ import cpService from '../services/cp';
 export class StatusController extends Controller {
   /** jwt scopes: `operator` */
   @Get()
-  public getChargePointStatus(): Status {
+  public getChargePointStatus(@Query() clientId: string): Status {
+    cpService.checkClientId(clientId);
+
     const chargePointStatus = cpService.getChargePointStatus();
     return chargePointStatus;
   }
