@@ -5,7 +5,7 @@ import { Status } from '../types';
 import cpService from '../services/cp';
 
 @Route('status')
-@Security('jwtAuth')
+@Security('jwtAuth', ['operator', 'installer'])
 @Tags('operator')
 export class StatusController extends Controller {
   /** jwt scopes: `operator` */

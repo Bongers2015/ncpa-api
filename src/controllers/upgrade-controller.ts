@@ -8,7 +8,7 @@ import { Upgrade } from '../types';
 
 @Route('upgrade')
 @Tags('operator')
-@Security('jwtAuth')
+@Security('jwtAuth', ['operator', 'installer'])
 export class UpgradeController extends Controller {
   /** jwt scopes: `operator` */
   @Post()

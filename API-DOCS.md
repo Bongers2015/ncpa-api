@@ -93,9 +93,9 @@ jwt scopes: `operator`, `installer`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 #### POST
 ##### Description:
@@ -117,9 +117,9 @@ jwt scopes: `operator`, `installer`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /config/socket-lock-mode
 
@@ -144,7 +144,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 #### POST
 ##### Description:
@@ -168,7 +168,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 ### /config/grid-max-current
 
@@ -193,7 +193,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 #### POST
 ##### Description:
@@ -217,7 +217,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 ### /config/load-shedding
 
@@ -242,7 +242,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 #### POST
 ##### Description:
@@ -266,7 +266,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 ### /config/charge-station-max-current
 
@@ -291,7 +291,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 #### POST
 ##### Description:
@@ -315,7 +315,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 ### /config/on-off-peak
 
@@ -340,7 +340,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 #### POST
 ##### Description:
@@ -364,7 +364,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 ### /config/grid-currents
 
@@ -389,7 +389,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 #### POST
 ##### Description:
@@ -415,7 +415,7 @@ min 1 item, max 3
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 ### /config/reboot
 
@@ -442,7 +442,7 @@ Reboots CP
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 ### /tests/shunt/activate
 
@@ -467,7 +467,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 ### /whitelist/cards
 
@@ -490,9 +490,9 @@ jwt scopes: `operator`, `installer`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /whitelist/cards/{token}
 
@@ -516,9 +516,9 @@ jwt scopes: `operator`, `installer`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 #### DELETE
 ##### Description:
@@ -540,9 +540,9 @@ jwt scopes: `operator`, `installer`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /whitelist/card
 
@@ -565,9 +565,9 @@ jwt scopes: `operator`, `installer`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /device-info
 
@@ -590,9 +590,9 @@ jwt scopes: `operator`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /status
 
@@ -615,9 +615,9 @@ jwt scopes: `operator`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /installer-status
 
@@ -642,7 +642,7 @@ jwt scopes: `installer`
 
 | Security Schema | Scopes |
 | --- | --- |
-| jwtAuth | |
+| jwtAuth | installer |
 
 ### /charging/start
 
@@ -666,9 +666,9 @@ jwt scopes: `operator` `
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /charging/stop
 
@@ -692,9 +692,9 @@ jwt scopes: `operator`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /charging/unlock
 
@@ -717,9 +717,9 @@ jwt scopes: `operator`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /transactions
 
@@ -742,9 +742,9 @@ jwt scopes: `operator`, `installer`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /schedules/chargepoint
 
@@ -767,9 +767,9 @@ jwt scopes: `operator` `
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 #### POST
 ##### Description:
@@ -791,9 +791,9 @@ jwt scopes: `operator` `
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /upgrade
 
@@ -817,9 +817,9 @@ jwt scopes: `operator`
 
 ##### Security
 
-| Security Schema | Scopes |
-| --- | --- |
-| jwtAuth | |
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
 
 ### /development/whitelist/cards
 
@@ -926,6 +926,7 @@ null
 | ---- | ---------- | ----------- | -------- | ---- |
 | host | path |  | Yes | string |
 | chargePointId | query | valid chargePointId for this application would be `12345` | Yes | string |
+| clientId | query |  | Yes | string |
 | ssid | query |  | Yes | string |
 | psk | query |  | Yes | string |
 

@@ -5,7 +5,7 @@ import cpService from '../services/cp';
 
 @Route('authentication-mode')
 @Tags('operator')
-@Security('jwtAuth')
+@Security('jwtAuth', ['operator', `installer`])
 export class AuthorizationModeController extends Controller {
   /** jwt scopes: `operator`, `installer` */
   @Get('/')

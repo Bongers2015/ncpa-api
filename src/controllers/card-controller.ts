@@ -7,7 +7,7 @@ import cpService from '../services/cp';
 export class CardController extends Controller {
   /** jwt scopes: `operator`, `installer` */
   @Get()
-  @Security('jwtAuth')
+  @Security('jwtAuth', ['operator', 'installer'])
   @Tags('operator')
   public async registerCard(
     // eslint-disable-next-line no-unused-vars

@@ -3,7 +3,7 @@ import { Controller, Security, Route, Tags, Post, Query } from 'tsoa';
 import cpService from '../services/cp';
 
 @Route('tests')
-@Security('jwtAuth')
+@Security('jwtAuth', ['installer'])
 @Tags('installer')
 export class TestController extends Controller {
   /** jwt scopes: `installer` */

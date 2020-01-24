@@ -95,7 +95,12 @@ export interface GetAuthQrResponse {
     "privCert"
     */
 type GetAuthQrResponse2Roles = {
-  [key in AuthorizationScope]: { identityToken: string; qrData: string };
+  [key in AuthorizationScope]: {
+    identityToken: string;
+    qrData: string;
+    requestUrl: string;
+    encodedEncryptedQRPayload: string;
+  };
 };
 export interface GetAuthQrResponse2 {
   /** {protocol}://{host}:{port}/{path} */

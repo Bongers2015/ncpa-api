@@ -7,7 +7,7 @@ import { Card } from '../types';
 export class CardsController extends Controller {
   /** jwt scopes: `operator`, `installer` */
   @Get()
-  @Security('jwtAuth')
+  @Security('jwtAuth', [`operator`, `installer`])
   @Tags('operator')
   public async getCards(@Query() clientId: string): Promise<Card[]> {
     cpService.checkClientId(clientId);
@@ -18,7 +18,7 @@ export class CardsController extends Controller {
 
   /** jwt scopes: `operator`, `installer` */
   @Get('{token}')
-  @Security('jwtAuth')
+  @Security('jwtAuth', [`operator`, `installer`])
   @Tags('operator')
   public async getCard(
     token: string,
@@ -32,7 +32,7 @@ export class CardsController extends Controller {
 
   /** jwt scopes: `operator`, `installer` */
   @Delete('{token}')
-  @Security('jwtAuth')
+  @Security('jwtAuth', ['operator', 'installer'])
   @Tags('operator')
   public async deleteCard(
     token: string,

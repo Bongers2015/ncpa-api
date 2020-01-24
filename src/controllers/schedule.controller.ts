@@ -16,7 +16,7 @@ import { ChargingSchedule } from '../types';
 export class ScheduleController extends Controller {
   /** jwt scopes: `operator` ` */
   @Get('/chargepoint')
-  @Security('jwtAuth')
+  @Security('jwtAuth', ['operator', 'installer'])
   @Tags('operator')
   public async getSchedule(
     @Query() clientId: string
@@ -30,7 +30,7 @@ export class ScheduleController extends Controller {
 
   /** jwt scopes: `operator` ` */
   @Post('/chargepoint')
-  @Security('jwtAuth')
+  @Security('jwtAuth', ['operator', 'installer'])
   @Tags('operator')
   public async setSchedule(
     @Body() chargingSchedule: ChargingSchedule,

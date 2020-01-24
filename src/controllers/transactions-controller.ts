@@ -9,7 +9,7 @@ export { Card } from '../types';
 export class TransactionsController extends Controller {
   /** jwt scopes: `operator`, `installer` */
   @Get()
-  @Security('jwtAuth')
+  @Security('jwtAuth', ['operator', 'installer'])
   @Tags('operator')
   public async getTransactions(
     @Query() clientId: string

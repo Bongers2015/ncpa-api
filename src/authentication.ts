@@ -4,13 +4,15 @@ import path from 'path';
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 
-const skipAuth = true;
+const skipAuth = false;
 // eslint-disable-next-line consistent-return
 export function expressAuthentication(
   request: express.Request,
   securityName: string,
   scopes?: string[]
-): Promise<{ id?: number; name?: string } | { scopes: string[] }> {
+): Promise<
+  { id?: number; name?: string } | { role: string; iat: number; sub: string }
+> {
   if (securityName === 'api_key') {
     let token;
     if (request.query && request.query.access_token) {
@@ -50,18 +52,16 @@ export function expressAuthentication(
 
           jwt.verify(strippedToken, serverCert, function secrets(
             err: jwt.VerifyErrors,
-            decoded: { scopes: string[] }
+            decoded: { role: string; iat: number; sub: string }
           ) {
+            console.log(decoded, scopes);
             if (err) {
               reject(err);
-            } else {
+            } else if (!scopes.includes(decoded.role)) {
               // Check if JWT contains all required scopes
               // eslint-disable-next-line no-restricted-syntax
-              for (const scope of scopes) {
-                if (!decoded.scopes.includes(scope)) {
-                  reject(new Error('JWT does not contain required scope.'));
-                }
-              }
+              reject(new Error('JWT does not contain required scope.'));
+            } else {
               resolve(decoded);
             }
           });

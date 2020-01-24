@@ -5,7 +5,7 @@ import { InstallerStatus } from '../types';
 import cpService from '../services/cp';
 
 @Route('installer-status')
-@Security('jwtAuth')
+@Security('jwtAuth', ['installer'])
 @Tags('installer')
 export class InstallerStatusController extends Controller {
   /** jwt scopes: `installer` */

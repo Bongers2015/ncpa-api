@@ -6,7 +6,7 @@ import cpService from '../services/cp';
 export class ChargingController extends Controller {
   /** jwt scopes: `operator` ` */
   @Post('/start')
-  @Security('jwtAuth')
+  @Security('jwtAuth', ['operator', 'installer'])
   @Tags('operator')
   public startCharging(@Query() tag: string, @Query() clientId: string): void {
     cpService.checkClientId(clientId);
@@ -16,7 +16,7 @@ export class ChargingController extends Controller {
 
   /** jwt scopes: `operator`  */
   @Post('/stop')
-  @Security('jwtAuth')
+  @Security('jwtAuth', ['operator', 'installer'])
   @Tags('operator')
   public stopCharging(@Query() tag: string, @Query() clientId: string): void {
     cpService.checkClientId(clientId);
@@ -26,7 +26,7 @@ export class ChargingController extends Controller {
 
   /** jwt scopes: `operator`  */
   @Post('/unlock')
-  @Security('jwtAuth')
+  @Security('jwtAuth', ['operator', 'installer'])
   @Tags('operator')
   public unlock(@Query() clientId: string): void {
     cpService.checkClientId(clientId);

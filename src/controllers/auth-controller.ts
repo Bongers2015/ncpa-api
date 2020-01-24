@@ -4,7 +4,9 @@ import path from 'path';
 import jwt from 'jsonwebtoken';
 import { Controller, Get, Route, Tags, Query } from 'tsoa';
 
-import { decrypt, encrypt } from '../services/qr';
+import { QRPayload } from 'src/types';
+
+import { decrypt2, encrypt } from '../services/qr';
 import { CHARGE_POINT_ID } from '../constants';
 @Route('auth')
 @Tags('public')
@@ -48,52 +50,51 @@ returns an access token and its accompanying public key for signature validation
   public async validateAuthToken(
     @Query() token: string,
     @Query() clientId?: string
-  ): Promise<{ accessToken: string; publicKey: string }> {
+  ): Promise<{ accessToken: string }> {
     return new Promise((resolve, reject) => {
       const serverCert = fs.readFileSync(
         path.resolve(process.cwd(), './certs/server.crt')
       );
-      const jwtToken = decrypt(decodeURIComponent(token));
-      jwt.verify(jwtToken, serverCert, (err, decoded) => {
-        if (err) {
-          reject(err);
-        } else {
-          const { iss, sub: chargePointId, aud } = decoded as {
-            iss: string;
-            sub: string;
-            aud: string | string[];
-          };
 
-          if (
-            iss === 'TNM Auth Server' &&
-            aud &&
-            (aud === 'operator' || aud === 'installer') &&
-            chargePointId === CHARGE_POINT_ID
-          ) {
-            // select scope
+      const qrPayload = decrypt2(decodeURIComponent(token)) as unknown;
+      const p = qrPayload as QRPayload;
 
-            const privateKey = fs.readFileSync(
-              path.resolve(process.cwd(), './certs/server.key')
-            );
-            const payload = {
-              scope: aud,
-              iss: chargePointId,
-              sub: chargePointId,
-              aud: clientId
-            };
-            const appToken = jwt.sign(payload, privateKey, {
-              algorithm: 'RS256'
-            });
-
-            resolve({
-              accessToken: encodeURIComponent(encrypt(appToken)),
-              publicKey: serverCert.toString()
-            });
+      const { tok: jwtToken, cp: chargePointId } = p;
+      if (jwtToken) {
+        jwt.verify(jwtToken, serverCert, (err, decoded) => {
+          if (err) {
+            reject(err);
           } else {
-            reject(new Error('no'));
+            const { role, iat } = decoded as {
+              role: string;
+              iat: number;
+            };
+            if (
+              !!iat &&
+              !!role &&
+              (role === 'operator' || role === 'installer') &&
+              !!chargePointId
+            ) {
+              // select scope
+              const privateKey = fs.readFileSync(
+                path.resolve(process.cwd(), './certs/server.key')
+              );
+              const payload = {
+                role,
+                sub: clientId
+              };
+              const appToken = jwt.sign(payload, privateKey, {
+                algorithm: 'RS256'
+              });
+              resolve({
+                accessToken: encodeURIComponent(appToken)
+              });
+            } else {
+              reject(new Error('no'));
+            }
           }
-        }
-      });
+        });
+      }
     });
   }
 }

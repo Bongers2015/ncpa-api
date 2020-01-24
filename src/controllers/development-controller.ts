@@ -148,19 +148,27 @@ export class AdminController extends Controller {
   @Get('qr2/{host}')
   @SuccessResponse('200', 'Returns GetAuthQrResponse2')
   @Example<GetAuthQrResponse2>({
-    host: 'omg',
+    host: 'https://localhost:3000/api/tnm/freeapp/v1',
     ssid: 'chargepoint_15e2b0d3c3',
     psk: 'AB/KEb0b3pu3o+K/NB3vbw',
     roles: {
       operator: {
+        requestUrl:
+          'https://localhost:3000/api/tnm/freeapp/v1/auth?token=U2FsdGVkX19UjqHxvsfJ%2BSvaean7RNS40GIBGdRGsNOT%2BW7lMzLKoz1A%2BPNumYC%2Fr6wXOyXRgz2p1P0CWSwH0p2NOXywE%2FcxRAbqnt0oLUf8KC5PL1%2FlBWjPwUwYNqvFJUTK82bbXO2Vf9VFzaUw12oUT1eTPoPgcuOcFzF8x%2FdptaCB1AtPp5uDd6LAqFRG51QlIwRDtxahDK95Fj%2FdC9ccnX1Rf3WQeleoBqvrbstWSzZpFiQRk%2BzWzbA36RWRtwiKj%2B%2BJlBUcPDrPIgeifkjL6tBKvdFW1KB0dTqicty%2BUC12BI50FeBtbK1e%2FTofzq%2FOT0FGBGnVk3F0w82wtYtgbtW%2F3kJoGqiuIfHH02%2BA2AwR%2BSgYzME12%2FX0DLVX5i58K3nB13TI5jNYoV6TqQvTeiP6irqukMqpyWcCP1FeXTD72SQvtRqEbNwjTfKSAgCoF%2B%2BA0g%2F800mLGjSBOk5jcZLxsn3PyALzHDVkEaQxShj3wLH1uQcBX630caSH%2Fm6WNQd4X8a2cY06QQk65JJ8ky7BtFq9BaLKmxjVRle%2FHBZlc4ipi3gYv2iczhLvzXxkBUNH6R%2F1%2FWIc9GUhOHPWMtmQE7QmHI0KQq%2B%2FeQRTVMjoA4Va6d91b4epGszQViKdyRInT47a8cRHMqJSBC%2FJ2wMOURluRy%2BXSQMPsfwncOPie2swMMWLrfPSEtAKmYs4asTdu%2FusX9v9FryyztmGosnAZzgL7wgUjrGVIOjvX3DN33%2F4KIE4Tl5C3JrdfdLf4ZhlGTo0ElDdP%2BUsCx%2B1eoytP54Nj%2BOHs8ccTR0%3D',
+
         identityToken: 'JWT token signed with the private cert below',
         qrData:
-          'Base64, encrypted data containing WiFi, installerToken, and cp meta data'
+          'Base64, encrypted data containing WiFi, installerToken, and cp meta data',
+        encodedEncryptedQRPayload: 'encodedEncryptedQRPayload'
       },
       installer: {
+        requestUrl:
+          'https://localhost:3000/api/tnm/freeapp/v1/auth?token=U2FsdGVkX19UjqHxvsfJ%2BSvaean7RNS40GIBGdRGsNOT%2BW7lMzLKoz1A%2BPNumYC%2Fr6wXOyXRgz2p1P0CWSwH0p2NOXywE%2FcxRAbqnt0oLUf8KC5PL1%2FlBWjPwUwYNqvFJUTK82bbXO2Vf9VFzaUw12oUT1eTPoPgcuOcFzF8x%2FdptaCB1AtPp5uDd6LAqFRG51QlIwRDtxahDK95Fj%2FdC9ccnX1Rf3WQeleoBqvrbstWSzZpFiQRk%2BzWzbA36RWRtwiKj%2B%2BJlBUcPDrPIgeifkjL6tBKvdFW1KB0dTqicty%2BUC12BI50FeBtbK1e%2FTofzq%2FOT0FGBGnVk3F0w82wtYtgbtW%2F3kJoGqiuIfHH02%2BA2AwR%2BSgYzME12%2FX0DLVX5i58K3nB13TI5jNYoV6TqQvTeiP6irqukMqpyWcCP1FeXTD72SQvtRqEbNwjTfKSAgCoF%2B%2BA0g%2F800mLGjSBOk5jcZLxsn3PyALzHDVkEaQxShj3wLH1uQcBX630caSH%2Fm6WNQd4X8a2cY06QQk65JJ8ky7BtFq9BaLKmxjVRle%2FHBZlc4ipi3gYv2iczhLvzXxkBUNH6R%2F1%2FWIc9GUhOHPWMtmQE7QmHI0KQq%2B%2FeQRTVMjoA4Va6d91b4epGszQViKdyRInT47a8cRHMqJSBC%2FJ2wMOURluRy%2BXSQMPsfwncOPie2swMMWLrfPSEtAKmYs4asTdu%2FusX9v9FryyztmGosnAZzgL7wgUjrGVIOjvX3DN33%2F4KIE4Tl5C3JrdfdLf4ZhlGTo0ElDdP%2BUsCx%2B1eoytP54Nj%2BOHs8ccTR0%3D',
+
         identityToken: 'JWT token signed with the private cert below',
         qrData:
-          'Base64, encrypted data containing WiFi, installerToken, and cp meta data'
+          'Base64, encrypted data containing WiFi, installerToken, and cp meta data',
+        encodedEncryptedQRPayload: 'encodedEncryptedQRPayload'
       }
     },
     pubCert: '2048 public cert valid from 1970 January 01 until 2040 June 01',
@@ -170,6 +178,7 @@ export class AdminController extends Controller {
     host: string,
     /** valid chargePointId for this application would be `12345` */
     @Query() chargePointId: string,
+    @Query() clientId: string,
     @Query() ssid: string,
     @Query() psk: string
   ): Promise<GetAuthQrResponse2> {
@@ -192,12 +201,16 @@ export class AdminController extends Controller {
       psk,
       roles: {
         operator: {
+          requestUrl: `${host}/auth?clientId=${clientId}&token=${operatorStuff.encodedEncryptedQRPayload}`,
           identityToken: operatorStuff.idToken,
-          qrData: operatorStuff.qrData
+          qrData: operatorStuff.qrData,
+          encodedEncryptedQRPayload: operatorStuff.encodedEncryptedQRPayload
         },
         installer: {
+          requestUrl: `${host}/auth?clientId=${clientId}&token=${installerStuff.encodedEncryptedQRPayload}`,
           identityToken: installerStuff.idToken,
-          qrData: installerStuff.qrData
+          qrData: installerStuff.qrData,
+          encodedEncryptedQRPayload: installerStuff.encodedEncryptedQRPayload
         }
       },
       pubCert: 'pubCert',

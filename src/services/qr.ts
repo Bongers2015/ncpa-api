@@ -53,7 +53,7 @@ export const encrypt2 = (
 export const decrypt2 = (
   messageWithNonce: string,
   key: string = QR_SHARED_SECRET
-): JSON => {
+): { [key: string]: unknown } => {
   const keyUint8Array = Buffer.from(key, 'base64');
   const messageWithNonceAsUint8Array = Buffer.from(messageWithNonce, 'base64');
   const nonce = messageWithNonceAsUint8Array.slice(0, BoxLength.Nonce);

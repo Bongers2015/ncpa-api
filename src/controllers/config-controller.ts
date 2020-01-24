@@ -4,7 +4,7 @@ import { GridCurrents, SocketLockMode, LoadShedding, Peak } from '../types';
 import cpService from '../services/cp';
 
 @Route('config')
-@Security('jwtAuth')
+@Security('jwtAuth', ['installer'])
 export class ConfigController extends Controller {
   /** jwt scopes: `installer` */
   @Tags('installer')
