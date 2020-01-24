@@ -171,6 +171,26 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetAuthQrResponse2Roles": {
+        "dataType": "refObject",
+        "properties": {
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetAuthQrResponse2": {
+        "dataType": "refObject",
+        "properties": {
+            "host": { "dataType": "string", "required": true },
+            "ssid": { "dataType": "string", "required": true },
+            "psk": { "dataType": "string", "required": true },
+            "roles": { "ref": "GetAuthQrResponse2Roles", "required": true },
+            "pubCert": { "dataType": "string", "required": true },
+            "privCert": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -956,7 +976,7 @@ export function RegisterRoutes(app: express.Express) {
     app.get('/api/tnm/v1/development/qr/:host',
         function(request: any, response: any, next: any) {
             const args = {
-                host: { "in": "path", "name": "host", "required": true, "dataType": "string" },
+                host: { "default": "http://asdasd", "in": "path", "name": "host", "required": true, "dataType": "string" },
                 chargePointId: { "in": "query", "name": "chargePointId", "required": true, "dataType": "string" },
                 clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
                 scope: { "in": "query", "name": "scope", "required": true, "dataType": "enum", "enums": ["operator", "installer"] },
@@ -975,6 +995,31 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAuthQr.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/tnm/v1/development/qr2/:host',
+        function(request: any, response: any, next: any) {
+            const args = {
+                host: { "in": "path", "name": "host", "required": true, "dataType": "string" },
+                chargePointId: { "in": "query", "name": "chargePointId", "required": true, "dataType": "string" },
+                ssid: { "in": "query", "name": "ssid", "required": true, "dataType": "string" },
+                psk: { "in": "query", "name": "psk", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdminController();
+
+
+            const promise = controller.getAuthQr2.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

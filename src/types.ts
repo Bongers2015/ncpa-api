@@ -1,6 +1,6 @@
-export type CardRegistrationStatus = 'SUCCESS' | 'FAILURE' | 'TIMEOUT';
-export type CardId = string;
-export type CardOwner = string;
+import { AuthorizationScope, CardRegistrationStatus } from './shared-types';
+
+export * from './shared-types';
 
 export interface Card {
   /** RFID  */
@@ -20,7 +20,6 @@ export interface CardRegistrationResponse {
   statusMessage: string;
 }
 
-export type AuthorizationMode = 'PLUGNCHARGE' | 'WHITELIST';
 export interface ChargingTransaction {
   startedAt: string;
   //   stoppedAt: ISODate;
@@ -66,37 +65,6 @@ export interface ChargingTransactionPerCard {
   totalWattHourCharged: CPWattHourCharged;
   cardId: string;
 }
-export type ChargePointStatus = 'OPERATIVE' | 'INOPERATIVE' | 'FAULTED';
-export type TransactionStatus =
-  | 'AVAILABLE'
-  | 'PREPARING'
-  | 'CHARGING'
-  | 'SUSPENDED_EV'
-  | 'SUSPENDED_EVSE'
-  | 'FINISHING'
-  | 'FAULTED';
-export type ConnectorStatus = 'OPERATIVE' | 'INOPERATIVE' | 'FAULTED';
-
-export interface Status {
-  chargePointStatus: ChargePointStatus;
-  transactionStatus: TransactionStatus[];
-  connectorStatus: ConnectorStatus[];
-  authorizationMode: AuthorizationMode;
-  /**
-   * @isLong longValue
-   */
-  numberOfRFIDCardsRegistered: number;
-}
-
-export interface InstallerStatus {
-  socketLockMode: SocketLockMode;
-  gridMaxCurrent: number;
-  loadSheddingModule: LoadSheddingStatus;
-  chargeStationMaxCurrent: number;
-  onOffPeak: Peak;
-  installationUsage: InstallationUsage;
-  gridCurrents: GridCurrents;
-}
 
 export interface ChargePointStatusUpdate {
   plugAndChargeEnabled: boolean;
@@ -117,7 +85,27 @@ export interface GetAuthQrResponse {
   /** url encoded encrypted jwt token */
   encryptedToken: string;
 }
-export type SocketLockMode = 'TRANSACTION' | 'LOCKED' | 'UNLOCKED';
+
+/* "ssid": "chargepoint_15e2b0d3c3",
+    "psk": "AB/KEb0b3pu3o+K/NB3vbw",
+    "qrData": "Base64, encrypted data constaining WiFi, end user Identitytoken, and cp meta data",
+    "installerQrData": "Base64, encrypted data containing WiFi, installerToken, and cp meta data"
+"identityToken": "JWT token signed with the private cert below",
+    "pubCert": "2048 public cert valid from 1970 January 01 until 2040 June 01",
+    "privCert"
+    */
+type GetAuthQrResponse2Roles = {
+  [key in AuthorizationScope]: { identityToken: string; qrData: string };
+};
+export interface GetAuthQrResponse2 {
+  /** {protocol}://{host}:{port}/{path} */
+  host: string;
+  ssid: string;
+  psk: string;
+  roles: GetAuthQrResponse2Roles;
+  pubCert: string;
+  privCert: string;
+}
 
 export interface Upgrade {
   /** Name of the file on the user's computer */
@@ -144,26 +132,4 @@ export interface Upgrade {
 export interface UpgradeResponse {
   filename: string;
   data: Upgrade;
-}
-
-export type AuthorizationScope = 'operator' | 'installer';
-export type LoadShedding = 'NO' | 'P1' | 'XEMEX_BLACK' | 'XEMEX_9600';
-export type LoadSheddingStatus = 'CONNECTED' | 'NOT_CONNECTED';
-export type Peak = 'ON_PEAK' | 'OFF_PEAK' | 'TRANSACTION_PEAK';
-export type DeviceInfo = {
-  softwareVersion: string;
-  firmwareVersion: string;
-  serial: string;
-};
-export type InstallationUsage = [number, number, number];
-
-export type GridCurrents = number[];
-
-export interface ChargingScheduleSection {
-  time: number;
-  limit: number;
-}
-export interface ChargingSchedule {
-  recurring: 'weekly' | 'daily' | 'none';
-  sections: ChargingScheduleSection[];
 }

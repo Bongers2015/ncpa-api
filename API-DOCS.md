@@ -917,6 +917,26 @@ Creates a QR code containing an identity token
 
 null
 
+### /development/qr2/{host}
+
+#### GET
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| host | path |  | Yes | string |
+| chargePointId | query | valid chargePointId for this application would be `12345` | Yes | string |
+| ssid | query |  | Yes | string |
+| psk | query |  | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Returns GetAuthQrResponse2 | [GetAuthQrResponse2](#getauthqrresponse2) |
+
+null
+
 ### Models
 
 
@@ -1028,3 +1048,19 @@ null
 | qrDataUrl | string | QR bitmap encoded as data url | Yes |
 | requestUrl | string | authorization request url | Yes |
 | encryptedToken | string | url encoded encrypted jwt token | Yes |
+
+#### GetAuthQrResponse2Roles
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+
+#### GetAuthQrResponse2
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| host | string | {protocol}://{host}:{port}/{path} | Yes |
+| ssid | string |  | Yes |
+| psk | string |  | Yes |
+| roles | [GetAuthQrResponse2Roles](#getauthqrresponse2roles) |  | Yes |
+| pubCert | string |  | Yes |
+| privCert | string |  | Yes |

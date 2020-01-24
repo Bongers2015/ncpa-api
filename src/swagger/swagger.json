@@ -361,6 +361,44 @@
 			],
 			"type": "object",
 			"additionalProperties": false
+		},
+		"GetAuthQrResponse2Roles": {
+			"properties": {},
+			"type": "object",
+			"additionalProperties": false
+		},
+		"GetAuthQrResponse2": {
+			"properties": {
+				"host": {
+					"type": "string",
+					"description": "{protocol}://{host}:{port}/{path}"
+				},
+				"ssid": {
+					"type": "string"
+				},
+				"psk": {
+					"type": "string"
+				},
+				"roles": {
+					"$ref": "#/definitions/GetAuthQrResponse2Roles"
+				},
+				"pubCert": {
+					"type": "string"
+				},
+				"privCert": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"host",
+				"ssid",
+				"psk",
+				"roles",
+				"pubCert",
+				"privCert"
+			],
+			"type": "object",
+			"additionalProperties": false
 		}
 	},
 	"info": {
@@ -1635,6 +1673,7 @@
 				"security": [],
 				"parameters": [
 					{
+						"default": "http://asdasd",
 						"in": "path",
 						"name": "host",
 						"required": true,
@@ -1662,6 +1701,72 @@
 							"operator",
 							"installer"
 						]
+					}
+				]
+			}
+		},
+		"/development/qr2/{host}": {
+			"get": {
+				"operationId": "GetAuthQr2",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Returns GetAuthQrResponse2",
+						"schema": {
+							"$ref": "#/definitions/GetAuthQrResponse2"
+						},
+						"examples": {
+							"application/json": {
+								"host": "omg",
+								"ssid": "chargepoint_15e2b0d3c3",
+								"psk": "AB/KEb0b3pu3o+K/NB3vbw",
+								"roles": {
+									"operator": {
+										"identityToken": "JWT token signed with the private cert below",
+										"qrData": "Base64, encrypted data containing WiFi, installerToken, and cp meta data"
+									},
+									"installer": {
+										"identityToken": "JWT token signed with the private cert below",
+										"qrData": "Base64, encrypted data containing WiFi, installerToken, and cp meta data"
+									}
+								},
+								"pubCert": "2048 public cert valid from 1970 January 01 until 2040 June 01",
+								"privCert": "2048 public cert valid from 1970 January 01 until 2040 June 01"
+							}
+						}
+					}
+				},
+				"tags": [
+					"developer"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "host",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"description": "valid chargePointId for this application would be `12345`",
+						"in": "query",
+						"name": "chargePointId",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "ssid",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "psk",
+						"required": true,
+						"type": "string"
 					}
 				]
 			}
