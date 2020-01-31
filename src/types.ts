@@ -100,6 +100,14 @@ type GetAuthQrResponse2Roles = {
     qrData: string;
     requestUrl: string;
     encodedEncryptedQRPayload: string;
+    encodedIdentityToken: string;
+  };
+};
+type QRGeneratorRequestRoles = {
+  [key in AuthorizationScope]: {
+    identityToken: string;
+    qrData: string;
+    encodedEncryptedQRPayload: string;
   };
 };
 export interface GetAuthQrResponse2 {
@@ -110,6 +118,18 @@ export interface GetAuthQrResponse2 {
   roles: GetAuthQrResponse2Roles;
   pubCert: string;
   privCert: string;
+}
+export interface QRGeneratorRequest {
+  chargePointId: string;
+  ssid: string;
+  psk: string;
+  privCert: string;
+  sharedSecret: string;
+}
+export interface QRGeneratorResponse {
+  ssid: string;
+  psk: string;
+  roles: QRGeneratorRequestRoles;
 }
 
 export interface Upgrade {

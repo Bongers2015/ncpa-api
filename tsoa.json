@@ -60,6 +60,45 @@
 							}
 						]
 					}
+				},
+				"/development/qr-gen": {
+					"post": {
+						"consumes": [ "multipart/form-data" ],
+						"parameters": [
+							{
+								"in": "query",
+								"name": "chargePointId",
+								"required": true,
+								"type": "string"
+							},
+							{
+								"in": "query",
+								"name": "ssid",
+								"required": true,
+								"type": "string"
+							},
+							{
+								"in": "query",
+								"name": "psk",
+								"required": true,
+								"type": "string"
+							},
+							{
+								"in": "formData",
+								"name": "privCert",
+								"type": "file",
+								"description": "defaults to file contents of `./certs/server.key`",
+								"required": false
+							},
+							{
+								"in": "query",
+								"name": "sharedSecret",
+								"type": "string",
+								"description": "Defaults to `QR_SHARED_SECRET` in `./src/constants`",
+								"required": false
+							}
+						]
+					}
 				}
 			}
 		}

@@ -160,33 +160,19 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "GetAuthQrResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "host": { "dataType": "string", "required": true },
-            "qrDataUrl": { "dataType": "string", "required": true },
-            "requestUrl": { "dataType": "string", "required": true },
-            "encryptedToken": { "dataType": "string", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "GetAuthQrResponse2Roles": {
+    "QRGeneratorRequestRoles": {
         "dataType": "refObject",
         "properties": {
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "GetAuthQrResponse2": {
+    "QRGeneratorResponse": {
         "dataType": "refObject",
         "properties": {
-            "host": { "dataType": "string", "required": true },
             "ssid": { "dataType": "string", "required": true },
             "psk": { "dataType": "string", "required": true },
-            "roles": { "ref": "GetAuthQrResponse2Roles", "required": true },
-            "pubCert": { "dataType": "string", "required": true },
-            "privCert": { "dataType": "string", "required": true },
+            "roles": { "ref": "QRGeneratorRequestRoles", "required": true },
         },
         "additionalProperties": false,
     },
@@ -271,7 +257,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/v1/config/socket-lock-mode',
+    app.get('/api/tnm/v1/config/socket-permanent-lock-mode',
         authenticateMiddleware([{ "jwtAuth": ["installer"] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -294,7 +280,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/tnm/v1/config/socket-lock-mode',
+    app.post('/api/tnm/v1/config/socket-permanent-lock-mode',
         authenticateMiddleware([{ "jwtAuth": ["installer"] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -973,39 +959,14 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/v1/development/qr/:host',
+    app.post('/api/tnm/v1/development/qr-gen',
         function(request: any, response: any, next: any) {
             const args = {
-                host: { "default": "http://asdasd", "in": "path", "name": "host", "required": true, "dataType": "string" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 chargePointId: { "in": "query", "name": "chargePointId", "required": true, "dataType": "string" },
-                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
-                scope: { "in": "query", "name": "scope", "required": true, "dataType": "enum", "enums": ["operator", "installer"] },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new AdminController();
-
-
-            const promise = controller.getAuthQr.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/tnm/v1/development/qr2/:host',
-        function(request: any, response: any, next: any) {
-            const args = {
-                host: { "in": "path", "name": "host", "required": true, "dataType": "string" },
-                chargePointId: { "in": "query", "name": "chargePointId", "required": true, "dataType": "string" },
-                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
                 ssid: { "in": "query", "name": "ssid", "required": true, "dataType": "string" },
                 psk: { "in": "query", "name": "psk", "required": true, "dataType": "string" },
+                sharedSecret: { "in": "query", "name": "sharedSecret", "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -1020,7 +981,7 @@ export function RegisterRoutes(app: express.Express) {
             const controller = new AdminController();
 
 
-            const promise = controller.getAuthQr2.apply(controller, validatedArgs as any);
+            const promise = controller.qrGenerator.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

@@ -1,6 +1,11 @@
 import { Controller, Get, Post, Route, Security, Tags, Query } from 'tsoa';
 
-import { GridCurrents, SocketLockMode, LoadShedding, Peak } from '../types';
+import {
+  GridCurrents,
+  SocketPermanentLockMode,
+  LoadShedding,
+  Peak
+} from '../types';
 import cpService from '../services/cp';
 
 @Route('config')
@@ -8,19 +13,19 @@ import cpService from '../services/cp';
 export class ConfigController extends Controller {
   /** jwt scopes: `installer` */
   @Tags('installer')
-  @Get('socket-lock-mode')
-  public getSocketLockMode(@Query() clientId: string): SocketLockMode {
+  @Get('socket-permanent-lock-mode')
+  public getSocketLockMode(@Query() clientId: string): SocketPermanentLockMode {
     cpService.checkClientId(clientId);
     return cpService.getSocketLockMode();
   }
 
   /** jwt scopes: `installer` */
   @Tags('installer')
-  @Post('socket-lock-mode')
+  @Post('socket-permanent-lock-mode')
   public setSocketLockMode(
-    @Query() socketLockMode: SocketLockMode,
+    @Query() socketLockMode: SocketPermanentLockMode,
     @Query() clientId: string
-  ): SocketLockMode {
+  ): SocketPermanentLockMode {
     cpService.checkClientId(clientId);
     return cpService.setSocketLockMode(socketLockMode);
   }

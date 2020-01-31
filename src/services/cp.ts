@@ -9,7 +9,7 @@ import {
   ChargePointStatus,
   Status,
   Transaction,
-  SocketLockMode,
+  SocketPermanentLockMode,
   ChargingTransactionPerCard,
   Peak,
   LoadShedding,
@@ -141,11 +141,11 @@ const setAuthMode = (newAuthMode: AuthorizationMode): AuthorizationMode => {
   return authMode;
 };
 
-let socketLockMode: SocketLockMode = 'UNLOCKED';
-const getSocketLockMode = (): SocketLockMode => socketLockMode;
+let socketLockMode: SocketPermanentLockMode = 'UNLOCKED';
+const getSocketLockMode = (): SocketPermanentLockMode => socketLockMode;
 const setSocketLockMode = (
-  newSocketLockMode: SocketLockMode
-): SocketLockMode => {
+  newSocketLockMode: SocketPermanentLockMode
+): SocketPermanentLockMode => {
   socketLockMode = newSocketLockMode;
   return socketLockMode;
 };
@@ -178,7 +178,8 @@ const getDeviceInfo = (): DeviceInfo => {
   return {
     softwareVersion: 'v1.0.90',
     firmwareVersion: 'v1.1.1',
-    serial: getSerial()
+    serial: getSerial(),
+    hasLatchingDevice: true
   };
 };
 

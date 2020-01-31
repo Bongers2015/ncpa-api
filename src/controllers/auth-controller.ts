@@ -8,12 +8,12 @@ import { QRPayload } from 'src/types';
 
 import {
   ExpandedAuthorizationScope,
-  AuthorizationMode,
   AuthorizationScope
 } from 'src/shared-types';
 
-import { decrypt2, encrypt } from '../services/qr';
-import { CHARGE_POINT_ID } from '../constants';
+import { decrypt2 } from '../services/qr';
+
+// import { CHARGE_POINT_ID } from '../constants';
 @Route('auth')
 @Tags('public')
 export class AuthController extends Controller {
@@ -45,8 +45,7 @@ returns an access token and its accompanying public key for signature validation
 
 ```json
 {
-  accessToken: "eyJhbGciOiJSUzI1NiI...",
-  publicKey: "-----BEGIN CERTIFI..."
+  accessToken: "eyJhbGciOiJSUzI1NiI..."
 }
 ```
    *
@@ -62,10 +61,10 @@ returns an access token and its accompanying public key for signature validation
         path.resolve(process.cwd(), './certs/server.crt')
       );
 
-      const qrPayload = decrypt2(decodeURIComponent(token)) as unknown;
-      const p = qrPayload as QRPayload;
+      const jwtToken = decodeURIComponent(token);
+      console.log('token', token);
+      console.log('jwtToken', jwtToken);
 
-      const { tok: jwtToken, cp: chargePointId } = p;
       if (jwtToken) {
         jwt.verify(jwtToken, serverCert, (err, decoded) => {
           if (err) {
@@ -78,8 +77,7 @@ returns an access token and its accompanying public key for signature validation
             if (
               !!iat &&
               !!role &&
-              (role === 'identity_operator' || role === 'identity_installer') &&
-              !!chargePointId
+              (role === 'identity_operator' || role === 'identity_installer')
             ) {
               const lookupHell: {
                 [key in ExpandedAuthorizationScope]: AuthorizationScope;
@@ -102,6 +100,7 @@ returns an access token and its accompanying public key for signature validation
               const appToken = jwt.sign(payload, privateKey, {
                 algorithm: 'RS256'
               });
+
               resolve({
                 accessToken: encodeURIComponent(appToken)
               });
@@ -110,6 +109,8 @@ returns an access token and its accompanying public key for signature validation
             }
           }
         });
+      } else {
+        reject(new Error('erm no'));
       }
     });
   }

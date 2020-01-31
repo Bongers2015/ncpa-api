@@ -19,9 +19,9 @@ export type TransactionStatus =
   | 'AVAILABLE'
   | 'PREPARING'
   | 'CHARGING'
-  | 'SUSPENDED_EV'
-  | 'SUSPENDED_EVSE'
-  | 'FINISHING'
+  | 'SUSPENDED_EV' // car says: im full, cable is locked
+  | 'SUSPENDED_EVSE' //
+  | 'FINISHING' // unlocking
   | 'FAULTED';
 export type ConnectorStatus = 'OPERATIVE' | 'INOPERATIVE' | 'FAULTED';
 
@@ -58,10 +58,10 @@ export interface QRPayload {
   cp: string;
 }
 
-export type SocketLockMode = 'TRANSACTION' | 'LOCKED' | 'UNLOCKED';
+export type SocketPermanentLockMode = 'TRANSACTION' | 'LOCKED' | 'UNLOCKED';
 
 export interface InstallerStatus {
-  socketLockMode: SocketLockMode;
+  socketLockMode: SocketPermanentLockMode;
   gridMaxCurrent: number;
   loadSheddingModule: LoadSheddingStatus;
   chargeStationMaxCurrent: number;
@@ -74,4 +74,5 @@ export type DeviceInfo = {
   softwareVersion: string;
   firmwareVersion: string;
   serial: string;
+  hasLatchingDevice: boolean;
 };

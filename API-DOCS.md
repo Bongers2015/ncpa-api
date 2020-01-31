@@ -52,8 +52,7 @@ returns an access token and its accompanying public key for signature validation
 
 ```json
 {
-accessToken: "eyJhbGciOiJSUzI1NiI...",
-publicKey: "-----BEGIN CERTIFI..."
+accessToken: "eyJhbGciOiJSUzI1NiI..."
 }
 ```
 
@@ -121,7 +120,7 @@ jwt scopes: `operator`, `installer`
 | --- | --- | --- |
 | jwtAuth | operator | installer |
 
-### /config/socket-lock-mode
+### /config/socket-permanent-lock-mode
 
 #### GET
 ##### Description:
@@ -875,9 +874,9 @@ Set the response of the `/card` endpoint request
 | --- | --- |
 | jwtAuth | |
 
-### /development/qr/{host}
+### /development/qr-gen
 
-#### GET
+#### POST
 ##### Description:
 
 jwt scopes: `developer` 
@@ -904,37 +903,17 @@ Creates a QR code containing an identity token
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
-| host | path |  | Yes | string |
-| chargePointId | query | valid chargePointId for this application would be `12345` | Yes | string |
-| clientId | query |  | Yes | string |
-| scope | query |  | Yes | string |
-
-##### Responses
-
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 | Returns GetAuthQrResponse | [GetAuthQrResponse](#getauthqrresponse) |
-
-null
-
-### /development/qr2/{host}
-
-#### GET
-##### Parameters
-
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| host | path |  | Yes | string |
-| chargePointId | query | valid chargePointId for this application would be `12345` | Yes | string |
-| clientId | query |  | Yes | string |
+| chargePointId | query |  | Yes | string |
 | ssid | query |  | Yes | string |
 | psk | query |  | Yes | string |
+| privCert | formData | defaults to file contents of `./certs/server.key` | No | file |
+| sharedSecret | query | Defaults to `QR_SHARED_SECRET` in `./src/constants` | No | string |
 
 ##### Responses
 
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
-| 200 | Returns GetAuthQrResponse2 | [GetAuthQrResponse2](#getauthqrresponse2) |
+| 200 | Returns QRGeneratorResponse | [QRGeneratorResponse](#qrgeneratorresponse) |
 
 null
 
@@ -1041,27 +1020,15 @@ null
 | ---- | ---- | ----------- | -------- |
 | token | string |  | Yes |
 
-#### GetAuthQrResponse
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| host | string | {protocol}://{host}:{port}/{path} | Yes |
-| qrDataUrl | string | QR bitmap encoded as data url | Yes |
-| requestUrl | string | authorization request url | Yes |
-| encryptedToken | string | url encoded encrypted jwt token | Yes |
-
-#### GetAuthQrResponse2Roles
+#### QRGeneratorRequestRoles
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
 
-#### GetAuthQrResponse2
+#### QRGeneratorResponse
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| host | string | {protocol}://{host}:{port}/{path} | Yes |
 | ssid | string |  | Yes |
 | psk | string |  | Yes |
-| roles | [GetAuthQrResponse2Roles](#getauthqrresponse2roles) |  | Yes |
-| pubCert | string |  | Yes |
-| privCert | string |  | Yes |
+| roles | [QRGeneratorRequestRoles](#qrgeneratorrequestroles) |  | Yes |

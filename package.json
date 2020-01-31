@@ -8,7 +8,7 @@
 	"private": true,
 	"scripts": {
 		"lint": "eslint --fix ./src/*",
-		"dev": "nodemon -e ts -w ./src/index.ts -w ./src/server.ts -w ./src/controllers -x yarn run serve",
+		"dev": "nodemon -e ts -w ./src/index.ts -w ./src/server.ts -w ./src/controllers -w ./src/services -x yarn run serve",
 		"serve": "tsoa routes && tsoa swagger && swagger-markdown -i ./src/swagger/swagger.json -o ./API-DOCS.md && ts-node src/index.ts",
 		"serve-prod": "NODE_ENV=production yarn run serve"
 	},

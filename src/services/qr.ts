@@ -36,7 +36,7 @@ export const decrypt = (ciphertext: string): string => {
   );
 };
 
-export const encrypt2 = (
+export const encryptJSON = (
   json: QRPayload,
   key: string = QR_SHARED_SECRET
 ): string => {
@@ -55,10 +55,10 @@ export const encrypt2 = (
   return base64FullMessage;
 };
 
-export const decrypt2 = (
+export const decrypt2 = <T = { [key: string]: unknown }>(
   messageWithNonce: string,
   key: string = QR_SHARED_SECRET
-): { [key: string]: unknown } => {
+): T => {
   const keyUint8Array = Buffer.from(key, 'base64');
   const messageWithNonceAsUint8Array = Buffer.from(messageWithNonce, 'base64');
   const nonce = messageWithNonceAsUint8Array.slice(0, BoxLength.Nonce);
@@ -78,10 +78,10 @@ export const decrypt2 = (
 };
 
 type CreatedIdToken = {
-  idTokenPayload: IDTokenPayload;
-  idToken: string;
+  identityTokenPayload: IDTokenPayload;
+  identityToken: string;
+  encodedIdentityToken: string;
   qrPayload: QRPayload;
-  encryptedQRPayload: string;
   encodedEncryptedQRPayload: string;
   qrData: string;
 };
@@ -89,16 +89,20 @@ export const createIdToken = async ({
   chargePointId,
   role: scope,
   ssid,
-  psk
+  psk,
+  privCert,
+  sharedSecret
 }: {
   chargePointId: string;
   role: AuthorizationScope;
   ssid: string;
   psk: string;
+  privCert?: string;
+  sharedSecret?: string;
 }): Promise<CreatedIdToken> => {
-  const privateKey = fs.readFileSync(
-    path.resolve(process.cwd(), './certs/server.key')
-  );
+  const privateKey =
+    privCert ||
+    fs.readFileSync(path.resolve(process.cwd(), './certs/server.key'));
 
   const lookup: { [key in AuthorizationScope]: ExpandedAuthorizationScope } = {
     operator: 'identity_operator',
@@ -113,6 +117,19 @@ export const createIdToken = async ({
   const idToken = jwt.sign(idTokenPayload, privateKey, {
     algorithm: 'RS256'
   });
+
+  console.log('idToken', idToken);
+  console.log('idToken.length', idToken.length);
+
+  const serverCert = fs.readFileSync(
+    path.resolve(process.cwd(), './certs/server.crt')
+  );
+
+  jwt.verify(idToken, serverCert, (err, decoded) => {
+    console.log('err', err);
+    console.log('decoded', decoded);
+  });
+
   const qrPayload: QRPayload = {
     SSID: ssid,
     Password: psk,
@@ -121,19 +138,18 @@ export const createIdToken = async ({
     cp: chargePointId
   };
 
-  const encryptedQRPayload = encrypt2(qrPayload);
-  const encodedEncryptedQRPayload = encodeURIComponent(encrypt2(qrPayload));
+  const encodedEncryptedQRPayload = encryptJSON(qrPayload, sharedSecret);
+  const encodedIdToken = encodeURIComponent(idToken);
   return new Promise((resolve, reject) => {
-    // const requestUrl = `${host}/auth?clientId=${clientId}&token=${encodedEncryptedToken}`;
-    qrcode.toDataURL(encryptedQRPayload, (err, qrDataUrl) => {
+    qrcode.toDataURL(encodedEncryptedQRPayload, (err, qrDataUrl) => {
       if (err) {
         reject(err);
       } else {
         resolve({
-          idTokenPayload,
-          idToken,
+          identityTokenPayload: idTokenPayload,
+          identityToken: idToken,
+          encodedIdentityToken: encodedIdToken,
           qrPayload,
-          encryptedQRPayload,
           encodedEncryptedQRPayload,
           qrData: qrDataUrl
         });
