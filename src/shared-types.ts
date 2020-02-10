@@ -30,6 +30,7 @@ export interface Status {
   transactionStatus: TransactionStatus[];
   connectorStatus: ConnectorStatus[];
   authorizationMode: AuthorizationMode;
+  chargeStationMaxCurrent: number;
   /**
    * @isLong longValue
    */
@@ -37,7 +38,7 @@ export interface Status {
 }
 export interface ChargingScheduleSection {
   time: number;
-  limit: number;
+  limit: number; // chargeStationMaxCurrent
 }
 export interface ChargingSchedule {
   recurring: 'weekly' | 'daily' | 'none';
@@ -63,16 +64,94 @@ export type SocketPermanentLockMode = 'TRANSACTION' | 'LOCKED' | 'UNLOCKED';
 export interface InstallerStatus {
   socketLockMode: SocketPermanentLockMode;
   gridMaxCurrent: number;
-  loadSheddingModule: LoadSheddingStatus;
+  loadSheddingModule: LoadShedding;
   chargeStationMaxCurrent: number;
   onOffPeak: Peak;
   installationUsage: InstallationUsage;
   gridCurrents: GridCurrents;
 }
+export type Phase = '1PHASE' | '3PHASE';
 
-export type DeviceInfo = {
-  softwareVersion: string;
+export interface DeviceInfo {
+  evccVersion: string;
   firmwareVersion: string;
+  model: string;
   serial: string;
   hasLatchingDevice: boolean;
-};
+  phase: Phase;
+  /** hard limit */
+  absoluteMaxCurrent: number; // hardLimit
+  /** soft limit */
+  contractualMaxCurrent: number; // softLimit
+}
+
+export interface Card {
+  /** RFID  */
+  token: string;
+  status: 'ACCEPTED' | 'BLOCKED' | 'EXPIRED' | 'INVALID' | 'UNKNOWN';
+  expirationDate?: string;
+}
+
+export interface CardRegistration {
+  card?: Card;
+  status: CardRegistrationStatus;
+  statusMessage: string;
+}
+
+export interface CardRegistrationResponse {
+  status: CardRegistrationStatus;
+  statusMessage: string;
+}
+
+export interface ChargingTransaction {
+  startedAt: string;
+  //   stoppedAt: ISODate;
+  duration: Seconds;
+  WattHourCharged: CPWattHourCharged;
+  cardId: string;
+}
+
+// >>> /transactions
+export interface Transaction {
+  id: string;
+  remoteId?: string;
+  /** card token id */
+  token: string;
+  /**
+   * @isLong longValue
+   */
+  startDate: number; // long
+  /**
+   * @isLong longValue
+   */
+  stopDate?: number; // long
+  stopReason?: string;
+  /**
+   * @isLong longValue
+   */
+  startWattHour: number; // long
+  /**
+   * @isLong longValue
+   */
+  stopWattHour?: number; // long
+  /**
+   * @isLong longValue
+   */
+  consumedWattHours: number; // long
+}
+
+export interface ChargingTransactionPerCard {
+  startDate: string;
+  endDate: string;
+  //   stoppedAt: ISODate;
+  totalDuration: Seconds;
+  totalWattHourCharged: CPWattHourCharged;
+  cardId: string;
+}
+
+export interface ChargePointStatusUpdate {
+  plugAndChargeEnabled: boolean;
+}
+export type ISODate = string;
+export type Seconds = number;
+export type CPWattHourCharged = number;

@@ -945,6 +945,14 @@ null
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
+| evccVersion | string |  | Yes |
+| firmwareVersion | string |  | Yes |
+| model | string |  | Yes |
+| serial | string |  | Yes |
+| hasLatchingDevice | boolean |  | Yes |
+| phase | string |  | Yes |
+| absoluteMaxCurrent | double | hard limit | Yes |
+| contractualMaxCurrent | double | soft limit | Yes |
 
 #### Status
 
@@ -954,6 +962,7 @@ null
 | transactionStatus | [ string ] |  | Yes |
 | connectorStatus | [ string ] |  | Yes |
 | authorizationMode | string |  | Yes |
+| chargeStationMaxCurrent | double |  | Yes |
 | numberOfRFIDCardsRegistered | long |  | Yes |
 
 #### InstallationUsage

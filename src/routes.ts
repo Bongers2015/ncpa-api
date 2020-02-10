@@ -66,6 +66,14 @@ const models: TsoaRoute.Models = {
     "DeviceInfo": {
         "dataType": "refObject",
         "properties": {
+            "evccVersion": { "dataType": "string", "required": true },
+            "firmwareVersion": { "dataType": "string", "required": true },
+            "model": { "dataType": "string", "required": true },
+            "serial": { "dataType": "string", "required": true },
+            "hasLatchingDevice": { "dataType": "boolean", "required": true },
+            "phase": { "dataType": "enum", "enums": ["1PHASE", "3PHASE"], "required": true },
+            "absoluteMaxCurrent": { "dataType": "double", "required": true },
+            "contractualMaxCurrent": { "dataType": "double", "required": true },
         },
         "additionalProperties": false,
     },
@@ -77,6 +85,7 @@ const models: TsoaRoute.Models = {
             "transactionStatus": { "dataType": "array", "array": { "dataType": "enum", "enums": ["AVAILABLE", "PREPARING", "CHARGING", "SUSPENDED_EV", "SUSPENDED_EVSE", "FINISHING", "FAULTED"] }, "required": true },
             "connectorStatus": { "dataType": "array", "array": { "dataType": "enum", "enums": ["OPERATIVE", "INOPERATIVE", "FAULTED"] }, "required": true },
             "authorizationMode": { "dataType": "enum", "enums": ["PLUGNCHARGE", "WHITELIST"], "required": true },
+            "chargeStationMaxCurrent": { "dataType": "double", "required": true },
             "numberOfRFIDCardsRegistered": { "dataType": "long", "required": true, "validators": { "isLong": { "errorMsg": "longValue" } } },
         },
         "additionalProperties": false,
@@ -94,7 +103,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "socketLockMode": { "dataType": "enum", "enums": ["TRANSACTION", "LOCKED", "UNLOCKED"], "required": true },
             "gridMaxCurrent": { "dataType": "double", "required": true },
-            "loadSheddingModule": { "dataType": "enum", "enums": ["CONNECTED", "NOT_CONNECTED"], "required": true },
+            "loadSheddingModule": { "dataType": "enum", "enums": ["NO", "P1", "XEMEX_BLACK", "XEMEX_9600"], "required": true },
             "chargeStationMaxCurrent": { "dataType": "double", "required": true },
             "onOffPeak": { "dataType": "enum", "enums": ["ON_PEAK", "OFF_PEAK", "TRANSACTION_PEAK"], "required": true },
             "installationUsage": { "ref": "InstallationUsage", "required": true },

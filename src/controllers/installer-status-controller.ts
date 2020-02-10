@@ -15,7 +15,7 @@ export class InstallerStatusController extends Controller {
     return {
       socketLockMode: cpService.getSocketLockMode(),
       gridMaxCurrent: cpService.getGridMaxCurrent(),
-      loadSheddingModule: cpService.getLoadSheddingStatus(),
+      loadSheddingModule: cpService.getLoadShedding(),
       chargeStationMaxCurrent: cpService.getChargeStationMaxCurrent(),
       onOffPeak: cpService.getOnOffPeak(),
       installationUsage: cpService.getInstallationUsage(),

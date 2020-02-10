@@ -1,77 +1,7 @@
-import { AuthorizationScope, CardRegistrationStatus } from './shared-types';
+import { AuthorizationScope } from './shared-types';
 
 export * from './shared-types';
 
-export interface Card {
-  /** RFID  */
-  token: string;
-  status: 'ACCEPTED' | 'BLOCKED' | 'EXPIRED' | 'INVALID' | 'UNKNOWN';
-  expirationDate?: string;
-}
-
-export interface CardRegistration {
-  card?: Card;
-  status: CardRegistrationStatus;
-  statusMessage: string;
-}
-
-export interface CardRegistrationResponse {
-  status: CardRegistrationStatus;
-  statusMessage: string;
-}
-
-export interface ChargingTransaction {
-  startedAt: string;
-  //   stoppedAt: ISODate;
-  duration: Seconds;
-  WattHourCharged: CPWattHourCharged;
-  cardId: string;
-}
-
-// >>> /transactions
-export interface Transaction {
-  id: string;
-  remoteId?: string;
-  /** card token id */
-  token: string;
-  /**
-   * @isLong longValue
-   */
-  startDate: number; // long
-  /**
-   * @isLong longValue
-   */
-  stopDate?: number; // long
-  stopReason?: string;
-  /**
-   * @isLong longValue
-   */
-  startWattHour: number; // long
-  /**
-   * @isLong longValue
-   */
-  stopWattHour?: number; // long
-  /**
-   * @isLong longValue
-   */
-  consumedWattHours: number; // long
-}
-
-export interface ChargingTransactionPerCard {
-  startDate: string;
-  endDate: string;
-  //   stoppedAt: ISODate;
-  totalDuration: Seconds;
-  totalWattHourCharged: CPWattHourCharged;
-  cardId: string;
-}
-
-export interface ChargePointStatusUpdate {
-  plugAndChargeEnabled: boolean;
-}
-export type ISODate = string;
-export type Seconds = number;
-export type CPWattHourCharged = number;
 export interface CreateCardRequest {
   token: string;
 }

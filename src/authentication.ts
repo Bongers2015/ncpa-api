@@ -4,7 +4,7 @@ import path from 'path';
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 
-const skipAuth = false;
+const skipAuth = true;
 // eslint-disable-next-line consistent-return
 export function expressAuthentication(
   request: express.Request,

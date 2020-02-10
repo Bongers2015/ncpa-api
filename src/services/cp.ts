@@ -14,7 +14,6 @@ import {
   Peak,
   LoadShedding,
   DeviceInfo,
-  LoadSheddingStatus,
   InstallationUsage,
   GridCurrents,
   ChargingSchedule
@@ -27,6 +26,8 @@ const baseRfidCard: Card = {
   status: 'ACCEPTED'
 };
 
+let chargeStationMaxCurrent = 3;
+
 let cards: Card[] = [baseRfidCard];
 let chargePointStatus: Status = {
   // code: 0,
@@ -34,7 +35,8 @@ let chargePointStatus: Status = {
   numberOfRFIDCardsRegistered: cards.length,
   transactionStatus: [],
   connectorStatus: [],
-  authorizationMode: 'WHITELIST'
+  authorizationMode: 'WHITELIST',
+  chargeStationMaxCurrent
 };
 const updateChargePointStatus = ({
   // code: newCode,
@@ -155,7 +157,7 @@ const setGridMaxCurrent = (newGridMaxCurrent: number): number => {
   gridMaxCurrent = newGridMaxCurrent;
   return gridMaxCurrent;
 };
-const serial = '123123123123';
+const serial = '07A10012';
 const getSerial = (): string => serial;
 
 let loadShedding: LoadShedding = 'NO';
@@ -165,7 +167,6 @@ const setLoadShedding = (newLoadShedding: LoadShedding): LoadShedding => {
   return loadShedding;
 };
 
-let chargeStationMaxCurrent = 3;
 const getChargeStationMaxCurrent = (): number => chargeStationMaxCurrent;
 const setChargeStationMaxCurrent = (
   newChargeStationMaxCurrent: number
@@ -176,15 +177,17 @@ const setChargeStationMaxCurrent = (
 
 const getDeviceInfo = (): DeviceInfo => {
   return {
-    softwareVersion: 'v1.0.90',
-    firmwareVersion: 'v1.1.1',
+    evccVersion: '103.18.19 3_256d3',
+    firmwareVersion: '"1.7.9.0',
+    model: 'HOMEADVANCEDSPRONQ',
     serial: getSerial(),
-    hasLatchingDevice: true
+    hasLatchingDevice: true,
+    phase: '1PHASE',
+    absoluteMaxCurrent: 32,
+    contractualMaxCurrent: 16
+    // currentLimits: { hardLimit: 32, softLimit: 20, loadsheddingLimit: 24 }
   };
 };
-
-const loadSheddingStatus: LoadSheddingStatus = 'CONNECTED';
-const getLoadSheddingStatus = (): LoadSheddingStatus => loadSheddingStatus;
 
 let onOffPeak: Peak = 'ON_PEAK';
 const getOnOffPeak = (): Peak => onOffPeak;
@@ -227,7 +230,10 @@ const checkClientId = (clientId: string): boolean => {
 };
 export default {
   getCards: (): Card[] => {
-    return cards.map(card => ({ ...card }));
+    console.log('get cards', cards);
+    return cards
+      .filter(card => card.token !== baseRfidCard.token)
+      .map(card => ({ ...card }));
   },
   addCardById,
   getCardById: (cardId: CardId): Card | undefined => {
@@ -308,6 +314,7 @@ export default {
   },
   cardRegistration: (): Promise<CardRegistration> => {
     let finalCardRegistrationResponse = cardRegistrationResponse;
+    console.log('cards', cards);
     if (cards.length >= MAX_NUMBER_OF_CARDS) {
       finalCardRegistrationResponse = {
         status: 'FAILURE',
@@ -356,7 +363,6 @@ export default {
   getChargeStationMaxCurrent,
   setChargeStationMaxCurrent,
   getDeviceInfo,
-  getLoadSheddingStatus,
   getInstallationUsage,
   activateShunt,
   deactivateShunt,

@@ -63,7 +63,50 @@
 			"additionalProperties": false
 		},
 		"DeviceInfo": {
-			"properties": {},
+			"properties": {
+				"evccVersion": {
+					"type": "string"
+				},
+				"firmwareVersion": {
+					"type": "string"
+				},
+				"model": {
+					"type": "string"
+				},
+				"serial": {
+					"type": "string"
+				},
+				"hasLatchingDevice": {
+					"type": "boolean"
+				},
+				"phase": {
+					"type": "string",
+					"enum": [
+						"1PHASE",
+						"3PHASE"
+					]
+				},
+				"absoluteMaxCurrent": {
+					"type": "number",
+					"format": "double",
+					"description": "hard limit"
+				},
+				"contractualMaxCurrent": {
+					"type": "number",
+					"format": "double",
+					"description": "soft limit"
+				}
+			},
+			"required": [
+				"evccVersion",
+				"firmwareVersion",
+				"model",
+				"serial",
+				"hasLatchingDevice",
+				"phase",
+				"absoluteMaxCurrent",
+				"contractualMaxCurrent"
+			],
 			"type": "object",
 			"additionalProperties": false
 		},
@@ -110,6 +153,10 @@
 						"WHITELIST"
 					]
 				},
+				"chargeStationMaxCurrent": {
+					"type": "number",
+					"format": "double"
+				},
 				"numberOfRFIDCardsRegistered": {
 					"type": "integer",
 					"format": "int64"
@@ -120,6 +167,7 @@
 				"transactionStatus",
 				"connectorStatus",
 				"authorizationMode",
+				"chargeStationMaxCurrent",
 				"numberOfRFIDCardsRegistered"
 			],
 			"type": "object",
@@ -147,8 +195,10 @@
 				"loadSheddingModule": {
 					"type": "string",
 					"enum": [
-						"CONNECTED",
-						"NOT_CONNECTED"
+						"NO",
+						"P1",
+						"XEMEX_BLACK",
+						"XEMEX_9600"
 					]
 				},
 				"chargeStationMaxCurrent": {
