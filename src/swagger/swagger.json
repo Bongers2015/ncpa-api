@@ -1293,7 +1293,8 @@
 				},
 				"description": "jwt scopes: `operator`",
 				"tags": [
-					"operator"
+					"operator",
+					"installer"
 				],
 				"security": [
 					{
@@ -1628,6 +1629,7 @@
 				},
 				"description": "jwt scopes: `operator`",
 				"tags": [
+					"installer",
 					"operator"
 				],
 				"security": [
