@@ -1291,7 +1291,7 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `operator`",
+				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
 					"operator",
 					"installer"
@@ -1627,7 +1627,7 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `operator`",
+				"description": "jwt scopes: `operator`, `installer`",
 				"tags": [
 					"installer",
 					"operator"
