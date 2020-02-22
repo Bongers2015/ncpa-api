@@ -877,28 +877,6 @@ Set the response of the `/card` endpoint request
 ### /development/qr-gen
 
 #### POST
-##### Description:
-
-jwt scopes: `developer` 
-
-Creates a QR code containing an identity token
-
-
-```
-{
-"iss": "TNM Auth server",
-"sub": "{cp-uuid}",
-"aud": "operator" | "installer",
-"iat": 1516239022,
-"wifi": {
-"ssid": "my-ssid",
-"password": "strong-wifi-password",
-"type": "wpa2",
-"hidden": true
-}
-}
-```
-
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
@@ -914,6 +892,135 @@ Creates a QR code containing an identity token
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
 | 200 | Returns QRGeneratorResponse | [QRGeneratorResponse](#qrgeneratorresponse) |
+
+null
+
+### /development/upgrade-contents
+
+#### GET
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | [ object ] |
+
+null
+
+### /development/upgrade
+
+#### DELETE
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | string |
+
+null
+
+#### GET
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | [ object ] |
+
+null
+
+### /firmwares/latest
+
+#### GET
+##### Description:
+
+jwt scopes: `developer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | ok | file |
+| 302 | Redirect | object |
+
+null
+
+### /firmwares/{filename}
+
+#### GET
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| filename | path |  | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | ok | file |
+
+null
+
+### /firmwares
+
+#### POST
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| data | formData |  | Yes | file |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | [SomeFile](#somefile) |
+
+null
+
+#### GET
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | [ object ] |
+
+null
+
+#### DELETE
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | string |
 
 null
 
@@ -1041,3 +1148,8 @@ null
 | ssid | string |  | Yes |
 | psk | string |  | Yes |
 | roles | [QRGeneratorRequestRoles](#qrgeneratorrequestroles) |  | Yes |
+
+#### SomeFile
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |

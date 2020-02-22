@@ -408,6 +408,11 @@
 			],
 			"type": "object",
 			"additionalProperties": false
+		},
+		"SomeFile": {
+			"properties": {},
+			"type": "object",
+			"additionalProperties": false
 		}
 	},
 	"info": {
@@ -1758,7 +1763,6 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `developer` \n\nCreates a QR code containing an identity token\n\n\n```\n{\n\"iss\": \"TNM Auth server\",\n\"sub\": \"{cp-uuid}\",\n\"aud\": \"operator\" | \"installer\",\n\"iat\": 1516239022,\n\"wifi\": {\n\"ssid\": \"my-ssid\",\n\"password\": \"strong-wifi-password\",\n\"type\": \"wpa2\",\n\"hidden\": true\n}\n}\n```",
 				"tags": [
 					"developer"
 				],
@@ -1800,6 +1804,260 @@
 				"consumes": [
 					"multipart/form-data"
 				]
+			}
+		},
+		"/development/upgrade-contents": {
+			"get": {
+				"operationId": "UpgradeContents",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"properties": {
+									"size": {
+										"type": "number",
+										"format": "double"
+									},
+									"filename": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"filename",
+									"size"
+								],
+								"type": "object"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"developer"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/development/upgrade": {
+			"delete": {
+				"operationId": "DeleteFirmwares",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "string"
+						}
+					}
+				},
+				"tags": [
+					"developer"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"get": {
+				"operationId": "Firmwares",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"properties": {
+									"filename": {
+										"type": "string"
+									},
+									"modified": {
+										"type": "string"
+									},
+									"modifiedMs": {
+										"type": "number",
+										"format": "double"
+									},
+									"size": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"size",
+									"modifiedMs",
+									"modified",
+									"filename"
+								],
+								"type": "object"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"developer"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/firmwares/latest": {
+			"get": {
+				"operationId": "FirmwareLatest",
+				"produces": [
+					"application/zip"
+				],
+				"responses": {
+					"200": {
+						"description": "ok",
+						"schema": {
+							"type": "file"
+						}
+					},
+					"302": {
+						"description": "Redirect",
+						"schema": {
+							"additionalProperties": true,
+							"type": "object"
+						}
+					}
+				},
+				"description": "jwt scopes: `developer`",
+				"tags": [
+					"firmwares"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/firmwares/{filename}": {
+			"get": {
+				"operationId": "FirmwareFilename",
+				"produces": [
+					"application/zip"
+				],
+				"responses": {
+					"200": {
+						"description": "ok",
+						"schema": {
+							"additionalProperties": true,
+							"type": "file"
+						}
+					}
+				},
+				"tags": [
+					"firmwares"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "filename",
+						"required": true,
+						"type": "string"
+					}
+				]
+			}
+		},
+		"/firmwares": {
+			"post": {
+				"operationId": "UploadFirmware",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/SomeFile"
+						}
+					}
+				},
+				"tags": [
+					"firmwares"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "formData",
+						"name": "data",
+						"type": "file",
+						"required": true
+					}
+				],
+				"consumes": [
+					"multipart/form-data"
+				]
+			},
+			"get": {
+				"operationId": "Firmwares",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"properties": {
+									"filename": {
+										"type": "string"
+									},
+									"modified": {
+										"type": "string"
+									},
+									"modifiedMs": {
+										"type": "number",
+										"format": "double"
+									},
+									"size": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"size",
+									"modifiedMs",
+									"modified",
+									"filename"
+								],
+								"type": "object"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"tags": [
+					"firmwares"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"delete": {
+				"operationId": "DeleteFirmwares",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"type": "string"
+						}
+					}
+				},
+				"tags": [
+					"firmwares"
+				],
+				"security": [],
+				"parameters": []
 			}
 		}
 	},

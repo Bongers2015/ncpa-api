@@ -140,6 +140,7 @@ let authMode: AuthorizationMode = 'WHITELIST';
 const getAuthMode = (): AuthorizationMode => authMode;
 const setAuthMode = (newAuthMode: AuthorizationMode): AuthorizationMode => {
   authMode = newAuthMode;
+  chargePointStatus = { ...chargePointStatus, authorizationMode: authMode };
   return authMode;
 };
 

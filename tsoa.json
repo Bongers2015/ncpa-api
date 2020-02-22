@@ -99,6 +99,31 @@
 							}
 						]
 					}
+				},
+				"/firmwares/{filename}": {
+					"get": {
+						"produces": [ "application/zip" ],
+						"responses": { "200": { "description": "ok", "schema": { "type": "file" } } }
+					}
+				},
+				"/firmwares/latest": {
+					"get": {
+						"produces": [ "application/zip" ],
+						"responses": { "200": { "description": "ok", "schema": { "type": "file" } } }
+					}
+				},
+				"/firmwares": {
+					"post": {
+						"consumes": [ "multipart/form-data" ],
+						"parameters": [
+							{
+								"in": "formData",
+								"name": "data",
+								"type": "file",
+								"required": true
+							}
+						]
+					}
 				}
 			}
 		}

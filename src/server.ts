@@ -26,13 +26,14 @@ import './controllers/transactions-controller';
 import './controllers/schedule.controller';
 import './controllers/upgrade-controller';
 import './controllers/development-controller';
+import './controllers/firmware-controller';
 
 import { RegisterRoutes } from './routes';
 
 export const server = (): Promise<https.Server | http.Server> => {
   const app = express()
     .use(bodyParser.urlencoded({ extended: true }))
-    .use(bodyParser.json())
+    .use(bodyParser.json({ limit: '50mb' }))
     .use(methodOverride())
     .use((_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');

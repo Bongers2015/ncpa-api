@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 import { Controller, Post, Request, Route, Security, Tags, Query } from 'tsoa';
 import Express from 'express';
 import multer from 'multer';
@@ -5,6 +8,8 @@ import multer from 'multer';
 import cpService from '../services/cp';
 
 import { Upgrade } from '../types';
+
+const fsPromises = fs.promises;
 
 @Route('upgrade')
 @Tags('operator')
@@ -22,6 +27,13 @@ export class UpgradeController extends Controller {
   }
 
   private handleFile(request: Express.Request): Promise<Upgrade> {
+    console.log('request.body', request.body);
+    console.log(multer().any());
+
+    multer().any()(request, undefined, error => {
+      console.log('request error', error);
+      console.log('request', request.files);
+    });
     const multerSingle = multer().single('data');
     return new Promise((resolve, reject) => {
       multerSingle(request, undefined, async error => {
@@ -40,6 +52,11 @@ export class UpgradeController extends Controller {
           filename,
           path: uploadPath
         } = file;
+
+        fsPromises.writeFile(
+          path.join(process.cwd(), 'received-upgrades', originalname),
+          request.file.buffer
+        );
 
         resolve({
           originalname,

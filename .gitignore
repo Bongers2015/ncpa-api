@@ -13,3 +13,6 @@ src/routes.ts
 !certs/server.cnf
 !certs/v3.ext
 #
+latest.zip
+received-upgrades/*.zip
+firmwares/*.zip
