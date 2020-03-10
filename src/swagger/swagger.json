@@ -117,7 +117,8 @@
 					"enum": [
 						"OPERATIVE",
 						"INOPERATIVE",
-						"FAULTED"
+						"FAULTED",
+						"UPGRADING"
 					]
 				},
 				"transactionStatus": {
@@ -1296,10 +1297,9 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `operator`, `installer`",
+				"description": "jwt scopes: `operator`",
 				"tags": [
-					"operator",
-					"installer"
+					"operator"
 				],
 				"security": [
 					{
@@ -1632,9 +1632,8 @@
 						}
 					}
 				},
-				"description": "jwt scopes: `operator`, `installer`",
+				"description": "jwt scopes: `operator`",
 				"tags": [
-					"installer",
 					"operator"
 				],
 				"security": [

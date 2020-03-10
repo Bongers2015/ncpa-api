@@ -83,7 +83,7 @@ const models: TsoaRoute.Models = {
     "Status": {
         "dataType": "refObject",
         "properties": {
-            "chargePointStatus": { "dataType": "enum", "enums": ["OPERATIVE", "INOPERATIVE", "FAULTED"], "required": true },
+            "chargePointStatus": { "dataType": "enum", "enums": ["OPERATIVE", "INOPERATIVE", "FAULTED", "UPGRADING"], "required": true },
             "transactionStatus": { "dataType": "array", "array": { "dataType": "enum", "enums": ["AVAILABLE", "PREPARING", "CHARGING", "SUSPENDED_EV", "SUSPENDED_EVSE", "FINISHING", "FAULTED"] }, "required": true },
             "connectorStatus": { "dataType": "array", "array": { "dataType": "enum", "enums": ["OPERATIVE", "INOPERATIVE", "FAULTED"] }, "required": true },
             "authorizationMode": { "dataType": "enum", "enums": ["PLUGNCHARGE", "WHITELIST"], "required": true },

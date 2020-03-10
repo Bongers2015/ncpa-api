@@ -229,6 +229,20 @@ const checkClientId = (clientId: string): boolean => {
   // eslint-disable-next-line no-self-compare
   return clientId === clientId;
 };
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const startUpgrade = () => {
+  updateChargePointStatus({
+    ...chargePointStatus,
+    statusMessage: 'UPGRADING'
+  });
+  setTimeout(() => {
+    updateChargePointStatus({
+      ...chargePointStatus,
+      statusMessage: 'OPERATIVE'
+    });
+  }, 30000);
+};
 export default {
   getCards: (): Card[] => {
     console.log('get cards', cards);
@@ -346,6 +360,7 @@ export default {
   getChargePointStatus: (): Status => {
     return chargePointStatus;
   },
+  startUpgrade,
   updateChargePointStatus,
   getCardTransactions,
   getTransactions,

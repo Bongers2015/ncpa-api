@@ -23,6 +23,8 @@ export class UpgradeController extends Controller {
   ): Promise<Upgrade> {
     cpService.checkClientId(clientId);
     const upgradeResponse = await this.handleFile(request);
+    cpService.startUpgrade();
+
     return upgradeResponse;
   }
 

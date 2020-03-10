@@ -14,7 +14,11 @@ export type Peak = 'ON_PEAK' | 'OFF_PEAK' | 'TRANSACTION_PEAK';
 export type InstallationUsage = [number, number, number];
 
 export type GridCurrents = number[];
-export type ChargePointStatus = 'OPERATIVE' | 'INOPERATIVE' | 'FAULTED';
+export type ChargePointStatus =
+  | 'OPERATIVE'
+  | 'INOPERATIVE'
+  | 'FAULTED'
+  | 'UPGRADING';
 export type TransactionStatus =
   | 'AVAILABLE'
   | 'PREPARING'
