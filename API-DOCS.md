@@ -519,6 +519,31 @@ jwt scopes: `operator`, `installer`
 | --- | --- | --- |
 | jwtAuth | operator | installer |
 
+#### POST
+##### Description:
+
+jwt scopes: `operator`, `installer`
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| token | path |  | Yes | string |
+| clientId | query |  | Yes | string |
+| label | query |  | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | Ok | [Card](#card) |
+
+##### Security
+
+| Security Schema | Scopes | |
+| --- | --- | --- |
+| jwtAuth | operator | installer |
+
 #### DELETE
 ##### Description:
 
@@ -1039,6 +1064,7 @@ null
 | token | string | RFID | Yes |
 | status | string |  | Yes |
 | expirationDate | string |  | No |
+| label | string |  | No |
 
 #### CardRegistration
 

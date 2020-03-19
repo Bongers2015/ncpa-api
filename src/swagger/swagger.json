@@ -28,6 +28,10 @@
 				"expirationDate": {
 					"type": "string",
 					"x-nullable": true
+				},
+				"label": {
+					"type": "string",
+					"x-nullable": true
 				}
 			},
 			"required": [
@@ -1201,6 +1205,52 @@
 					{
 						"in": "query",
 						"name": "clientId",
+						"required": true,
+						"type": "string"
+					}
+				]
+			},
+			"post": {
+				"operationId": "UpdateCardLabel",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Card"
+						}
+					}
+				},
+				"description": "jwt scopes: `operator`, `installer`",
+				"tags": [
+					"operator"
+				],
+				"security": [
+					{
+						"jwtAuth": [
+							"operator",
+							"installer"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "token",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "clientId",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "label",
 						"required": true,
 						"type": "string"
 					}

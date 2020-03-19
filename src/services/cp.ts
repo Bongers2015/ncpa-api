@@ -26,7 +26,7 @@ const baseRfidCard: Card = {
   status: 'ACCEPTED'
 };
 
-let chargeStationMaxCurrent = 3;
+let chargeStationMaxCurrent = 16;
 
 let cards: Card[] = [baseRfidCard];
 let chargePointStatus: Status = {
@@ -100,6 +100,9 @@ const addCardById = (cardId: string): boolean => {
   return false;
 };
 
+const serial = '07A10012';
+const getSerial = (): string => serial;
+
 const getCardTransactions = (cardId: string): Transaction[] => {
   return [
     {
@@ -119,6 +122,28 @@ const getTransactions = (): Transaction[] => {
       startDate: 1231023123123,
       stopDate: 1231023140000,
       startWattHour: 123,
+      consumedWattHours: 0
+    },
+    {
+      id: '1301',
+      remoteId: null,
+      token: `LCP${serial}`,
+      startDate: 1583849111000,
+      stopDate: 1583849274000,
+      stopReason: null,
+      startWattHour: 80,
+      stopWattHour: 80,
+      consumedWattHours: 0
+    },
+    {
+      id: '1302',
+      remoteId: null,
+      token: `LCA${serial}`,
+      startDate: 1583849291000,
+      stopDate: 1583849369000,
+      stopReason: null,
+      startWattHour: 80,
+      stopWattHour: 80,
       consumedWattHours: 0
     }
   ];
@@ -158,8 +183,6 @@ const setGridMaxCurrent = (newGridMaxCurrent: number): number => {
   gridMaxCurrent = newGridMaxCurrent;
   return gridMaxCurrent;
 };
-const serial = '07A10012';
-const getSerial = (): string => serial;
 
 let loadShedding: LoadShedding = 'NO';
 const getLoadShedding = (): LoadShedding => loadShedding;
@@ -179,7 +202,7 @@ const setChargeStationMaxCurrent = (
 const getDeviceInfo = (): DeviceInfo => {
   return {
     evccVersion: '103.18.19 3_256d3',
-    firmwareVersion: '"1.7.9.0',
+    firmwareVersion: '1.7.9.0',
     model: 'HOMEADVANCEDSPRONQ',
     serial: getSerial(),
     hasLatchingDevice: true,
@@ -242,6 +265,18 @@ const startUpgrade = () => {
       statusMessage: 'OPERATIVE'
     });
   }, 30000);
+};
+
+const updateCardLabel = (token: string, label: string): Card => {
+  let updatedCard: Card;
+  cards = cards.map(card => {
+    if (card.token === token) {
+      updatedCard = { ...card, label };
+      return updatedCard;
+    }
+    return card;
+  });
+  return updatedCard;
 };
 export default {
   getCards: (): Card[] => {
@@ -386,5 +421,6 @@ export default {
   setGridCurrents,
   getChargingSchedule,
   setChargingSchedule,
-  checkClientId
+  checkClientId,
+  updateCardLabel
 };

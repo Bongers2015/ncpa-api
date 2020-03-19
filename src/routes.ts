@@ -51,6 +51,7 @@ const models: TsoaRoute.Models = {
             "token": { "dataType": "string", "required": true },
             "status": { "dataType": "enum", "enums": ["ACCEPTED", "BLOCKED", "EXPIRED", "INVALID", "UNKNOWN"], "required": true },
             "expirationDate": { "dataType": "string" },
+            "label": { "dataType": "string" },
         },
         "additionalProperties": false,
     },
@@ -647,6 +648,31 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getCard.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/tnm/v1/whitelist/cards/:token',
+        authenticateMiddleware([{ "jwtAuth": ["operator", "installer"] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                token: { "in": "path", "name": "token", "required": true, "dataType": "string" },
+                clientId: { "in": "query", "name": "clientId", "required": true, "dataType": "string" },
+                label: { "in": "query", "name": "label", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new CardsController();
+
+
+            const promise = controller.updateCardLabel.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

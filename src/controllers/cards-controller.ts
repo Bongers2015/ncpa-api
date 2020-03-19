@@ -1,4 +1,15 @@
-import { Controller, Security, Delete, Route, Tags, Get, Query } from 'tsoa';
+import { rejects } from 'assert';
+
+import {
+  Controller,
+  Security,
+  Delete,
+  Route,
+  Tags,
+  Get,
+  Query,
+  Post
+} from 'tsoa';
 
 import cpService from '../services/cp';
 import { Card } from '../types';
@@ -27,6 +38,26 @@ export class CardsController extends Controller {
     cpService.checkClientId(clientId);
     return new Promise(resolve => {
       resolve(cpService.getCardById(token));
+    });
+  }
+
+  /** jwt scopes: `operator`, `installer` */
+  @Post('{token}')
+  @Security('jwtAuth', [`operator`, `installer`])
+  @Tags('operator')
+  public async updateCardLabel(
+    token: string,
+    @Query() clientId: string,
+    @Query() label: string
+  ): Promise<Card> {
+    cpService.checkClientId(clientId);
+    return new Promise((resolve, reject) => {
+      const updatedCard: Card = cpService.updateCardLabel(token, label);
+      if (updatedCard) {
+        resolve(updatedCard);
+      } else {
+        reject(new Error('Could not find card'));
+      }
     });
   }
 

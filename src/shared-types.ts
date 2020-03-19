@@ -94,6 +94,7 @@ export interface Card {
   token: string;
   status: 'ACCEPTED' | 'BLOCKED' | 'EXPIRED' | 'INVALID' | 'UNKNOWN';
   expirationDate?: string;
+  label?: string;
 }
 
 export interface CardRegistration {
