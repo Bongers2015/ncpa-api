@@ -1115,6 +1115,11 @@ null
 | installationUsage | [InstallationUsage](#installationusage) |  | Yes |
 | gridCurrents | [GridCurrents](#gridcurrents) |  | Yes |
 
+#### Seconds
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+
 #### Transaction
 
 | Name | Type | Description | Required |
@@ -1122,8 +1127,8 @@ null
 | id | string |  | Yes |
 | remoteId | string |  | No |
 | token | string | card token id | Yes |
-| startDate | long |  | Yes |
-| stopDate | long |  | No |
+| startDate | [Seconds](#seconds) |  | Yes |
+| stopDate | [Seconds](#seconds) |  | No |
 | stopReason | string |  | No |
 | startWattHour | long |  | Yes |
 | stopWattHour | long |  | No |
@@ -1133,7 +1138,7 @@ null
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| time | double |  | Yes |
+| time | [Seconds](#seconds) |  | Yes |
 | limit | double |  | Yes |
 
 #### ChargingSchedule

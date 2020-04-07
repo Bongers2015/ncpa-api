@@ -208,7 +208,7 @@ const getDeviceInfo = (): DeviceInfo => {
     hasLatchingDevice: true,
     phase: '1PHASE',
     absoluteMaxCurrent: 32,
-    contractualMaxCurrent: 16
+    contractualMaxCurrent: 64
     // currentLimits: { hardLimit: 32, softLimit: 20, loadsheddingLimit: 24 }
   };
 };

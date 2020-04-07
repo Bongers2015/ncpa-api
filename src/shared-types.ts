@@ -41,7 +41,7 @@ export interface Status {
   numberOfRFIDCardsRegistered: number;
 }
 export interface ChargingScheduleSection {
-  time: number;
+  time: Seconds;
   limit: number; // chargeStationMaxCurrent
 }
 export interface ChargingSchedule {
@@ -122,14 +122,9 @@ export interface Transaction {
   remoteId?: string;
   /** card token id */
   token: string;
-  /**
-   * @isLong longValue
-   */
-  startDate: number; // long
-  /**
-   * @isLong longValue
-   */
-  stopDate?: number; // long
+
+  startDate: Seconds;
+  stopDate?: Seconds;
   stopReason?: string;
   /**
    * @isLong longValue

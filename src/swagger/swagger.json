@@ -237,6 +237,11 @@
 			"type": "object",
 			"additionalProperties": false
 		},
+		"Seconds": {
+			"properties": {},
+			"type": "object",
+			"additionalProperties": false
+		},
 		"Transaction": {
 			"properties": {
 				"id": {
@@ -251,12 +256,10 @@
 					"description": "card token id"
 				},
 				"startDate": {
-					"type": "integer",
-					"format": "int64"
+					"$ref": "#/definitions/Seconds"
 				},
 				"stopDate": {
-					"type": "integer",
-					"format": "int64",
+					"$ref": "#/definitions/Seconds",
 					"x-nullable": true
 				},
 				"stopReason": {
@@ -290,8 +293,7 @@
 		"ChargingScheduleSection": {
 			"properties": {
 				"time": {
-					"type": "number",
-					"format": "double"
+					"$ref": "#/definitions/Seconds"
 				},
 				"limit": {
 					"type": "number",

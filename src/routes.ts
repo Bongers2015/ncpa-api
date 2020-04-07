@@ -115,14 +115,21 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Seconds": {
+        "dataType": "refObject",
+        "properties": {
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Transaction": {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
             "remoteId": { "dataType": "string" },
             "token": { "dataType": "string", "required": true },
-            "startDate": { "dataType": "long", "required": true, "validators": { "isLong": { "errorMsg": "longValue" } } },
-            "stopDate": { "dataType": "long", "validators": { "isLong": { "errorMsg": "longValue" } } },
+            "startDate": { "ref": "Seconds", "required": true },
+            "stopDate": { "ref": "Seconds" },
             "stopReason": { "dataType": "string" },
             "startWattHour": { "dataType": "long", "required": true, "validators": { "isLong": { "errorMsg": "longValue" } } },
             "stopWattHour": { "dataType": "long", "validators": { "isLong": { "errorMsg": "longValue" } } },
@@ -134,7 +141,7 @@ const models: TsoaRoute.Models = {
     "ChargingScheduleSection": {
         "dataType": "refObject",
         "properties": {
-            "time": { "dataType": "double", "required": true },
+            "time": { "ref": "Seconds", "required": true },
             "limit": { "dataType": "double", "required": true },
         },
         "additionalProperties": false,
